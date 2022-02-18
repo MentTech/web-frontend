@@ -3,7 +3,6 @@ import { AppPropsWithLayout } from '@models/common';
 import { EmptyLayout } from '@components/layouts';
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-  console.log("App render");
   const Layout = Component.Layout ?? EmptyLayout;
   return (
     <Layout>

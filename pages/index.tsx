@@ -1,6 +1,5 @@
 import { MainLayout } from '@components/layouts'
 import { NextPageWithLayout } from '@models/common'
-import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
@@ -32,7 +31,7 @@ const Home: NextPageWithLayout = () => {
 
           <a href="https://nextjs.org/learn" className={styles.card}>
             <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
+            <p className='text-red-600'>Learn about Next.js in an interactive course with quizzes!</p>
           </a>
 
           <a
