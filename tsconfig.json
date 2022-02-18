@@ -17,7 +17,28 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": [
+        "./components/*"
+      ],
+      "@models/*": [
+        "./models/*"
+      ],
+      "@styles/*": [
+        "./styles/*"
+      ],
+      "@hooks/*": [
+        "./hooks/*"
+      ],
+      "@constants/*": [
+        "./constants/*"
+      ],
+      "@features/*": [
+        "./features/*"
+      ],
+    }
   },
   "include": [
     "next-env.d.ts",
@@ -26,23 +47,5 @@
   ],
   "exclude": [
     "node_modules"
-  ],
-  "baseUrl": ".",
-  "paths": {
-    "@component/*": [
-      "./components/*"
-    ],
-    "@model/*": [
-      "./models/*"
-    ],
-    "@styles/*": [
-      "./styles/*"
-    ],
-    "@hooks/*": [
-      "./hooks/*"
-    ],
-    "@constants/*": [
-      "./constants/*"
-    ],
-  }
+  ]
 }
