@@ -38,13 +38,16 @@
       "@features/*": [
         "./features/*"
       ],
+      "@config/*": [
+        "./config/*"
+      ],
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "config/main.js"  ],
   "exclude": [
     "node_modules"
   ]
