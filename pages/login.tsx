@@ -14,6 +14,7 @@ export default function Login() {
     <>
       Not signed in <br />
       <button onClick={() => signIn('google')}>Sign in with google</button>
+      <button onClick={() => signIn('facebook')}>Sign in with facebook</button>
     </>
   )
 }
