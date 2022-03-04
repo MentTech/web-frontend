@@ -13,7 +13,7 @@ interface FormLogintInputs {
 const schema = yup
   .object({
     email: yup.string().email().required(),
-    password: yup.string().max(32).min(8).required(),
+    password: yup.string().max(32).min(6).required(),
   })
   .required()
 
@@ -30,7 +30,7 @@ export default function Login() {
     signIn('credentials', {
       email: data.email,
       password: data.password,
-      callbackUrl: '/',
+      callbackUrl: 'http://localhost:8080',
     })
   }
 
