@@ -38,18 +38,20 @@ export default NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, account }) {
-      console.log('jwt')
+    async jwt({ token, account, user, profile }) {
       if (account) {
-        token.accessToken = account.accessToken
+        // check account provider
+        if (account.provider === 'credentials') {
+          token.accessToken = user?.accessToken
+        }
       }
       return token
     },
 
     async session({ session, token, user }) {
-      console.log('session')
       session.accessToken = token.accessToken
       return session
     },
   },
+  secret: process.env.SECRET,
 })

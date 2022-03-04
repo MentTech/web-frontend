@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import httpProxy from 'http-proxy'
 import Cookies from 'cookies'
+import { getSession } from 'next-auth/react'
 
 const proxy = httpProxy.createProxyServer()
 
@@ -11,11 +12,10 @@ export const config = {
 }
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<any>) {
-  return new Promise((resolve) => {
-    const cookie = new Cookies(req, res)
-    const token = cookie.get('next-auth.session-token')
-    if (token) {
-      req.headers.Authorization = `Bearer ${token}`
+  return new Promise(async (resolve) => {
+    const session = await getSession({ req })
+    if (session?.accessToken) {
+      req.headers.Authorization = `Bearer ${session?.accessToken}`
     }
     req.headers.cookie = ''
     proxy.web(req, res, {
