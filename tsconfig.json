@@ -41,6 +41,9 @@
       "@config/*": [
         "./config/*"
       ],
+      "@api/*": [
+        "./api-client/*"
+      ],
     }
   },
   "include": [
