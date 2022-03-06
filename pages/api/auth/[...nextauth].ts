@@ -2,8 +2,8 @@ import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import axios from 'axios'
 import { config } from '@config/main'
+import { authApi } from '@api/auth-api'
 
 export default NextAuth({
   providers: [
@@ -23,12 +23,15 @@ export default NextAuth({
       },
       async authorize(credentials, req) {
         try {
-          const res = await axios.post(`${config.backendURL}/auth/signin`, {
-            email: credentials?.email,
-            password: credentials?.password,
-          })
-          if (res.data.accessToken) {
-            return res.data
+          if (credentials?.email && credentials?.password) {
+            const res = await authApi.login({
+              email: credentials?.email,
+              password: credentials?.password,
+            })
+            console.log('res', res)
+            if (res.data) {
+              return res.data
+            }
           }
         } catch (err) {
           console.log(err)
@@ -54,4 +57,11 @@ export default NextAuth({
     },
   },
   secret: process.env.SECRET,
+  pages: {
+    signIn: '/auth/login',
+    signOut: '/auth/logout',
+    error: '/auth/error', // Error code passed in query string as ?error=
+    verifyRequest: '/auth/verify-request', // (used for check email message)
+    newUser: '/auth/new-user',
+  },
 })

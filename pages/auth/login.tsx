@@ -30,7 +30,7 @@ export default function Login() {
     signIn('credentials', {
       email: data.email,
       password: data.password,
-      callbackUrl: 'http://localhost:8080',
+      callbackUrl: '/',
     })
   }
 

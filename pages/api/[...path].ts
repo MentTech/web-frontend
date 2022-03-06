@@ -31,6 +31,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<any>) 
     })
 
     proxy.once('proxyRes', () => {
+      console.log('response')
       resolve(true)
     })
   })
