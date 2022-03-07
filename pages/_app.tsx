@@ -25,7 +25,9 @@ function MyApp({
         <CssBaseline />
         <Provider store={store}>
           <SessionProvider session={session}>
-            <SWRConfig value={{ fetcher: (url) => axiosClient.get(url) }}>
+            <SWRConfig
+              value={{ fetcher: (url) => axiosClient.get(url), shouldRetryOnError: false }}
+            >
               <Layout>
                 <Component {...pageProps} />
               </Layout>

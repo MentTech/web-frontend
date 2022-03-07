@@ -1,14 +1,9 @@
-import { useSession, signIn } from 'next-auth/react'
-import { useState } from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
+import { loginPayload } from '@models/auth'
+import { signIn } from 'next-auth/react'
 import Link from 'next/link'
-
-interface FormLogintInputs {
-  email: string
-  password: string
-}
+import { SubmitHandler, useForm } from 'react-hook-form'
+import * as yup from 'yup'
 
 const schema = yup
   .object({
@@ -22,11 +17,11 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormLogintInputs>({
+  } = useForm<loginPayload>({
     resolver: yupResolver(schema),
   })
 
-  const onSubmit: SubmitHandler<FormLogintInputs> = (data) => {
+  const onSubmit: SubmitHandler<loginPayload> = (data) => {
     signIn('credentials', {
       email: data.email,
       password: data.password,

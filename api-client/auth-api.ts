@@ -2,10 +2,10 @@ import { loginPayload } from '@models/index'
 import axiosClient from './axios-client'
 
 export const authApi = {
-  login(payload: loginPayload) {
-    return axiosClient.post('/auth/signin', payload)
+  loginApiServer(payload: loginPayload) {
+    return axiosClient.post('/v1/auth/signin', payload)
   },
-  logout() {
+  logoutApiServer() {
     return axiosClient.post('/logout')
   },
 }

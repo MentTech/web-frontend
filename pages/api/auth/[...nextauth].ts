@@ -24,12 +24,12 @@ export default NextAuth({
       async authorize(credentials, req) {
         try {
           if (credentials?.email && credentials?.password) {
-            const res = await authApi.login({
+            const res = await authApi.loginApiServer({
               email: credentials?.email,
               password: credentials?.password,
             })
             console.log('res', res)
-            if (res.data) {
+            if (res.data?.accessToken) {
               return res.data
             }
           }
@@ -57,11 +57,4 @@ export default NextAuth({
     },
   },
   secret: process.env.SECRET,
-  pages: {
-    signIn: '/auth/login',
-    signOut: '/auth/logout',
-    error: '/auth/error', // Error code passed in query string as ?error=
-    verifyRequest: '/auth/verify-request', // (used for check email message)
-    newUser: '/auth/new-user',
-  },
 })
