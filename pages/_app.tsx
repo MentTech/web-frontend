@@ -1,4 +1,5 @@
 import axiosClient from '@api/axios-client'
+import Auth from '@components/common/Auth'
 import { EmptyLayout } from '@components/layouts'
 import { CacheProvider } from '@emotion/react'
 import { AppPropsWithLayout } from '@models/common'
@@ -19,6 +20,7 @@ function MyApp({
   pageProps: { session, ...pageProps },
 }: AppPropsWithLayout) {
   const Layout = Component.Layout ?? EmptyLayout
+
   return (
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
@@ -32,7 +34,13 @@ function MyApp({
               }}
             >
               <Layout>
-                <Component {...pageProps} />
+                {Component.isPrivate ? (
+                  <Auth>
+                    <Component {...pageProps} />
+                  </Auth>
+                ) : (
+                  <Component {...pageProps} />
+                )}
               </Layout>
             </SWRConfig>
           </SessionProvider>

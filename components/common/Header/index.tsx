@@ -1,10 +1,12 @@
 import * as React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useProfile } from '@hooks/index'
 
 export interface HeaderProps {}
 
 export default function Header(props: HeaderProps) {
+  const { logout } = useProfile()
   return (
     <div>
       <nav className="bg-white dark:bg-gray-800  shadow py-4 ">
@@ -89,7 +91,7 @@ export default function Header(props: HeaderProps) {
                           className="block block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600"
                           role="menuitem"
                         >
-                          <span className="flex flex-col">
+                          <span onClick={() => logout()} className="flex flex-col">
                             <span>Logout</span>
                           </span>
                         </a>

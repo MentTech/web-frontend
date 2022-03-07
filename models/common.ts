@@ -9,6 +9,7 @@ export interface LayoutProps {
 
 export type NextPageWithLayout = NextPage & {
   Layout?: (props: LayoutProps) => ReactElement
+  isPrivate?: boolean
 }
 
 export type AppPropsWithLayout = AppProps & {
