@@ -13,9 +13,6 @@ const Home: NextPageWithLayout = () => {
         <Typography component="h1" variant="h3">
           Home Page
         </Typography>
-        <Link href={'/profile'}>
-          <a>Profile</a>
-        </Link>
       </div>
     </Box>
   )

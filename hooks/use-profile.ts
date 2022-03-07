@@ -13,8 +13,6 @@ export function useProfile() {
 
   const isFirstLoading = profile === undefined && error === undefined
 
-  console.log('first loading: ', isFirstLoading)
-
   async function login(provider: string, payload?: SignInOptions) {
     await signIn(provider, payload)
     await mutate({})

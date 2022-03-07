@@ -1,14 +1,17 @@
 import { useProfile } from '@hooks/index'
 import { MainLayout } from '@components/layouts'
 import { NextPageWithLayout } from '@models/common'
+import { Typography, Box } from '@mui/material'
 export interface ProfileProps {}
 
 const Profile: NextPageWithLayout = (props: ProfileProps) => {
   const { profile } = useProfile()
   return (
-    <div>
-      <div>{JSON.stringify(profile)}</div>
-    </div>
+    <Box>
+      <Typography>Profile</Typography>
+      <p>{profile?.name}</p>
+      <p>{profile?.email}</p>
+    </Box>
   )
 }
 

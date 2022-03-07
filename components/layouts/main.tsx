@@ -1,14 +1,13 @@
-import Header from '@components/common/Header';
-import { LayoutProps } from '@models/common';
-import * as React from 'react';
+import Header from '@components/common/Header'
+import { LayoutProps } from '@models/common'
+import * as React from 'react'
+import { Container } from '@mui/material'
 
-export function MainLayout ({ children }: LayoutProps) {
+export function MainLayout({ children }: LayoutProps) {
   return (
     <>
       <Header />
-      <div>
-        {children}
-      </div>
+      <Container>{children}</Container>
     </>
-  );
+  )
 }

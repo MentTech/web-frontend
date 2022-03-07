@@ -28,7 +28,6 @@ export default NextAuth({
               email: credentials?.email,
               password: credentials?.password,
             })
-            console.log('res', res)
             if (res.data?.accessToken) {
               return res.data
             }
@@ -42,11 +41,25 @@ export default NextAuth({
   ],
   callbacks: {
     async jwt({ token, account, user, profile }) {
-      if (account) {
-        // check account provider
-        if (account.provider === 'credentials') {
-          token.accessToken = user?.accessToken
+      try {
+        if (account) {
+          console.log('account', account)
+          // check account provider
+          if (account.provider === 'credentials') {
+            token.accessToken = user?.accessToken
+          } else {
+            // send social token to server
+            const res = await authApi.loginSocialApiServer(account.provider, {
+              accessToken: account.access_token as string,
+            })
+            console.log(res.data)
+            if (res.data?.accessToken) {
+              token.accessToken = res.data.accessToken
+            }
+          }
         }
+      } catch (err) {
+        console.log(err)
       }
       return token
     },
