@@ -26,7 +26,10 @@ function MyApp({
         <Provider store={store}>
           <SessionProvider session={session}>
             <SWRConfig
-              value={{ fetcher: (url) => axiosClient.get(url), shouldRetryOnError: false }}
+              value={{
+                fetcher: (url) => axiosClient.get(url).then((res) => res.data),
+                shouldRetryOnError: false,
+              }}
             >
               <Layout>
                 <Component {...pageProps} />

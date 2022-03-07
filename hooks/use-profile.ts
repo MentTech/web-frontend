@@ -7,16 +7,17 @@ export function useProfile() {
     error,
     mutate,
     isValidating,
-  } = useSWR<any>('/api/v1/users/profile', {
-    revalidateOnMount: false,
+  } = useSWR<any>('/v1/users/profile', {
     dedupingInterval: 60 * 60 * 1000, // 1 hour,
   })
 
   const isFirstLoading = profile === undefined && error === undefined
 
+  console.log('first loading: ', isFirstLoading)
+
   async function login(provider: string, payload?: SignInOptions) {
     await signIn(provider, payload)
-    await mutate()
+    await mutate({})
   }
 
   async function logout(signOutParams?: SignOutParams) {
