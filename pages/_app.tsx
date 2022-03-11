@@ -10,7 +10,9 @@ import { store } from 'app/store'
 import { SessionProvider } from 'next-auth/react'
 import { Provider } from 'react-redux'
 import { SWRConfig } from 'swr'
+import { ToastContainer } from 'react-toastify'
 import '../styles/globals.css'
+import 'react-toastify/dist/ReactToastify.css'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -42,6 +44,7 @@ function MyApp({
                   <Component {...pageProps} />
                 )}
               </Layout>
+              <ToastContainer />
             </SWRConfig>
           </SessionProvider>
         </Provider>

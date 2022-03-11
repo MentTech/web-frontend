@@ -1,4 +1,5 @@
 import { loginPayload, LoginSocialPayload } from '@models/index'
+import { RegisterForm } from 'pages/authenticate/register'
 import axiosClient from './axios-client'
 
 export const authApi = {
@@ -7,5 +8,8 @@ export const authApi = {
   },
   loginSocialApiServer(provider: string, payload: LoginSocialPayload) {
     return axiosClient.get(`/v1/auth/${provider}/token?token=${payload.accessToken}`)
+  },
+  registerApiServer(payload: RegisterForm) {
+    return axiosClient.post('/v1/auth/signup', payload)
   },
 }
