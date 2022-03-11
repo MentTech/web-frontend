@@ -4,7 +4,10 @@ import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import * as yup from 'yup'
-import { getSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import { toast } from 'react-toastify'
+import { useEffect, useState } from 'react'
 
 const schema = yup
   .object({
@@ -14,6 +17,16 @@ const schema = yup
   .required()
 
 export default function Login() {
+  const { data: session, status } = useSession()
+  const [loading, setLoading] = useState(true)
+  const router = useRouter()
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/')
+    } else if (status === 'unauthenticated') {
+      setLoading(false)
+    }
+  }, [session, status, router])
   const {
     register,
     handleSubmit,
@@ -26,12 +39,24 @@ export default function Login() {
     signIn('credentials', {
       email: data.email,
       password: data.password,
-      callbackUrl: '/',
+      redirect: false,
+    }).then((res: any) => {
+      if (res?.ok) {
+        router.push('/')
+      } else {
+        console.log(res?.err)
+        toast.error('Credentials do not match!', { type: 'error' })
+      }
     })
+  }
+
+  if (loading) {
+    return <div>Loading...</div>
   }
 
   return (
     <>
+      (
       <div className="flex justify-center min-h-screen items-center bg-gradient-to-tl from-green-400 to-indigo-900">
         <div className="flex flex-col w-full max-w-md px-4 py-8 bg-gray-100 rounded-lg shadow dark:bg-gray-800 sm:px-6 md:px-8 lg:px-10">
           <div className="self-center mb-6 text-xl font-light text-gray-600 sm:text-2xl dark:text-white">
@@ -148,6 +173,7 @@ export default function Login() {
           </div>
         </div>
       </div>
+      )
     </>
   )
 }

@@ -40,7 +40,6 @@ const schema = yup
 export interface RegisterProps {}
 
 export default function Register(props: RegisterProps) {
-  const inputBirthDayRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const {
     register,
@@ -50,6 +49,7 @@ export default function Register(props: RegisterProps) {
   } = useForm<RegisterForm>({
     resolver: yupResolver(schema),
   })
+  const inputBirthDayRef = useRef<HTMLDivElement>(null)
 
   const onSubmit = async (data: RegisterForm) => {
     console.log(data)
