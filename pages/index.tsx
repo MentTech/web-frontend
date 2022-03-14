@@ -48,7 +48,33 @@ const Home: NextPageWithLayout = () => {
           </div>
         </div>
       </div>
-      <div className={styles.contentSection}></div>
+      <div className={styles.contentSection}>
+        <h2 className={styles.contentHeading}>Meet Our Finest Mentors</h2>
+        <p className={styles.contentSubheading}>
+          Manage and view all your learning goals, paths, mentors, courses and everything else you
+          need from one dashboard.
+        </p>
+        <div className={styles.mentorsList}>
+          <div className={styles.mentorItem}>
+            <img className={styles.mentorAvatar} src="/static/mentorAvatar.png" alt="#" />
+            <h3 className={styles.mentorName}>Rick Ashtley</h3>
+            <p className={styles.mentorJob}>Biochemistry, Chemlabs</p>
+            <a className={`${styles.btnPrimary} ${styles.mentorCardBtn}`}>Get in Touch</a>
+          </div>
+          <div className={styles.mentorItem}>
+            <img className={styles.mentorAvatar} src="/static/mentorAvatar.png" alt="#" />
+            <h3 className={styles.mentorName}>Rick Ashtley</h3>
+            <p className={styles.mentorJob}>Biochemistry, Chemlabs</p>
+            <a className={`${styles.btnPrimary} ${styles.mentorCardBtn}`}>Get in Touch</a>
+          </div>
+          <div className={styles.mentorItem}>
+            <img className={styles.mentorAvatar} src="/static/mentorAvatar.png" alt="#" />
+            <h3 className={styles.mentorName}>Rick Ashtley</h3>
+            <p className={styles.mentorJob}>Biochemistry, Chemlabs</p>
+            <a className={`${styles.btnPrimary} ${styles.mentorCardBtn}`}>Get in Touch</a>
+          </div>
+        </div>
+      </div>
     </>
   )
 }
