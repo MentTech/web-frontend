@@ -1,0 +1,24 @@
+#header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .logo {
+    color: #00BFA6;
+    font-size: 26px;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+
+    li {
+      margin-right: 50px;  
+
+      a {
+        font-size: 26px;
+        color: #00BFA6
+      }
+    }
+  }
+}

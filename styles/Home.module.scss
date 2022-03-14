@@ -1,0 +1,101 @@
+.headerSession {
+  padding: 52px 188px;
+  background-color: #3F3D56;
+  display: block;
+  width: 100%;
+  min-height: 824px;
+}
+
+.HeaderContent {
+  margin-top: 138px;
+  display: flex;
+}
+
+.HeaderContentLeft {
+  flex: 1;
+  margin-right: 40px;
+  position: relative;
+}
+
+.HeaderContentRight {
+  flex: 1;
+  margin-left: 40px;
+}
+
+.HeadingPrimaryMain {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 64px;
+  line-height: 75px;
+  /* or 117% */
+
+  letter-spacing: -0.04em;
+
+  color: #FFFFFF;
+}
+
+.HeadingPrimarySub {
+  margin-top: 20px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 35px;
+  letter-spacing: -0.04em;
+  color: #FFFFFF;
+  opacity: 0.7;
+}
+
+.HeaderButtons {
+  margin-top: 60px;
+  display: flex;
+  align-items: center;
+  a {
+    margin-right: 20px;
+  }
+}
+
+.HeaderHatIcon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-60%, -80%);
+}
+
+.EmcImg {
+  position: absolute;
+  top: 230px;
+}
+
+.btnPrimary {
+  width: 160px;
+  height: 60px;
+  color: #fff;
+  background: #00BFA6;
+  border-radius: 100px;
+  text-align: center;
+  font-size: 18px;
+  line-height: 60px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btnSecondaryOutline {
+  width: 160px;
+  height: 60px;
+  color: #fff;
+  background: #3F3D56;
+  border: 3px solid #FFFFFF;
+  border-radius: 100px;
+  text-align: center;
+  font-size: 18px;
+  line-height: 60px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.contentSection {
+  padding: 52px 188px;
+  background-color: #D0CDE1;
+  display: block;
+  width: 100%;
+  min-height: 824px;
+}

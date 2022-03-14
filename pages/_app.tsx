@@ -11,7 +11,7 @@ import { SessionProvider } from 'next-auth/react'
 import { Provider } from 'react-redux'
 import { SWRConfig } from 'swr'
 import { ToastContainer } from 'react-toastify'
-import '../styles/globals.css'
+import '../styles/globals.scss'
 import 'react-toastify/dist/ReactToastify.css'
 
 const clientSideEmotionCache = createEmotionCache()

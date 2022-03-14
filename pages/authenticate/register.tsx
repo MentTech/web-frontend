@@ -68,7 +68,7 @@ export default function Register(props: RegisterProps) {
     <div className="flex justify-center min-h-screen items-center bg-gradient-to-tl from-green-400 to-indigo-900">
       <div className="flex flex-col w-full max-w-md px-4 py-8 bg-gray-100 rounded-lg shadow dark:bg-gray-800 sm:px-6 md:px-8 lg:px-10">
         <div className="self-center mb-6 text-xl font-light text-gray-600 sm:text-2xl dark:text-white">
-          Register To Your Account
+          Đăng ký tài khoản mentee
         </div>
         <div className="flex gap-4 item-center">
           <button
@@ -118,7 +118,7 @@ export default function Register(props: RegisterProps) {
                     {...register('email')}
                     type="email"
                     className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                    placeholder="Your email"
+                    placeholder="Email"
                   />
                 </div>
               </div>
@@ -131,7 +131,7 @@ export default function Register(props: RegisterProps) {
                     {...register('name')}
                     type="text"
                     className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                    placeholder="Your name"
+                    placeholder="Họ và tên"
                   />
                 </div>
               </div>
@@ -159,7 +159,7 @@ export default function Register(props: RegisterProps) {
                                 {...inputProps}
                                 type="text"
                                 className="w-full outline-none"
-                                placeholder="Your birthday"
+                                placeholder="Ngày sinh"
                                 onFocus={() => {
                                   inputBirthDayRef.current?.focus()
                                 }}
@@ -182,7 +182,7 @@ export default function Register(props: RegisterProps) {
                     {...register('phone')}
                     type="number"
                     className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                    placeholder="Your phone"
+                    placeholder="Số điện thoại"
                   />
                 </div>
               </div>
@@ -195,7 +195,7 @@ export default function Register(props: RegisterProps) {
                     {...register('password')}
                     type="password"
                     className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                    placeholder="Your password"
+                    placeholder="Mật khẩu"
                   />
                 </div>
               </div>
@@ -208,7 +208,7 @@ export default function Register(props: RegisterProps) {
                     {...register('confirmPassword')}
                     type="password"
                     className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                    placeholder="Confirm your password"
+                    placeholder="Xác nhận mật khẩu"
                   />
                 </div>
               </div>
@@ -226,7 +226,7 @@ export default function Register(props: RegisterProps) {
                   type="submit"
                   className="py-2 px-4  bg-purple-600 hover:bg-purple-700 focus:ring-purple-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
                 >
-                  Register
+                  Đăng ký
                 </button>
               </div>
             </div>
