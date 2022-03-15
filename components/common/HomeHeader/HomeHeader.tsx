@@ -17,7 +17,9 @@ export default function HomeHeader(props: IHomeHeaderProps) {
           <a href="#">Mentors</a>
         </li>
         <li>
-          <a href="#">Đăng ký</a>
+          <Link href="/authenticate/register">
+            <a>Đăng ký</a>
+          </Link>
         </li>
       </ul>
     </div>

@@ -141,6 +141,80 @@ const Home: NextPageWithLayout = () => {
           alt="educationgirl"
         />
       </div>
+      <div className={styles.contentSection}>
+        <h2 className={styles.contentHeading}>
+          Join as a Mentor, Get Rewards for <br /> Answering Questions
+        </h2>
+        <div className={styles.signUpWrapper}>
+          <div className={styles.signUpLeft}>
+            <form className={styles.signUpForm}>
+              <h3 className={styles.formTitle}>Sign Up</h3>
+              <div className={styles.formGroup}>
+                <label className={styles.formLable} htmlFor="name">
+                  Name
+                </label>
+                <input className={styles.formControl} type="text" name="name" id="name" />
+              </div>
+              <div className={styles.formGroup}>
+                <label className={styles.formLable} htmlFor="">
+                  Email
+                </label>
+                <input className={styles.formControl} type="email" name="email" id="email" />
+              </div>
+              <div className={styles.formGroup}>
+                <label id="fileLabel1" htmlFor="cv" className={styles.formLable}>
+                  Upload CV
+                </label>
+                <input id="cv" className={styles.formFile} type="file" />
+              </div>
+            </form>
+          </div>
+          <div className={styles.signUpRight}>
+            <img id={styles.signUpImage} src="/static/signUpImg.png" alt="signUpImg" />
+          </div>
+        </div>
+      </div>
+      <div className={styles.contentDarkSection}>
+        <h2 className={styles.contentHeading}>Don’t Take Our Word For It</h2>
+        <div className={styles.feedBacksList}>
+          <div className={styles.feedBackItem}>
+            <div className={styles.rating}></div>
+            <p className={styles.feedBackDesc}>
+              Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consecte abitasse platea
+              dictumst. Nullam pretium faucibus dui id laoreet. Aliquam luctus auctor tortor nec
+              sollicitudin. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet.
+            </p>
+            <div className={styles.feedBackInfo}></div>
+          </div>
+          <div className={styles.feedBackItem}>
+            <div className={styles.rating}></div>
+            <p className={styles.feedBackDesc}>
+              Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consecte abitasse platea
+              dictumst. Nullam pretium faucibus dui id laoreet. Aliquam luctus auctor tortor nec
+              sollicitudin. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet.
+            </p>
+            <div className={styles.feedBackInfo}></div>
+          </div>
+          <div className={styles.feedBackItem}>
+            <div className={styles.rating}></div>
+            <p className={styles.feedBackDesc}>
+              Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consecte abitasse platea
+              dictumst. Nullam pretium faucibus dui id laoreet. Aliquam luctus auctor tortor nec
+              sollicitudin. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet.
+            </p>
+            <div className={styles.feedBackInfo}></div>
+          </div>
+        </div>
+      </div>
+      <div className={styles.contentSection}>
+        <h2 className={styles.contentHeading}>
+          What Are You Waiting For? <br /> It’s Completely Free!
+        </h2>
+        <div className={styles.buttonGroup}>
+          <a className={`${styles.btnPrimary} ${styles.askBtn}`}>Become a mentor</a>
+          <a className={`${styles.btnPrimary} ${styles.askBtn}`}>Ask Question</a>
+        </div>
+      </div>
     </>
   )
 }

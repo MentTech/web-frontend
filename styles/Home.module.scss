@@ -98,7 +98,7 @@
   background-color: #F2F2F2;
   display: block;
   width: 100%;
-  min-height: 824px;
+  // min-height: 824px;
 
   .contentHeading {
     font-weight: 600;
@@ -135,7 +135,8 @@
   .mentorsList {
     display: flex;
     justify-content: space-between;
-
+    margin-left: -10px;
+    margin-right: -10px;
     .mentorItem {
       margin: 10px;
       width: 386px;
@@ -200,6 +201,7 @@
     right: 0;
     width: 600px;
     opacity: 0.9;
+    z-index: 0;
   }
 
   .contentHeading {
@@ -221,6 +223,7 @@
 
   .questionsList {
     z-index: 100;
+    position: relative;
     margin-top: 90px;
     width: 560px;
     margin-right: auto;
@@ -228,7 +231,6 @@
     margin-bottom: 104px;
 
     .questionItem {
-      z-index: 100;
       margin-top: 20px;
       background: #E5E5E5;
       border-radius: 25px;
@@ -258,10 +260,103 @@
           color: #2F2E41;
         }
       }
-
-      
     }
   }
+}
 
+
+.signUpWrapper{
+  margin-top: 174px;
+  display: flex;  
+  justify-content: space-around;
   
+  .signUpLeft {
+    flex: 1;
+  }
+
+  .signUpRight {
+    flex: 1;
+  }
+
+  .signUpForm {
+    width: 463px;
+    min-height: 506px;
+    background: #575A88;
+    border-radius: 35px;
+    padding: 12px 65px;
+    box-shadow: 10px 20px 50px rgb(0 0 0 / 30%);
+    .formTitle {
+      font-weight: 600;
+      font-size: 48px;
+      line-height: 75px;
+      color: #FFFFFF;
+      width: 100%;
+      text-align: center;
+    }
+
+    .formGroup {
+      display: flex;
+      flex-direction: column;
+      margin-top: 40px;
+    }
+
+    .formControl {
+      width: 100%;
+      height: 50px;
+      background: #FFFFFF;
+      border-radius: 30px;
+    }
+
+    .formLable {
+      font-weight: 600;
+      font-size: 18px;
+      color: #FFFFFF;
+      margin-bottom: 5px;
+    }
+
+    .formFile {
+      display: none;
+    }
+
+    
+  }
+}
+
+label#fileLabel {
+  appearance: button;
+  border: none;
+  background: #FFFFFF;
+  border-radius: 5px;
+  width: 154px;
+  height: 40px;
+  color: red !important;
+}
+
+#signUpImage {
+  width: 700px;
+}
+
+.feedBacksList {
+  margin-top: 95px;
+  display: flex;
+  margin-left: -10px;
+  margin-right: -10px;
+  .feedBackItem {
+    margin: 10px;
+    width: 387px;
+    min-height: 288px;
+    background: #F2F2F2;
+    border-radius: 10px;
+  }
+}
+
+.askBtn {
+  margin-right: 35px;
+  box-sizing: border-box;
+  padding: 22px 41px;
+}
+
+.buttonGroup {
+  margin-top: 45px;
+  text-align: center;
 }
