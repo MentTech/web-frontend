@@ -75,6 +75,72 @@ const Home: NextPageWithLayout = () => {
           </div>
         </div>
       </div>
+      <div className={styles.contentDarkSection}>
+        <h2 className={styles.contentHeading}>Ask Questions, Get Quick Answers</h2>
+        <div className={styles.questionsList}>
+          <div className={styles.questionItem}>
+            <div className={styles.questionInfo}>
+              <img className={styles.menteeAvatar} src="/static/mentorAvatar.png" alt="#" />
+              <div>
+                <h4 className={styles.menteeName}>Asif Khan</h4>
+                <p className={styles.question}>
+                  How can I get into a decent university in Canada for undergraduate study?
+                </p>
+              </div>
+            </div>
+            <hr
+              style={{ marginTop: '18px', backgroundColor: '#000', height: '2px', border: 'none' }}
+            />
+          </div>
+          <div className={styles.questionItem}>
+            <div className={styles.questionInfo}>
+              <img className={styles.menteeAvatar} src="/static/mentorAvatar.png" alt="#" />
+              <div>
+                <h4 className={styles.menteeName}>Asif Khan</h4>
+                <p className={styles.question}>
+                  How can I get into a decent university in Canada for undergraduate study?
+                </p>
+              </div>
+            </div>
+            <hr
+              style={{ marginTop: '18px', backgroundColor: '#000', height: '2px', border: 'none' }}
+            />
+          </div>
+          <div className={styles.questionItem}>
+            <div className={styles.questionInfo}>
+              <img className={styles.menteeAvatar} src="/static/mentorAvatar.png" alt="#" />
+              <div>
+                <h4 className={styles.menteeName}>Asif Khan</h4>
+                <p className={styles.question}>
+                  How can I get into a decent university in Canada for undergraduate study?
+                </p>
+              </div>
+            </div>
+            <hr
+              style={{ marginTop: '18px', backgroundColor: '#000', height: '2px', border: 'none' }}
+            />
+          </div>
+          <div className={styles.questionItem}>
+            <div className={styles.questionInfo}>
+              <img className={styles.menteeAvatar} src="/static/mentorAvatar.png" alt="#" />
+              <div>
+                <h4 className={styles.menteeName}>Asif Khan</h4>
+                <p className={styles.question}>
+                  How can I get into a decent university in Canada for undergraduate study?
+                </p>
+              </div>
+            </div>
+            <hr
+              style={{ marginTop: '18px', backgroundColor: '#000', height: '2px', border: 'none' }}
+            />
+          </div>
+        </div>
+        <img
+          className={styles.educationGirlImg}
+          src="/static/educationGirl.png"
+          alt="educationgirl"
+        />
+      </div>
     </>
   )
 }
