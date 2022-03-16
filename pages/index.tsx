@@ -1,9 +1,20 @@
 import { NextPageWithLayout } from '@models/common'
 import HomeHeader from '@components/common/HomeHeader/HomeHeader'
 import Image from 'next/image'
+import { useState } from 'react'
+import Rating from '@mui/material/Rating'
+import Carousel from 'react-elastic-carousel'
 import styles from '../styles/Home.module.scss'
 
+const breakPoints = [
+  { width: 1, itemsToShow: 1 },
+  { width: 550, itemsToShow: 2, itemsToScroll: 2 },
+  { width: 768, itemsToShow: 3 },
+  { width: 1200, itemsToShow: 4 },
+]
+
 const Home: NextPageWithLayout = () => {
+  const [items, setItems] = useState([1, 2, 3, 4, 5, 6, 7, 8])
   return (
     <>
       {/* Header section */}
@@ -36,14 +47,9 @@ const Home: NextPageWithLayout = () => {
             </div>
           </div>
           <div className={styles.HeaderContentRight}>
-            <Image
-              src={'/static/onlineLearning.png'}
-              alt="onlineLearning"
-              width={692}
-              height={500}
-            />
+            <img src={'/static/onlineLearning.png'} alt="onlineLearning" width={692} />
             <div className={styles.EmcImg}>
-              <Image src={'/static/emc.png'} alt="emc" width={180} height={120} />
+              <img src={'/static/emc.png'} alt="emc" width={180} />
             </div>
           </div>
         </div>
@@ -76,6 +82,7 @@ const Home: NextPageWithLayout = () => {
         </div>
       </div>
       <div className={styles.contentDarkSection}>
+        <img className={styles.topLeftImg} src={'/static/Design.png'} alt="de" />
         <h2 className={styles.contentHeading}>Ask Questions, Get Quick Answers</h2>
         <div className={styles.questionsList}>
           <div className={styles.questionItem}>
@@ -174,36 +181,30 @@ const Home: NextPageWithLayout = () => {
           </div>
         </div>
       </div>
+
       <div className={styles.contentDarkSection}>
         <h2 className={styles.contentHeading}>Don’t Take Our Word For It</h2>
         <div className={styles.feedBacksList}>
-          <div className={styles.feedBackItem}>
-            <div className={styles.rating}></div>
-            <p className={styles.feedBackDesc}>
-              Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consecte abitasse platea
-              dictumst. Nullam pretium faucibus dui id laoreet. Aliquam luctus auctor tortor nec
-              sollicitudin. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet.
-            </p>
-            <div className={styles.feedBackInfo}></div>
-          </div>
-          <div className={styles.feedBackItem}>
-            <div className={styles.rating}></div>
-            <p className={styles.feedBackDesc}>
-              Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consecte abitasse platea
-              dictumst. Nullam pretium faucibus dui id laoreet. Aliquam luctus auctor tortor nec
-              sollicitudin. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet.
-            </p>
-            <div className={styles.feedBackInfo}></div>
-          </div>
-          <div className={styles.feedBackItem}>
-            <div className={styles.rating}></div>
-            <p className={styles.feedBackDesc}>
-              Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consecte abitasse platea
-              dictumst. Nullam pretium faucibus dui id laoreet. Aliquam luctus auctor tortor nec
-              sollicitudin. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet.
-            </p>
-            <div className={styles.feedBackInfo}></div>
-          </div>
+          <Carousel enableAutoPlay isRTL={false} breakPoints={breakPoints}>
+            {items.map((item) => (
+              <div key={item} className={styles.feedBackItem}>
+                <Rating name="read-only" value={5} readOnly />
+                <p className={styles.feedBackDesc}>
+                  Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consecte abitasse platea
+                  dictumst. Nullam pretium faucibus dui id laoreet. Aliquam luctus auctor tortor nec
+                  sollicitudin. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet.
+                </p>
+                <div className={styles.feedBackInfo}>
+                  <img
+                    className={styles.feedBackAvatar}
+                    src="/static/mentorAvatar.png"
+                    alt="avatar"
+                  />
+                  <h3 className={styles.feedBackName}>Jack Adams</h3>
+                </div>
+              </div>
+            ))}
+          </Carousel>
         </div>
       </div>
       <div className={styles.contentSection}>

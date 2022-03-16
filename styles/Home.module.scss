@@ -19,7 +19,8 @@
 
 .HeaderContentRight {
   flex: 1;
-  margin-left: 40px;
+  width: 100%;
+  overflow: visible;
 }
 
 .HeadingPrimaryMain {
@@ -195,6 +196,13 @@
   width: 100%;
   min-height: 824px;
 
+  .topLeftImg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 270px;
+  }
+
   .educationGirlImg {
     position: absolute;
     bottom: 0;
@@ -305,6 +313,11 @@
       height: 50px;
       background: #FFFFFF;
       border-radius: 30px;
+      padding: 8px 16px;
+    }
+
+    .formControl:focus {
+      outline: none;
     }
 
     .formLable {
@@ -338,15 +351,39 @@ label#fileLabel {
 
 .feedBacksList {
   margin-top: 95px;
-  display: flex;
-  margin-left: -10px;
-  margin-right: -10px;
   .feedBackItem {
     margin: 10px;
     width: 387px;
     min-height: 288px;
     background: #F2F2F2;
     border-radius: 10px;
+    padding: 14px 27px 27px;
+  }
+
+  .feedBackDesc {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 25px;
+    color: #000000;
+  }
+
+  .feedBackInfo {
+    display: flex;
+    align-items: center;
+    margin-top: 26px;
+  }
+
+  .feedBackAvatar {
+    width: 62px;
+    height: 62px;
+    margin-right: 14px;
+  }
+
+  .feedBackName {
+    font-weight: 600;
+    font-size: 24px;
+    color: #000000;
   }
 }
 
