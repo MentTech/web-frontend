@@ -45,23 +45,8 @@ const Header = () => {
     }
   }
 
-  const handleOpenNavMenu = (event: any) => {
-    setAnchorElNav(event.currentTarget)
-  }
-  const handleOpenUserMenu = (event: any) => {
-    setAnchorElUser(event.currentTarget)
-  }
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
-  }
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null)
-  }
-
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -81,7 +66,7 @@ const Header = () => {
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={handleOpenNavMenu}
+              onClick={handleClose}
               color="inherit"
             >
               <MenuIcon />
@@ -99,16 +84,19 @@ const Header = () => {
                 horizontal: 'left',
               }}
               open={Boolean(anchorEl)}
-              onClose={handleCloseNavMenu}
+              onClose={handleClose}
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={handleClose}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
+              <MenuItem onClick={handleClose}>
+                <Typography textAlign="center">Mentors</Typography>
+              </MenuItem>
             </Menu>
           </Box>
           <Typography
@@ -125,7 +113,7 @@ const Header = () => {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={handleClose}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}
