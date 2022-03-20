@@ -37,7 +37,9 @@ export default function HomeHeader(props: IHomeHeaderProps) {
           <a href="#">Trang chủ</a>
         </li>
         <li>
-          <a href="#">Mentors</a>
+          <Link href="/find">
+            Tìm kiếm
+          </Link>
         </li>
         <li>
           {session ? (

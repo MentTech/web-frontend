@@ -7,7 +7,7 @@ export function MainLayout({ children }: LayoutProps) {
   return (
     <>
       <Header />
-      <Container>{children}</Container>
+      <Container maxWidth="lg">{children}</Container>
     </>
   )
 }
