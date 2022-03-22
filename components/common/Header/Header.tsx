@@ -20,8 +20,9 @@ import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import * as React from 'react'
 import { useState } from 'react'
+import Loading from '@components/common/Loading/Loading'
 
-const pages = ['Products', 'Pricing', 'Blog']
+const pages = ['Mentors']
 const settings = ['Account', 'Dashboard']
 
 const Header = () => {
@@ -33,8 +34,7 @@ const Header = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
-
-  const { logout } = useProfile()
+  const { logout, profile } = useProfile()
 
   const handleLogout = (event: any) => {
     event.preventDefault()
@@ -94,9 +94,6 @@ const Header = () => {
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
-              <MenuItem onClick={handleClose}>
-                <Typography textAlign="center">Mentors</Typography>
-              </MenuItem>
             </Menu>
           </Box>
           <Typography
@@ -131,7 +128,9 @@ const Header = () => {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
               >
-                <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                <Avatar src={profile?.avatar} sx={{ width: 32, height: 32 }}>
+                  M
+                </Avatar>
               </IconButton>
             </Tooltip>
             <Menu
@@ -190,7 +189,7 @@ const Header = () => {
                 </ListItemIcon>
                 Settings
               </MenuItem>
-              <MenuItem onClick={() => signOut({ callbackUrl: '/authenticate/login' })}>
+              <MenuItem onClick={handleLogout}>
                 <ListItemIcon>
                   <Logout fontSize="small" />
                 </ListItemIcon>

@@ -43,7 +43,6 @@ export default NextAuth({
     async jwt({ token, account, user, profile }) {
       try {
         if (account) {
-          console.log('account', account)
           // check account provider
           if (account.provider === 'credentials') {
             token.accessToken = user?.accessToken

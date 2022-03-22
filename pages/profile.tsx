@@ -28,7 +28,7 @@ const Profile: NextPageWithLayout = (props: ProfileProps) => {
                   <Box sx={{ position: 'absolute', top: '40%', left: 60, display: 'flex' }}>
                     <Avatar
                       alt="Remy Sharp"
-                      src="/static/images/avatar/1.jpg"
+                      src={profile.avatar}
                       sx={{
                         width: 176,
                         height: 176,
