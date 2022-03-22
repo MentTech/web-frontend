@@ -8,7 +8,7 @@ import * as React from 'react'
 
 export interface IProfileCardProps {
   children?: React.ReactNode
-  onEditClick: () => void
+  onEditClick?: () => void
   [x: string]: any
 }
 
