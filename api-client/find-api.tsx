@@ -3,7 +3,12 @@ import axiosClient from './axios-client'
 
 export const findApi = {
   findMentor(payload: any) {
-      const {} = FindForm
-    return axiosClient.get('/mentor/search')
+    return axiosClient.get('/v1/mentor/search', payload)
+  },
+  getAllSkills() {
+    return axiosClient.get('/v1/skill')
+  },
+  getAllCatergories() {
+    return axiosClient.get('/v1/category')
   },
 }

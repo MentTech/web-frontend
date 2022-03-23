@@ -13,7 +13,7 @@ export const LoadingIndicator = ({
   ...props
 }: LoadingIndicatorProps) => {
   return loading ? (
-    <Box className="df aic jcc w100" {...props}>
+    <Box className="df aic fdc jcc w100" {...props}>
       <CircularProgress size={40} />
       <Typography {...typoProps}>Đang tải</Typography>
     </Box>

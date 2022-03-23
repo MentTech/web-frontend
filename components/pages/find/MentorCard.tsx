@@ -18,7 +18,7 @@ interface MentorProps {
   avatar: string
   name: string
   id: string
-  description: string
+  User_mentor: any
 }
 
 interface MentorCardProps extends CardProps {
@@ -26,7 +26,10 @@ interface MentorCardProps extends CardProps {
 }
 
 export const MentorCard = ({ mentor, ...props }: MentorCardProps) => {
-  const { name, id, avatar, description } = mentor
+  const { name, id, avatar, User_mentor } = mentor
+  const { introduction, rating, category, experiences } = User_mentor
+
+  const last_experience = experiences[experiences.length - 1]
   const onClickAddToFavorite = () => {
     console.log('add to favorite')
   }
@@ -35,30 +38,36 @@ export const MentorCard = ({ mentor, ...props }: MentorCardProps) => {
     const origin = location.origin
     copyTextToClipboard(origin + '/mentors/' + id, (err) => {
       toast.error(err)
-    })
+    }).then(() => toast.success('Link đã được copy'))
   }
 
   const router = useRouter()
 
   const onClickGoToDetail = () => {
-    router.push('/mentor/' + id)
+    router.push('/mentors/' + id)
   }
 
   return (
     <Card className="w100" {...props}>
       <CardMedia
         component="img"
-        height="200"
         image={avatar ?? 'https://source.unsplash.com/random'}
         alt={name ?? 'avatar'}
         style={{
           objectFit: 'cover',
+          height: '200px',
+          width: '100%',
         }}
       />
       <CardContent>
-        <Typography className="sb">{name ?? 'Lorem et laborum.'}</Typography>
+        <Typography className="sb">{name}</Typography>
+        {last_experience && (
+          <Typography className="sb" variant="body2">
+            {last_experience.title + ' tại ' + last_experience.company}
+          </Typography>
+        )}
         <Typography variant="body2" color="text.secondary">
-          {description ?? 'Lorem et laborum excepteur exercitation eiusmod enim quis.'}
+          {introduction}
         </Typography>
       </CardContent>
       <CardActions disableSpacing className="df aic jcsb">

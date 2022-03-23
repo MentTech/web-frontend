@@ -6,9 +6,9 @@ import { ErrorBoundary } from '@components/common/ErrorBoundary/ErrorBoundary'
 
 const FindMentorContext = React.createContext({
   fetchedMentor: [],
-  suggested: [],
-  trending: [],
   loading: false,
+  fetchedCategories: [],
+  fetchedSkills: [],
 })
 
 interface FindMentorProviderProps {
@@ -17,38 +17,53 @@ interface FindMentorProviderProps {
 
 const FindMentorProvider = ({ children }: FindMentorProviderProps) => {
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  // const [error, setError] = useState('')
 
   const router = useRouter()
 
-  const { searchValue, sortValue, skill, price } = router.query
+  const { keyword, sortBy, skills, order, category } = router.query
 
   const [fetchedMentor, setFetchedMentor] = useState([])
-  const [suggested, setSuggested] = useState([])
-  const [trending, setTrending] = useState([])
+  const [fetchedCategories, setfetchedCategories] = useState([])
+  const [fetchedSkills, setfetchedSkills] = useState([])
 
   React.useEffect(() => {
-    findApi
-      .findMentor({ searchValue, skill, price })
-      .then()
-      .catch((err) => {
-        toast.error(err.message)
-      })
-  }, [])
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        const { data: skillArray } = await findApi.getAllSkills()
+        setfetchedSkills(skillArray)
+        const { data: category } = await findApi.getAllCatergories()
+        setfetchedCategories(category)
+        const { data: mentor } = await findApi.findMentor({
+          keyword,
+          sortBy,
+          skills,
+          order,
+          category,
+        })
+        setFetchedMentor(mentor)
+      } catch (error: any) {
+        toast.error(error.message)
+        // setError(error.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [keyword, skills, order, category, sortBy])
 
   return (
-    // <ErrorBoundary style={{ height: '100%' }} error={error}>
     <FindMentorContext.Provider
       value={{
         loading,
         fetchedMentor,
-        suggested,
-        trending,
+        fetchedCategories,
+        fetchedSkills,
       }}
     >
       {children}
     </FindMentorContext.Provider>
-    // </ErrorBoundary>
   )
 }
 export default FindMentorProvider

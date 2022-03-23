@@ -1,14 +1,15 @@
 import { MainLayout } from '@components/layouts'
-import { useFindMentor } from 'context/FindMentorProvider'
+import FindMentorProvider, { useFindMentor } from 'context/FindMentorProvider'
 import { FindBox } from './FindBox'
+import { FindResult } from './FindResult'
 
 export const FindPage = () => {
-  const { fetchedMentor, suggested, trending } = useFindMentor()
-
   return (
     <MainLayout>
-      <FindBox />
-      
+      <FindMentorProvider>
+        <FindBox />
+        <FindResult />
+      </FindMentorProvider>
     </MainLayout>
   )
 }
