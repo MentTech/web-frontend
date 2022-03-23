@@ -1,3 +1,5 @@
+import { Mentee } from '@models/index'
+
 export interface Degree {
   title: string
   issuer: string
@@ -24,18 +26,25 @@ export interface Job {
   additional: Object
 }
 
-export interface Mentor {
-  id: string
-  email: string
-  name: string
-  birthday?: Date
-  phone?: string
-  avatar?: string
+export interface Skill {
+  id: Number;
+  description: string;
+  additional: Object | null
+  isAccepted: Boolean;
+  createdAt: Date
+}
+
+export interface UserMentor {
+  linkedin: string;
   degree?: Array<Degree>
   experiences?: Array<Experience>
-  linkedin?: string
-  jobs?: Array<Job>
   achievements?: Array<string>
-  skillIds?: Array<Number>
+  skills?: Array<Skill>
   introduction?: string
+  category?: object
+  rating: Number;
+}
+
+export type Mentor = Mentee & {
+  User_mentor : UserMentor
 }

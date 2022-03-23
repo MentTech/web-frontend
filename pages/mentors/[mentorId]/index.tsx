@@ -1,18 +1,20 @@
+import { mentorApi } from '@api/mentor-api'
+import Breadcrumb from '@components/common/Breadcrumb/Breadcrumb'
 import FeedbackCard from '@components/common/FeedbackCard/FeedbackCard'
 import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
+import LinearIndeterminate from '@components/common/LinearIndeterminate/LinearIndeterminate'
 import MentorMediaInfo from '@components/common/MentorMediaInfor/MentorMediaInfor'
 import MentorProgramCard from '@components/common/MentorProgramCard/MentorProgramCard'
 import SkillBadge from '@components/common/SkillBadge/SkillBadge'
 import { MainLayout } from '@components/layouts'
-import { Favorite, TrendingUpOutlined } from '@mui/icons-material'
+import { Mentor } from '@models/mentor'
+import { Favorite } from '@mui/icons-material'
 import { Avatar, Box, Card, CardContent, Grid, Stack, Typography } from '@mui/material'
+import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import Carousel from 'react-elastic-carousel'
 import ReactReadMoreReadLess from 'react-read-more-read-less'
-import { GetStaticPropsContext, GetStaticProps, GetStaticPaths } from 'next'
-import { mentorApi } from '@api/mentor-api'
-import { Mentor } from '@models/mentor'
-import { useRouter } from 'next/router'
 
 const breakPoints = [
   { width: 1, itemsToShow: 1 },
@@ -20,19 +22,29 @@ const breakPoints = [
   { width: 768, itemsToShow: 3 },
   { width: 1200, itemsToShow: 4 },
 ]
-
 export interface MentorProfileProps {
   mentor: Mentor
 }
 
 function Profile({ mentor }: MentorProfileProps) {
   const router = useRouter()
+  if (router.isFallback) {
+    return <LinearIndeterminate />
+  }
+  const breadcrumbs = [
+    { label: 'Home', href: '/' },
+    { label: 'Mentors', href: '/mentors' },
+    { label: mentor.name },
+  ]
+
   const { mentorId } = router.query
+  const skillDescs = mentor?.User_mentor.skills?.map(item => item.description)
   return (
     <>
+      <Breadcrumb items={breadcrumbs} />
       <Box sx={{ flexGrow: 1, marginTop: 4 }}>
         <Grid container spacing={4}>
-          <Grid item sm={8}>
+          <Grid item sm={12} md={8}>
             <Card sx={{ borderRadius: '20px', boxShadow: 'none' }}>
               <CardContent sx={{ padding: '20px', position: 'relative' }}>
                 <button
@@ -65,32 +77,14 @@ function Profile({ mentor }: MentorProfileProps) {
                     readMoreClassName="read-more-less--more"
                     readLessClassName="read-more-less--less"
                   >
-                    Hello there. 👋 My name is Jake. I am a software engineer based in Sydney. I
-                    have more than 15 years of experience in software engineering and have spent
-                    half of it in senior and technical leadership roles. I have a passion for
-                    finding user-friendly solutions to complex problems, and have done so for
-                    products in different industries. I have a broad experience in various
-                    technologies and able to learn and switch on demand. Here’s what you can expect
-                    from me. I will... - Listen and understand your learning goals - Design a
-                    development plan based on your learning goals - Help you understand difficult
-                    concepts - Provide coding exercises - Give quality code review feedback - Help
-                    you when you are stuck - Help you prepare for a coding interview - Provide a
-                    weekly 1 on 1 meeting Here is what I can help you with: - Server-side
-                    development using either of the following: - Node and Javascript - .Net Core and
-                    C# - Serverless - Front-end development using React or Vue - Mobile app
-                    development using Objective-C or Swift - Unit and Integration Testing -
-                    Components and Frameworks - Implementing Clean Code - Design Patterns - Software
-                    design and UML - General Programming in C#, Javascript, Java, PHP - Shell
-                    scripting - Productivity and Career Advice If you are motivated to break into
-                    software development, I would be happy to be your mentor. Let’s talk. 🚀
+                    {mentor.User_mentor.introduction}
                   </ReactReadMoreReadLess>
                 </Box>
                 {/* Kỹ năng */}
                 <Box sx={{ marginTop: '20px' }}>
                   <HeadingPrimary>Kỹ năng</HeadingPrimary>
-
                   <SkillBadge
-                    skills={['Software Architecture', 'Front-end', 'HTML', 'Javascipt', 'CSS']}
+                    skills={skillDescs as string[]}
                   />
                 </Box>
                 {/* Kinh nghiệm */}
@@ -130,7 +124,7 @@ function Profile({ mentor }: MentorProfileProps) {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item sm={4}>
+          <Grid item sm={12} md={4}>
             <Stack spacing={3}>
               <Typography sx={{ fontWeight: '600', fontSize: '24px', textAlign: 'center' }}>
                 Chương trình mentorship
@@ -198,7 +192,7 @@ function Profile({ mentor }: MentorProfileProps) {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
-    paths: [{ params: { mentorId: '40' } }, { params: { mentorId: '31' } }],
+    paths: [{ params: { mentorId: '41' } },{ params: { mentorId: '42' } },{ params: { mentorId: '43' } }],
     fallback: true,
   }
 }
@@ -213,18 +207,17 @@ export const getStaticProps: GetStaticProps<MentorProfileProps> = async (
       notFound: true,
     }
   }
-  const res = await mentorApi.getMentorById(mentorId.toString())
-  const mentor = res.data
-  if (mentor) {
+  try {
+    const res = await mentorApi.getMentorById(mentorId.toString());
     return {
       props: {
-        mentor,
+        mentor: res.data,
       },
-      revalidate: 10,
+      revalidate: 60,
     }
-  } else {
+  } catch (err) {
     return {
-      notFound: true,
+      notFound: true
     }
   }
 }
