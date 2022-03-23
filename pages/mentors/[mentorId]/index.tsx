@@ -1,14 +1,18 @@
-import MentorProgramCard from '@components/common/MentorProgramCard/MentorProgramCard'
-import { MainLayout } from '@components/layouts'
-import { NextPageWithLayout } from '@models/common'
-import Link from 'next/link'
-import { Avatar, Box, Card, CardContent, Grid, Stack, Typography, Rating } from '@mui/material'
-import { LocationOn, AccessTime, Favorite } from '@mui/icons-material'
 import FeedbackCard from '@components/common/FeedbackCard/FeedbackCard'
+import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
+import MentorMediaInfo from '@components/common/MentorMediaInfor/MentorMediaInfor'
+import MentorProgramCard from '@components/common/MentorProgramCard/MentorProgramCard'
+import SkillBadge from '@components/common/SkillBadge/SkillBadge'
+import { MainLayout } from '@components/layouts'
+import { Favorite, TrendingUpOutlined } from '@mui/icons-material'
+import { Avatar, Box, Card, CardContent, Grid, Stack, Typography } from '@mui/material'
+import Link from 'next/link'
 import Carousel from 'react-elastic-carousel'
 import ReactReadMoreReadLess from 'react-read-more-read-less'
-import SkillBadge from '@components/common/SkillBadge/SkillBadge'
-import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
+import { GetStaticPropsContext, GetStaticProps, GetStaticPaths } from 'next'
+import { mentorApi } from '@api/mentor-api'
+import { Mentor } from '@models/mentor'
+import { useRouter } from 'next/router'
 
 const breakPoints = [
   { width: 1, itemsToShow: 1 },
@@ -17,9 +21,13 @@ const breakPoints = [
   { width: 1200, itemsToShow: 4 },
 ]
 
-export interface MentorProfileProps {}
+export interface MentorProfileProps {
+  mentor: Mentor
+}
 
-const Profile: NextPageWithLayout = (props: MentorProfileProps) => {
+function Profile({ mentor }: MentorProfileProps) {
+  const router = useRouter()
+  const { mentorId } = router.query
   return (
     <>
       <Box sx={{ flexGrow: 1, marginTop: 4 }}>
@@ -45,44 +53,8 @@ const Profile: NextPageWithLayout = (props: MentorProfileProps) => {
                     }}
                   />
                 </button>
-                <Box sx={{ display: 'flex' }}>
-                  <Avatar
-                    src="/static/mentorProfileAvatar.png"
-                    sx={{ width: '215px', height: '215px', borderRadius: '20px' }}
-                  />
-                  <Box sx={{ marginLeft: '36px', marginBottom: '36px' }}>
-                    <Typography sx={{ fontSize: '30px', fontWeight: '600' }}>
-                      Nguyễn Văn B
-                    </Typography>
-                    <Typography sx={{ fontSize: '24px', fontWeight: '400' }}>
-                      CEO at ABC Company
-                    </Typography>
-                    <Stack
-                      direction="row"
-                      spacing={1}
-                      sx={{
-                        display: 'flex',
-                        alignItem: 'center',
-                        marginTop: '12px',
-                        marginBottom: '12px',
-                      }}
-                    >
-                      <Rating readOnly value={4.5} precision={0.5} />
-                      <Typography>4.5 (3 đánh giá)</Typography>
-                    </Stack>
-                    <Stack direction={'row'} spacing={4} sx={{ marginBottom: '20px' }}>
-                      <span>
-                        <LocationOn sx={{ marginRight: '4px' }} />
-                        TP.HCM
-                      </span>
-                      <span>
-                        <AccessTime sx={{ marginRight: '4px' }} />
-                        Thường trả lời sau vài giờ
-                      </span>
-                    </Stack>
-                    <SkillBadge skills={['Software Architecture', 'Front-end', 'Javascipt']} />
-                  </Box>
-                </Box>
+                <MentorMediaInfo mentor={mentor} />
+
                 {/* GiỚi thiệu */}
                 <Box sx={{ marginTop: '20px' }}>
                   <HeadingPrimary>Giới thiệu</HeadingPrimary>
@@ -165,7 +137,7 @@ const Profile: NextPageWithLayout = (props: MentorProfileProps) => {
               </Typography>
               <MentorProgramCard title="Định hướng và phát triển kỹ năng lập trình" token={100} />
               <MentorProgramCard title="Định hướng và phát triển kỹ năng lập trình" token={100} />
-              <Link href="#">
+              <Link href={`/mentors/${mentorId}/sessions`}>
                 <a
                   style={{
                     color: '#fff',
@@ -222,6 +194,39 @@ const Profile: NextPageWithLayout = (props: MentorProfileProps) => {
       </Box>
     </>
   )
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [{ params: { mentorId: '40' } }, { params: { mentorId: '31' } }],
+    fallback: true,
+  }
+}
+
+export const getStaticProps: GetStaticProps<MentorProfileProps> = async (
+  context: GetStaticPropsContext
+) => {
+  const mentorId = context.params?.mentorId
+  console.log(mentorId)
+  if (!mentorId) {
+    return {
+      notFound: true,
+    }
+  }
+  const res = await mentorApi.getMentorById(mentorId.toString())
+  const mentor = res.data
+  if (mentor) {
+    return {
+      props: {
+        mentor,
+      },
+      revalidate: 10,
+    }
+  } else {
+    return {
+      notFound: true,
+    }
+  }
 }
 
 Profile.Layout = MainLayout

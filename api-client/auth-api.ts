@@ -7,11 +7,15 @@ export const authApi = {
     return axiosClient.post('/v1/auth/signin', payload)
   },
   loginSocialApiServer(provider: string, payload: LoginSocialPayload) {
-    return axiosClient.post(`/v1/auth/${provider}/token`, {
-      params: {
-        token: payload.accessToken,
-      },
-    })
+    return axiosClient.post(
+      `/v1/auth/${provider}/token`,
+      {},
+      {
+        params: {
+          token: payload.accessToken,
+        },
+      }
+    )
   },
   registerApiServer(payload: RegisterForm) {
     return axiosClient.post('/v1/auth/signup', payload)

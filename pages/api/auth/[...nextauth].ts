@@ -51,7 +51,7 @@ export default NextAuth({
             const res = await authApi.loginSocialApiServer(account.provider, {
               accessToken: account.access_token as string,
             })
-            console.log(res.data)
+            console.log('google', res.data)
             if (res.data?.accessToken) {
               token.accessToken = res.data.accessToken
             }

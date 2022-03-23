@@ -3,6 +3,6 @@ import axiosClient from './axios-client'
 
 export const profileApi = {
   getProfile() {
-    return axiosClient.get('/users/profile')
+    return axiosClient.get('/v1/users/profile')
   },
 }
