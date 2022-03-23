@@ -20,8 +20,9 @@ import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import * as React from 'react'
 import { useState } from 'react'
+import Loading from '@components/common/Loading/Loading'
 
-const pages = ['Products', 'Pricing', 'Blog']
+const pages = ['Mentors']
 const settings = ['Account', 'Dashboard']
 
 const Header = () => {
@@ -33,8 +34,7 @@ const Header = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
-
-  const { logout } = useProfile()
+  const { logout, profile } = useProfile()
 
   const handleLogout = (event: any) => {
     event.preventDefault()
@@ -45,23 +45,8 @@ const Header = () => {
     }
   }
 
-  const handleOpenNavMenu = (event: any) => {
-    setAnchorElNav(event.currentTarget)
-  }
-  const handleOpenUserMenu = (event: any) => {
-    setAnchorElUser(event.currentTarget)
-  }
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
-  }
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null)
-  }
-
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -81,7 +66,7 @@ const Header = () => {
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={handleOpenNavMenu}
+              onClick={handleClose}
               color="inherit"
             >
               <MenuIcon />
@@ -99,13 +84,13 @@ const Header = () => {
                 horizontal: 'left',
               }}
               open={Boolean(anchorEl)}
-              onClose={handleCloseNavMenu}
+              onClose={handleClose}
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={handleClose}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -125,7 +110,7 @@ const Header = () => {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={handleClose}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}
@@ -143,7 +128,9 @@ const Header = () => {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
               >
-                <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                <Avatar src={profile?.avatar} sx={{ width: 32, height: 32 }}>
+                  M
+                </Avatar>
               </IconButton>
             </Tooltip>
             <Menu
@@ -202,7 +189,7 @@ const Header = () => {
                 </ListItemIcon>
                 Settings
               </MenuItem>
-              <MenuItem onClick={() => signOut({ callbackUrl: '/authenticate/login' })}>
+              <MenuItem onClick={handleLogout}>
                 <ListItemIcon>
                   <Logout fontSize="small" />
                 </ListItemIcon>

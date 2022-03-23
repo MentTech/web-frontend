@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { useEffect, useState } from 'react'
+import LinearIndeterminate from '@components/common/LinearIndeterminate/LinearIndeterminate'
 
 const schema = yup
   .object({
@@ -51,7 +52,7 @@ export default function Login() {
   }
 
   if (loading) {
-    return <div>Loading...</div>
+    return <LinearIndeterminate />
   }
 
   return (

@@ -43,7 +43,6 @@ export default NextAuth({
     async jwt({ token, account, user, profile }) {
       try {
         if (account) {
-          console.log('account', account)
           // check account provider
           if (account.provider === 'credentials') {
             token.accessToken = user?.accessToken
@@ -52,7 +51,7 @@ export default NextAuth({
             const res = await authApi.loginSocialApiServer(account.provider, {
               accessToken: account.access_token as string,
             })
-            console.log(res.data)
+            console.log('google', res.data)
             if (res.data?.accessToken) {
               token.accessToken = res.data.accessToken
             }
