@@ -18,6 +18,7 @@ import { ORDER_OPTIONS, SORT_OPTIONS } from '@utils/constant'
 import { useFindMentor } from '../../../context/FindMentorProvider'
 import { LoadingIndicator } from '../../common/LoadingIndicator/LoadingIndicator'
 import { useEffect, useState } from 'react'
+import { Skill } from '@models/mentor'
 
 export interface FindForm {
   keyword: string
@@ -38,7 +39,7 @@ const schema = yup.object({
 export const FindBox = () => {
   const router = useRouter()
 
-  const [skills, setSkills] = useState<string[]>([])
+  const [skills, setSkills] = useState<Skill[]>([])
   const [currentSkill, setcurrentSkill] = useState('')
   const [helperText, setHelperText] = useState('')
   const [openSort, setOpenSort] = useState(false)
@@ -101,9 +102,9 @@ export const FindBox = () => {
           >
             <MenuItem value="">Chọn chuyên mục...</MenuItem>
 
-            {fetchedCategories.map((item: { id: number; name: string }) => {
+            {fetchedCategories.map((item, index) => {
               return (
-                <MenuItem key={item.id} value={item.id}>
+                <MenuItem key={index} value={item.id}>
                   {item.name}
                 </MenuItem>
               )
@@ -121,10 +122,10 @@ export const FindBox = () => {
             select
           >
             <MenuItem value=".">Chọn kỹ năng...</MenuItem>
-            {fetchedSkills.map((item: { id: number; name: string }) => {
+            {fetchedSkills.map((item) => {
               return (
                 <MenuItem
-                  key={item.id}
+                  key={item.description}
                   onClick={() => {
                     if (!skills.find((skill) => skill.id === item.id)) {
                       setSkills([...skills, item])

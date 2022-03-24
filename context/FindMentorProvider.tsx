@@ -3,8 +3,16 @@ import { useRouter } from 'next/router'
 import { findApi } from '@api/find-api'
 import { toast } from 'react-toastify'
 import { ErrorBoundary } from '@components/common/ErrorBoundary/ErrorBoundary'
+import { Category, Mentor, Skill } from '@models/mentor'
 
-const FindMentorContext = React.createContext({
+interface FindMentorContextProps {
+  fetchedMentor: Mentor[]
+  loading: boolean
+  fetchedCategories: Category[]
+  fetchedSkills: Skill[]
+}
+
+const FindMentorContext = React.createContext<FindMentorContextProps>({
   fetchedMentor: [],
   loading: false,
   fetchedCategories: [],
@@ -23,9 +31,9 @@ const FindMentorProvider = ({ children }: FindMentorProviderProps) => {
 
   const { keyword, sortBy, skills, order, category } = router.query
 
-  const [fetchedMentor, setFetchedMentor] = useState([])
-  const [fetchedCategories, setfetchedCategories] = useState([])
-  const [fetchedSkills, setfetchedSkills] = useState([])
+  const [fetchedMentor, setFetchedMentor] = useState<Mentor[]>([])
+  const [fetchedCategories, setfetchedCategories] = useState<Category[]>([])
+  const [fetchedSkills, setfetchedSkills] = useState<Skill[]>([])
 
   React.useEffect(() => {
     const fetchData = async () => {

@@ -1,3 +1,4 @@
+import { Mentor } from '@models/mentor'
 import { FavoriteOutlined, Share } from '@mui/icons-material'
 import {
   Button,
@@ -14,22 +15,15 @@ import { copyTextToClipboard } from '@utils/method'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 
-interface MentorProps {
-  avatar: string
-  name: string
-  id: string
-  User_mentor: any
-}
-
 interface MentorCardProps extends CardProps {
-  mentor: MentorProps
+  mentor: Mentor
 }
 
 export const MentorCard = ({ mentor, ...props }: MentorCardProps) => {
   const { name, id, avatar, User_mentor } = mentor
   const { introduction, rating, category, experiences } = User_mentor
 
-  const last_experience = experiences[experiences.length - 1]
+  const last_experience = experiences?.[experiences.length - 1]
   const onClickAddToFavorite = () => {
     console.log('add to favorite')
   }

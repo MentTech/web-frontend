@@ -27,24 +27,30 @@ export interface Job {
 }
 
 export interface Skill {
-  id: Number;
-  description: string;
+  id: number
+  description: string
   additional: Object | null
-  isAccepted: Boolean;
+  isAccepted: Boolean
+  createdAt: Date
+}
+
+export interface Category {
+  id: number
+  name: string
   createdAt: Date
 }
 
 export interface UserMentor {
-  linkedin: string;
+  linkedin: string
   degree?: Array<Degree>
   experiences?: Array<Experience>
   achievements?: Array<string>
   skills?: Array<Skill>
   introduction?: string
   category?: object
-  rating: Number;
+  rating: Number
 }
 
 export type Mentor = Mentee & {
-  User_mentor : UserMentor
+  User_mentor: UserMentor
 }

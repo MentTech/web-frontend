@@ -4,6 +4,6 @@ export const SORT_OPTIONS = [
 ]
 
 export const ORDER_OPTIONS = [
-  { value: true, title: 'Tăng dần' },
-  { value: false, title: 'Giảm dần' },
+  { value: 'true', title: 'Tăng dần' },
+  { value: 'false', title: 'Giảm dần' },
 ]
