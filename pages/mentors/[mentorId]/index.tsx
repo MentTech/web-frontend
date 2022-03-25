@@ -34,7 +34,7 @@ function Profile({ mentor }: MentorProfileProps) {
   const breadcrumbs = [
     { label: 'Home', href: '/' },
     { label: 'Mentors', href: '/mentors' },
-    { label: mentor.name },
+    { label: mentor.name as string },
   ]
 
   const { mentorId } = router.query

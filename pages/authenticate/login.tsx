@@ -28,6 +28,7 @@ export default function Login() {
       setLoading(false)
     }
   }, [session, status, router])
+
   const {
     register,
     handleSubmit,

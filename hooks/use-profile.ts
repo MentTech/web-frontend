@@ -1,5 +1,5 @@
 import useSWR from 'swr'
-import { signIn, SignInOptions, signOut, SignOutParams } from 'next-auth/react'
+import { signOut, SignOutParams } from 'next-auth/react'
 
 export function useProfile() {
   const {
@@ -9,16 +9,12 @@ export function useProfile() {
     isValidating,
   } = useSWR<any>('/v1/users/profile', {
     dedupingInterval: 60 * 60 * 1000, // 1 hour,
+    revalidateOnFocus: false,
   })
 
   const isFirstLoading = profile === undefined && error === undefined
 
-  async function login(provider: string, payload?: SignInOptions) {
-    await signIn(provider, payload)
-    await mutate({})
-  }
-
-  async function logout(signOutParams?: SignOutParams) {
+  async function logout(signOutParams?: SignOutParams<any>) {
     await signOut(signOutParams)
     await mutate({}, false)
   }
@@ -28,7 +24,6 @@ export function useProfile() {
     mutate,
     error,
     isValidating,
-    login,
     logout,
     isFirstLoading,
   }

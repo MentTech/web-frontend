@@ -2,7 +2,8 @@ import { useProfile } from '@hooks/index'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { Box } from '@mui/material'
-import Loading from '@components/common/Loading/Loading'
+import { useSession } from 'next-auth/react'
+import LinearIndeterminate from './LinearIndeterminate/LinearIndeterminate'
 
 export interface ProfileProps {
   children: React.ReactNode
@@ -10,21 +11,12 @@ export interface ProfileProps {
 
 export default function Auth({ children }: ProfileProps) {
   const router = useRouter()
-  const { profile, isFirstLoading } = useProfile()
-  console.log('profile', profile)
-  useEffect(() => {
-    if (!isFirstLoading && !profile?.email) {
-      router.push('/authenticate/login')
-    }
-  }, [profile, isFirstLoading, router])
-
-  if (!profile?.email) {
-    return (
-      <Box sx={{ marginTop: '8px' }}>
-        <Loading />
-      </Box>
-    )
+  const { data, status } = useSession()
+  if (status === 'authenticated') {
+    return <div>{children}</div>
   }
-
-  return <div>{children}</div>
+  if (status === 'unauthenticated') {
+    router.push('/authenticate/login')
+  }
+  return <LinearIndeterminate />
 }

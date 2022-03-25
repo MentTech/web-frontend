@@ -18,7 +18,7 @@ export default function MentorSessions({ mentor, mentorId }: MentorSessionsProps
   const breadcrumbs = [
     { label: 'Home', href: '/' },
     { label: 'Mentors', href: '/mentors' },
-    { label: mentor.name, href: `/mentors/${mentorId}`},
+    { label: mentor.name as string, href: `/mentors/${mentorId}`},
     { label: 'Sessions'}
   ]
   return (

@@ -14,9 +14,9 @@ const Profile: NextPageWithLayout = (props: ProfileProps) => {
     <>
       <Box sx={{ flexGrow: 1, marginTop: 4 }}>
         <Grid container spacing={3}>
-          <Grid item sm={8}>
+          <Grid item md={8}>
             <Stack spacing={3}>
-              <Card sx={{ minHeight: 465, position: 'relative' }}>
+              <Card sx={{ minHeight: '465px', position: 'relative' }}>
                 <CardContent sx={{ padding: 0 }}>
                   <Box
                     sx={{
@@ -25,17 +25,23 @@ const Profile: NextPageWithLayout = (props: ProfileProps) => {
                       background: 'url("/static/coverPhoto.png") center/ cover',
                     }}
                   ></Box>
-                  <Box sx={{ position: 'absolute', top: '40%', left: 60, display: 'flex' }}>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={profile.avatar}
-                      sx={{
-                        width: 176,
-                        height: 176,
-                        border: '2px solid #fff',
-                      }}
-                    />
-                    <Box>
+                  <Grid
+                    container
+                    sx={{ position: 'absolute', top: '40%', left: 60, display: 'flex' }}
+                  >
+                    <Grid item md={3}>
+                      <Avatar
+                        alt="Remy Sharp"
+                        src={profile.avatar}
+                        sx={{
+                          width: 176,
+                          height: 176,
+                          border: '2px solid #fff',
+                        }}
+                      />
+                    </Grid>
+
+                    <Grid item md={9} sx={{ textAlign: 'left' }}>
                       <Typography
                         component="h2"
                         variant="h3"
@@ -54,8 +60,8 @@ const Profile: NextPageWithLayout = (props: ProfileProps) => {
                       >
                         {profile.email}
                       </Typography>
-                    </Box>
-                  </Box>
+                    </Grid>
+                  </Grid>
                 </CardContent>
               </Card>
               <ProfileCard padding="20px 44px">
@@ -113,9 +119,9 @@ const Profile: NextPageWithLayout = (props: ProfileProps) => {
               </ProfileCard>
             </Stack>
           </Grid>
-          <Grid item sm={4}>
-            <Card sx={{ textAlign: 'center', padding: '24px 32px', width: '100%' }}>
-              <CardContent>
+          <Grid item md={4} xs={12}>
+            <Card sx={{ textAlign: 'center', padding: '24px 32px' }}>
+              <CardContent sx={{ width: '100%' }}>
                 <Typography variant="h5" component="h2">
                   Có thể bạn quan tâm
                 </Typography>

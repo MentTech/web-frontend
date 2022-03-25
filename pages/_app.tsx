@@ -35,15 +35,17 @@ function MyApp({
                 shouldRetryOnError: false,
               }}
             >
-              <Layout>
-                {Component.isPrivate ? (
-                  <Auth>
+              {Component.isPrivate ? (
+                <Auth>
+                  <Layout>
                     <Component {...pageProps} />
-                  </Auth>
-                ) : (
-                  <Component {...pageProps} />
-                )}
-              </Layout>
+                  </Layout>
+                </Auth>
+              ) : (
+                <Layout>
+                  <Component {...pageProps} />/
+                </Layout>
+              )}
               <ToastContainer />
             </SWRConfig>
           </SessionProvider>

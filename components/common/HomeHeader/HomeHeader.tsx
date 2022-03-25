@@ -11,13 +11,14 @@ import Tooltip from '@mui/material/Tooltip'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useState } from 'react'
-import { signOut } from 'next-auth/react'
 import styles from './HomeHeader.module.scss'
+import { useProfile } from '@hooks/index'
 
-export interface IHomeHeaderProps {}
+export interface HomeHeaderProps {}
 
-export default function HomeHeader(props: IHomeHeaderProps) {
+export default function HomeHeader(props: HomeHeaderProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const { logout, profile } = useProfile()
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -37,9 +38,7 @@ export default function HomeHeader(props: IHomeHeaderProps) {
           <a href="#">Trang chủ</a>
         </li>
         <li>
-          <Link href="/find">
-            Tìm kiếm
-          </Link>
+          <Link href="/find">Tìm kiếm</Link>
         </li>
         <li>
           {session ? (
@@ -53,7 +52,9 @@ export default function HomeHeader(props: IHomeHeaderProps) {
                   aria-haspopup="true"
                   aria-expanded={open ? 'true' : undefined}
                 >
-                  <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                  <Avatar sx={{ width: 32, height: 32 }} src={profile?.avatar}>
+                    M
+                  </Avatar>
                 </IconButton>
               </Tooltip>
               <Menu
@@ -92,9 +93,11 @@ export default function HomeHeader(props: IHomeHeaderProps) {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               >
                 <Link href="/profile">
-                  <MenuItem>
-                    <Avatar /> Profile
-                  </MenuItem>
+                  <a>
+                    <MenuItem>
+                      <Avatar /> Profile
+                    </MenuItem>
+                  </a>
                 </Link>
                 <MenuItem>
                   <Avatar /> My account
@@ -112,7 +115,7 @@ export default function HomeHeader(props: IHomeHeaderProps) {
                   </ListItemIcon>
                   Settings
                 </MenuItem>
-                <MenuItem onClick={() => signOut({ redirect: false })}>
+                <MenuItem onClick={() => logout({ redirect: false })}>
                   <ListItemIcon>
                     <Logout fontSize="small" />
                   </ListItemIcon>
