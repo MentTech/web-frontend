@@ -1,4 +1,3 @@
-import { mentorApi } from '@api/mentor-api'
 import Breadcrumb from '@components/common/Breadcrumb/Breadcrumb'
 import FeedbackCard from '@components/common/FeedbackCard/FeedbackCard'
 import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
@@ -15,6 +14,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Carousel from 'react-elastic-carousel'
 import ReactReadMoreReadLess from 'react-read-more-read-less'
+import axios from 'axios'
+import { config } from '@config/main'
 
 const breakPoints = [
   { width: 1, itemsToShow: 1 },
@@ -210,7 +211,7 @@ export const getStaticProps: GetStaticProps<MentorProfileProps> = async (
     }
   }
   try {
-    const res = await mentorApi.getMentorById(mentorId as string)
+    const res = await axios.get(`${config.backendURL}/v1/mentor/${mentorId}`)
     return {
       props: {
         mentor: res.data,
@@ -222,6 +223,7 @@ export const getStaticProps: GetStaticProps<MentorProfileProps> = async (
       notFound: true,
     }
   }
+  // get mentor by id
 }
 
 Profile.Layout = MainLayout
