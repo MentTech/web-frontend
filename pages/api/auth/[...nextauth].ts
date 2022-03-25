@@ -38,6 +38,31 @@ export default NextAuth({
         return null
       },
     }),
+    CredentialsProvider({
+      id: 'mentor',
+      name: 'mentor',
+      credentials: {
+        email: { label: 'Email', type: 'email', placeholder: 'Email' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials, req) {
+        try {
+          console.log('credentials', credentials)
+          if (credentials?.email && credentials?.password) {
+            const res = await authApi.loginMentorApiServer({
+              email: credentials?.email,
+              password: credentials?.password,
+            })
+            if (res.data?.accessToken) {
+              return res.data
+            }
+          }
+        } catch (err) {
+          console.log(err)
+        }
+        return null
+      },
+    }),
   ],
   callbacks: {
     async jwt({ token, account, user, profile }) {
@@ -51,7 +76,6 @@ export default NextAuth({
             const res = await authApi.loginSocialApiServer(account.provider, {
               accessToken: account.access_token as string,
             })
-            console.log('google', res.data)
             if (res.data?.accessToken) {
               token.accessToken = res.data.accessToken
             }

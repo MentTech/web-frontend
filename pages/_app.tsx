@@ -43,7 +43,7 @@ function MyApp({
                 </Auth>
               ) : (
                 <Layout>
-                  <Component {...pageProps} />/
+                  <Component {...pageProps} />
                 </Layout>
               )}
               <ToastContainer />

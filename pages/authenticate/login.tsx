@@ -14,6 +14,7 @@ const schema = yup
   .object({
     email: yup.string().email().required(),
     password: yup.string().max(32).min(6).required(),
+    isMentor: yup.boolean().default(false).required(),
   })
   .required()
 
@@ -32,24 +33,41 @@ export default function Login() {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<loginPayload>({
     resolver: yupResolver(schema),
   })
 
   const onSubmit: SubmitHandler<loginPayload> = (data) => {
-    signIn('credentials', {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    }).then((res: any) => {
-      if (res?.ok) {
-        router.push('/')
-      } else {
-        console.log(res?.err)
-        toast.error('Credentials do not match!', { type: 'error' })
-      }
-    })
+    const isMentor = getValues('isMentor')
+    if (isMentor) {
+      signIn('mentor', {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      }).then((res: any) => {
+        if (res?.ok) {
+          router.push('/mentor/home')
+        } else {
+          console.log(res?.err)
+          toast.error('Credentials do not match!', { type: 'error' })
+        }
+      })
+    } else {
+      signIn('credentials', {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      }).then((res: any) => {
+        if (res?.ok) {
+          router.push('/')
+        } else {
+          console.log(res?.err)
+          toast.error('Credentials do not match!', { type: 'error' })
+        }
+      })
+    }
   }
 
   if (loading) {
@@ -146,9 +164,23 @@ export default function Login() {
                     placeholder="Your password"
                   />
                 </div>
-                <p className="text-red-600">{errors.password?.message}</p>
               </div>
-              <div className="flex items-center mb-6 -mt-4">
+              <div className="flex flex-col mb-6">
+                <div className="flex relative ">
+                  <div className="form-control">
+                    <label className="cursor-pointer label">
+                      <input
+                        type="checkbox"
+                        className="checkbox checkbox-accent"
+                        {...register('isMentor')}
+                      />
+                      <span className="label-text ml-2">Bạn là mentor?</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {/* <div className="flex items-center mb-6 -mt-4">
                 <div className="flex ml-auto">
                   <Link href="/auth/forgot-password">
                     <a className="inline-flex text-xs font-thin text-gray-500 sm:text-sm dark:text-gray-100 hover:text-gray-700 dark:hover:text-white">
@@ -156,7 +188,9 @@ export default function Login() {
                     </a>
                   </Link>
                 </div>
-              </div>
+              </div> */}
+              <p className="text-red-600">{errors.password?.message}</p>
+
               <div className="flex w-full">
                 <button className="cursor-pointer py-2 px-4 bg-purple-600 hover:bg-purple-700 focus:ring-purple-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
                   Login

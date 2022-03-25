@@ -6,6 +6,9 @@ export const authApi = {
   loginApiServer(payload: loginPayload) {
     return axiosClient.post('/v1/auth/signin', payload)
   },
+  loginMentorApiServer(payload: loginPayload) {
+    return axiosClient.post('/v1/auth/signIn/mentor', payload)
+  },
   loginSocialApiServer(provider: string, payload: LoginSocialPayload) {
     return axiosClient.post(
       `/v1/auth/${provider}/token`,
