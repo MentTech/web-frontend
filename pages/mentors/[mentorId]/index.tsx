@@ -38,7 +38,7 @@ function Profile({ mentor }: MentorProfileProps) {
   ]
 
   const { mentorId } = router.query
-  const skillDescs = mentor?.User_mentor.skills?.map(item => item.description)
+  const skillDescs = mentor?.User_mentor.skills?.map((item) => item.description)
   return (
     <>
       <Breadcrumb items={breadcrumbs} />
@@ -83,9 +83,7 @@ function Profile({ mentor }: MentorProfileProps) {
                 {/* Kỹ năng */}
                 <Box sx={{ marginTop: '20px' }}>
                   <HeadingPrimary>Kỹ năng</HeadingPrimary>
-                  <SkillBadge
-                    skills={skillDescs as string[]}
-                  />
+                  <SkillBadge skills={skillDescs as string[]} />
                 </Box>
                 {/* Kinh nghiệm */}
                 <Box sx={{ marginTop: '20px' }}>
@@ -192,7 +190,11 @@ function Profile({ mentor }: MentorProfileProps) {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
-    paths: [{ params: { mentorId: '41' } },{ params: { mentorId: '42' } },{ params: { mentorId: '43' } }],
+    paths: [
+      { params: { mentorId: '60' } },
+      { params: { mentorId: '61' } },
+      { params: { mentorId: '62' } },
+    ],
     fallback: true,
   }
 }
@@ -201,23 +203,23 @@ export const getStaticProps: GetStaticProps<MentorProfileProps> = async (
   context: GetStaticPropsContext
 ) => {
   const mentorId = context.params?.mentorId
-  console.log(mentorId)
+  console.log('GET STATIC PROPS ', mentorId)
   if (!mentorId) {
     return {
       notFound: true,
     }
   }
   try {
-    const res = await mentorApi.getMentorById(mentorId.toString());
+    const res = await mentorApi.getMentorById(mentorId as string)
     return {
       props: {
         mentor: res.data,
       },
-      revalidate: 60,
+      revalidate: 10,
     }
   } catch (err) {
     return {
-      notFound: true
+      notFound: true,
     }
   }
 }

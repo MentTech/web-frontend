@@ -12,12 +12,18 @@ export const config = {
   },
 }
 
+export interface MyToken {
+  id: Number
+  iat: Number
+  exp: Number
+}
+
 export default function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   return new Promise(async (resolve) => {
     const session = await getSession({ req })
     if (session?.accessToken) {
       // console.log(jwt_decode(session?.accessToken as string))
-      const decodeToken = jwt_decode<JwtPayload>(session?.accessToken as string)
+      const decodeToken = jwt_decode<MyToken>(session?.accessToken as string)
       if (decodeToken?.exp < new Date().getTime() / 1000) {
         const { logout } = useProfile()
         await logout()

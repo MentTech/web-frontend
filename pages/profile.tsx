@@ -32,7 +32,7 @@ const Profile: NextPageWithLayout = (props: ProfileProps) => {
                     <Grid item md={3}>
                       <Avatar
                         alt="Remy Sharp"
-                        src={profile.avatar}
+                        src={profile?.avatar}
                         sx={{
                           width: 176,
                           height: 176,
@@ -49,7 +49,7 @@ const Profile: NextPageWithLayout = (props: ProfileProps) => {
                         marginTop="90px"
                         fontSize="32px"
                       >
-                        {profile.name}
+                        {profile?.name}
                       </Typography>
                       <Typography
                         variant="h5"
@@ -58,7 +58,7 @@ const Profile: NextPageWithLayout = (props: ProfileProps) => {
                         fontSize="20px"
                         color="rgba(66, 66, 66, 0.39)"
                       >
-                        {profile.email}
+                        {profile?.email}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -89,13 +89,13 @@ const Profile: NextPageWithLayout = (props: ProfileProps) => {
                   <Grid container>
                     <Grid item md={6}>
                       <Typography variant="h6" component="h2" fontSize="16px">
-                        Họ và tên: {profile.name}
+                        Họ và tên: {profile?.name}
                       </Typography>
                       <Typography variant="h6" component="h2" fontSize="16px">
-                        Ngày sinh: {profile.birthDay}
+                        Ngày sinh: {profile?.birthDay}
                       </Typography>
                       <Typography variant="h6" component="h2" fontSize="16px">
-                        Email: {profile.email}
+                        Email: {profile?.email}
                       </Typography>
                     </Grid>
                     <Grid item md={6}>
