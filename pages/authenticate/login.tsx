@@ -61,7 +61,7 @@ export default function Login() {
         redirect: false,
       }).then((res: any) => {
         if (res?.ok) {
-          router.push('/')
+          router.push('/find')
         } else {
           console.log(res?.err)
           toast.error('Credentials do not match!', { type: 'error' })

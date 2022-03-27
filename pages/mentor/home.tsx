@@ -1,11 +1,10 @@
-import * as React from 'react'
-import { MentorLayout } from '@components/layouts/index'
-import { Grid, Card, CardContent, Box } from '@mui/material'
 import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
 import MentorProgramCard from '@components/common/MentorProgramCard/MentorProgramCard'
-export interface AppProps {}
+import { Card, CardContent, Grid } from '@mui/material'
+import Box from '@mui/material/Box'
+import { MentorLayout } from '@components/layouts/index'
 
-export default function Home(props: AppProps) {
+export default function MentorHome() {
   return (
     <Box sx={{ marginTop: '24px' }}>
       <Grid container spacing={3}>
@@ -36,4 +35,4 @@ export default function Home(props: AppProps) {
   )
 }
 
-Home.Layout = MentorLayout
+MentorHome.Layout = MentorLayout

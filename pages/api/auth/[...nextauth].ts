@@ -47,7 +47,6 @@ export default NextAuth({
       },
       async authorize(credentials, req) {
         try {
-          console.log('credentials', credentials)
           if (credentials?.email && credentials?.password) {
             const res = await authApi.loginMentorApiServer({
               email: credentials?.email,
