@@ -1,4 +1,3 @@
-import { useProfile } from '@hooks/index'
 import MenuIcon from '@mui/icons-material/Menu'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
@@ -10,6 +9,7 @@ import Toolbar from '@mui/material/Toolbar'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import { useState } from 'react'
+import { useProfile } from '@hooks/index'
 
 const pages = ['Products', 'Pricing', 'Blog']
 const settings = ['Profile', 'Account', 'Dashboard']
@@ -22,7 +22,7 @@ export interface MentorToolbar {
 const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
-  const { logout } = useProfile()
+  const { logout, profile } = useProfile()
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -41,7 +41,7 @@ const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
 
   function handleLogout() {
     try {
-      logout({ callbackUrl: '/authenticate/login' })
+      logout()
     } catch (err) {
       console.log(err)
     }
@@ -60,7 +60,7 @@ const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
         <MenuIcon />
       </IconButton>
       <Typography variant="h6" noWrap component="div">
-        Mentoring
+        MENTORING
       </Typography>
 
       <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -105,7 +105,7 @@ const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
         component="div"
         sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
       >
-        LOGO
+        MENTORING
       </Typography>
       <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
         {pages.map((page) => (
@@ -122,7 +122,9 @@ const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
       <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="Open settings">
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+            <Avatar src={profile?.avatar} sx={{ width: 32, height: 32 }}>
+              M
+            </Avatar>
           </IconButton>
         </Tooltip>
         <Menu

@@ -26,8 +26,7 @@ export function useMentorProgram(mentorId: string) {
   async function addProgram(program: MentorProgram) {
     try {
       const res = await mentorApi.addMentorProgram(mentorId, program)
-      console.log(res.data)
-      mutate([...programs, program], false)
+      mutate([...programs, res.data], false)
       toast.success('Tạo program thành công')
     } catch (err: any) {
       toast.error(err.response.data.message)

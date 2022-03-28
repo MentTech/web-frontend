@@ -22,13 +22,13 @@ export default function Login() {
   const { data: session, status } = useSession()
   const [loading, setLoading] = useState(true)
   const router = useRouter()
-  useEffect(() => {
-    if (status === 'authenticated') {
-      router.push('/')
-    } else if (status === 'unauthenticated') {
-      setLoading(false)
-    }
-  }, [session, status, router])
+  // useEffect(() => {
+  //   if (status === 'authenticated') {
+  //     router.push('/')
+  //   } else if (status === 'unauthenticated') {
+  //     setLoading(false)
+  //   }
+  // }, [session, status, router])
 
   const {
     register,
@@ -70,9 +70,9 @@ export default function Login() {
     }
   }
 
-  if (loading) {
-    return <LinearIndeterminate />
-  }
+  // if (loading) {
+  //   return <LinearIndeterminate />
+  // }
 
   return (
     <>
@@ -191,11 +191,9 @@ export default function Login() {
               </div> */}
               <p className="text-red-600">{errors.password?.message}</p>
 
-              <div className="flex w-full">
-                <button className="cursor-pointer py-2 px-4 bg-purple-600 hover:bg-purple-700 focus:ring-purple-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                  Login
-                </button>
-              </div>
+              <button className="cursor-pointer py-2 px-4 bg-purple-600 hover:bg-purple-700 focus:ring-purple-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                Login
+              </button>
             </form>
           </div>
           <div className="flex items-center justify-center mt-6">

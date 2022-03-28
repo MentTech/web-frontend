@@ -112,7 +112,7 @@ export function MentorLayout({ children }: LayoutProps) {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Home', 'Message', 'Profile'].map((text, index) => (
+          {['Home', 'Message'].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
               <ListItemText primary={text} />
@@ -124,6 +124,14 @@ export function MentorLayout({ children }: LayoutProps) {
                 <MailIcon />
               </ListItemIcon>
               <ListItemText primary={'Session'} />
+            </ListItem>
+          </Link>
+          <Link href="/mentor/profile">
+            <ListItem button>
+              <ListItemIcon>
+                <MailIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Profile'} />
             </ListItem>
           </Link>
         </List>

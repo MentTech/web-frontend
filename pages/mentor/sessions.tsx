@@ -104,7 +104,6 @@ export default function MentorHome() {
                   {...field}
                   error={errors.title}
                   fullWidth
-                  required
                   id="outlined-required"
                   label="Tên chương trình"
                   helperText={errors.title?.message}
@@ -120,7 +119,6 @@ export default function MentorHome() {
                   {...field}
                   error={errors.detail}
                   fullWidth
-                  required
                   id="outlined-required"
                   label="Chi tiết"
                   helperText={errors.detail?.message}
@@ -136,7 +134,6 @@ export default function MentorHome() {
                   {...field}
                   error={errors.credit}
                   fullWidth
-                  required
                   id="outlined-required"
                   label="Token"
                   type="number"
