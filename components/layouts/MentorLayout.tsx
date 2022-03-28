@@ -4,6 +4,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import MailIcon from '@mui/icons-material/Mail'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
+import { Container } from '@mui/material'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -15,8 +16,8 @@ import ListItem from '@mui/material/ListItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import { styled, useTheme } from '@mui/material/styles'
-import { Container } from '@mui/material'
-import * as React from 'react'
+import { useState } from 'react'
+import Link from 'next/link'
 
 const drawerWidth = 240
 
@@ -70,8 +71,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }))
 
 export function MentorLayout({ children }: LayoutProps) {
+  //const [selected, setSelected] = useState()
   const theme = useTheme()
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -110,12 +112,20 @@ export function MentorLayout({ children }: LayoutProps) {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Home', 'Message', 'Sessions', 'Profile'].map((text, index) => (
+          {['Home', 'Message', 'Profile'].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           ))}
+          <Link href="/mentor/sessions">
+            <ListItem button>
+              <ListItemIcon>
+                <MailIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Session'} />
+            </ListItem>
+          </Link>
         </List>
         <Divider />
         {/* <List>

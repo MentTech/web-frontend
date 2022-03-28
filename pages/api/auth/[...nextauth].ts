@@ -3,7 +3,8 @@ import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { config } from '@config/main'
-import { authApi } from '@api/auth-api'
+import { authApi } from '@api/index'
+import axios from 'axios'
 
 export default NextAuth({
   providers: [
@@ -52,6 +53,7 @@ export default NextAuth({
               email: credentials?.email,
               password: credentials?.password,
             })
+
             if (res.data?.accessToken) {
               return res.data
             }
@@ -68,7 +70,7 @@ export default NextAuth({
       try {
         if (account) {
           // check account provider
-          if (account.provider === 'credentials') {
+          if (account.provider === 'credentials' || account.provider === 'mentor') {
             token.accessToken = user?.accessToken
           } else {
             // send social token to server
@@ -79,6 +81,13 @@ export default NextAuth({
               token.accessToken = res.data.accessToken
             }
           }
+          // get profile
+          const res = await axios.get(`${config.backendURL}/v1/users/profile`, {
+            headers: {
+              Authorization: `Bearer ${token.accessToken}`,
+            },
+          })
+          token.uid = res.data.id
         }
       } catch (err) {
         console.log(err)
@@ -88,7 +97,8 @@ export default NextAuth({
 
     async session({ session, token, user }) {
       session.accessToken = token.accessToken
-      return session
+      session.user.id = token.uid as string
+      return Promise.resolve(session)
     },
   },
   secret: process.env.SECRET,
