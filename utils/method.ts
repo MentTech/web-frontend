@@ -1,3 +1,5 @@
+import { toast, ToastOptions } from 'react-toastify'
+
 export async function copyTextToClipboard(text: string, callbackErr: (arg0: string) => any) {
   // navigator clipboard api needs a secure context (https)
   if (navigator.clipboard && window.isSecureContext) {
@@ -27,4 +29,12 @@ export async function copyTextToClipboard(text: string, callbackErr: (arg0: stri
       }
     })
   }
+}
+
+export const setToastError = (error: any) => {
+  return toast.error(`Có lỗi xảy ra: ${error}`)
+}
+
+export const setToastSuccess = (message: string) => {
+  return toast.success(message)
 }
