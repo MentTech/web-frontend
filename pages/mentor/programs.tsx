@@ -14,7 +14,6 @@ import { Add, AddBox, Delete, Edit } from '@mui/icons-material'
 import * as yup from 'yup'
 import { MentorProgram } from '@models/index'
 import Loading from '@components/common/Loading/Loading'
-import { render } from '@headlessui/react/dist/utils/render'
 
 const schema = yup
   .object({
