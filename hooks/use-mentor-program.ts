@@ -16,11 +16,16 @@ export function useMentorProgram(mentorId: string) {
   })
 
   async function deleteProgram(programId: string) {
-    await mentorApi.deleteMentorProgram(mentorId, programId)
-    mutate(
-      programs.filter((program) => program.id !== programId),
-      false
-    )
+    try {
+      await mentorApi.deleteMentorProgram(mentorId, programId)
+      mutate(
+        programs.filter((program) => program.id !== programId),
+        false
+      )
+      toast.success('Xóa chương trình thành công')
+    } catch (err: any) {
+      toast.error('Xóa chương trình thất bại')
+    }
   }
 
   async function addProgram(program: MentorProgram) {
@@ -34,11 +39,16 @@ export function useMentorProgram(mentorId: string) {
   }
 
   async function editProgram(program: any) {
-    await mentorApi.editMentorProgram(mentorId, program)
-    mutate(
-      programs.map((p) => (p.id === program.id ? program : p)),
-      false
-    )
+    try {
+      await mentorApi.editMentorProgram(mentorId, program)
+      mutate(
+        programs.map((p) => (p.id === program.id ? program : p)),
+        false
+      )
+      toast.success('Sửa program thành công')
+    } catch (err: any) {
+      toast.error(err.response.data.message)
+    }
   }
 
   return {

@@ -98,7 +98,7 @@ export default function Login() {
             <label
               onClick={() => setIsMentor(true)}
               htmlFor="mentor"
-              className={`text-white btn btn-outline btn-success ml-3 hover:text-white ${
+              className={`btn btn-outline btn-success ml-3 hover:text-white ${
                 isMentor ? 'bg-success text-white' : ''
               }`}
             >

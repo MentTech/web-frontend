@@ -18,6 +18,7 @@ import ListItemText from '@mui/material/ListItemText'
 import { styled, useTheme } from '@mui/material/styles'
 import { useState } from 'react'
 import Link from 'next/link'
+import Footer from '@components/common/Footer/Footer'
 
 const drawerWidth = 240
 
@@ -118,12 +119,12 @@ export function MentorLayout({ children }: LayoutProps) {
               <ListItemText primary={text} />
             </ListItem>
           ))}
-          <Link href="/mentor/sessions">
+          <Link href="/mentor/programs">
             <ListItem button>
               <ListItemIcon>
                 <MailIcon />
               </ListItemIcon>
-              <ListItemText primary={'Session'} />
+              <ListItemText primary={'Programs'} />
             </ListItem>
           </Link>
           <Link href="/mentor/profile">
@@ -148,6 +149,7 @@ export function MentorLayout({ children }: LayoutProps) {
       <Main open={open}>
         <DrawerHeader />
         {children}
+        {/* <Footer /> */}
       </Main>
     </Box>
   )
