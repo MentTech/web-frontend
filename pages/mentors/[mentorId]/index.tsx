@@ -179,7 +179,7 @@ export const getStaticProps: GetStaticProps<MentorProfileProps> = async (
     }
   }
   try {
-    const res = await axios.get(`${config.backendURL}/mentor/${mentorId}`)
+    const res = await axios.get(`${config.backendURL}/v1/mentor/${mentorId}`)
     return {
       props: {
         mentor: res.data,
