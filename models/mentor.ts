@@ -40,15 +40,24 @@ export interface Category {
   createdAt: Date
 }
 
+export interface Program {
+  id: number
+  title: string
+  createdAt: Date
+  credit: number
+  mentorId: number
+  detail: string
+}
 export interface UserMentor {
-  linkedin: string
+  linkedin?: string
   degree?: Array<Degree>
   experiences?: Array<Experience>
   achievements?: Array<string>
   skills?: Array<Skill>
   introduction?: string
   category?: object
-  rating: Number
+  rating?: Number
+  programs?: Array<Program>
 }
 
 export type Mentor = Mentee & {

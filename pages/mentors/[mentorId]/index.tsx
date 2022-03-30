@@ -16,6 +16,7 @@ import Carousel from 'react-elastic-carousel'
 import ReactReadMoreReadLess from 'react-read-more-read-less'
 import axios from 'axios'
 import { config } from '@config/main'
+import SuggestMentorsCard from '@components/common/SuggestMentorsCard'
 
 const breakPoints = [
   { width: 1, itemsToShow: 1 },
@@ -40,6 +41,9 @@ function Profile({ mentor }: MentorProfileProps) {
 
   const { mentorId } = router.query
   const skillDescs = mentor?.User_mentor.skills?.map((item) => item.description)
+
+  const { User_mentor } = mentor
+  const { programs } = User_mentor
   return (
     <>
       <Breadcrumb items={breadcrumbs} />
@@ -128,9 +132,10 @@ function Profile({ mentor }: MentorProfileProps) {
               <Typography sx={{ fontWeight: '600', fontSize: '24px', textAlign: 'center' }}>
                 Chương trình mentorship
               </Typography>
-              <MentorProgramCard title="Định hướng và phát triển kỹ năng lập trình" token={100} />
-              <MentorProgramCard title="Định hướng và phát triển kỹ năng lập trình" token={100} />
-              <Link href={`/mentors/${mentorId}/sessions`}>
+              {programs?.slice(0, 2).map((item) => (
+                <MentorProgramCard program={item} key={item.id} />
+              ))}
+              <Link href={`/mentors/${mentorId}/programs`}>
                 <a
                   style={{
                     color: '#fff',
@@ -143,44 +148,7 @@ function Profile({ mentor }: MentorProfileProps) {
                   Xem toàn bộ
                 </a>
               </Link>
-              <Card
-                sx={{
-                  textAlign: 'center',
-                  width: '100%',
-                  borderRadius: '20px',
-                  boxShadow: 'none',
-                }}
-              >
-                <CardContent sx={{ padding: '24px 32px' }}>
-                  <Typography variant="h5" component="h2">
-                    Mentor tương tự
-                  </Typography>
-                  <Stack spacing={2} sx={{ marginTop: '24px' }}>
-                    <Box sx={{ display: 'flex' }}>
-                      <Avatar
-                        alt="Remy Sharp"
-                        src="/static/images/avatar/1.jpg"
-                        sx={{ width: '44px', height: '44px' }}
-                      />
-                      <Box sx={{ textAlign: 'left', marginLeft: '16px', fontSize: '18px' }}>
-                        <Typography color="#00BFA6">Mentor A</Typography>
-                        <Typography>Project Manager at ABC COMPANY</Typography>
-                      </Box>
-                    </Box>
-                    <Box sx={{ display: 'flex' }}>
-                      <Avatar
-                        alt="Remy Sharp"
-                        src="/static/images/avatar/1.jpg"
-                        sx={{ width: '44px', height: '44px' }}
-                      />
-                      <Box sx={{ textAlign: 'left', marginLeft: '16px', fontSize: '18px' }}>
-                        <Typography color="#00BFA6">Mentor A</Typography>
-                        <Typography>Project Manager at ABC COMPANY</Typography>
-                      </Box>
-                    </Box>
-                  </Stack>
-                </CardContent>
-              </Card>
+              <SuggestMentorsCard />
             </Stack>
           </Grid>
         </Grid>
@@ -211,7 +179,7 @@ export const getStaticProps: GetStaticProps<MentorProfileProps> = async (
     }
   }
   try {
-    const res = await axios.get(`${config.backendURL}/v1/mentor/${mentorId}`)
+    const res = await axios.get(`${config.backendURL}/mentor/${mentorId}`)
     return {
       props: {
         mentor: res.data,

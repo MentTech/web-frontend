@@ -1,12 +1,13 @@
+import { Program } from '@models/mentor'
 import { Card, CardContent, Typography } from '@mui/material'
 import Link from 'next/link'
 
 export interface MentorProgramCardProps {
-  token?: number
-  title?: string
+  program: Program
 }
 
-export default function MentorProgramCard({ token, title }: MentorProgramCardProps) {
+export default function MentorProgramCard({ program }: MentorProgramCardProps) {
+  const { id, title, detail, mentorId, credit } = program
   return (
     <Card
       sx={{
@@ -28,9 +29,9 @@ export default function MentorProgramCard({ token, title }: MentorProgramCardPro
           {title}
         </Typography>
         <Typography sx={{ color: '#fff', textAlign: 'left', opacity: '0.8', marginBottom: '20px' }}>
-          {token} token/ 1 giờ
+          {credit} credit / 1 giờ
         </Typography>
-        <Link href="#">
+        <Link href={`/mentors/${String(mentorId)}/programs/${id}`}>
           <a
             style={{
               color: '#00BFA6',
