@@ -43,14 +43,18 @@ const FindMentorProvider = ({ children }: FindMentorProviderProps) => {
         setfetchedSkills(skillArray)
         const { data: category } = await findApi.getAllCatergories()
         setfetchedCategories(category)
-        const { data: mentor } = await findApi.findMentor({
+        const resultMentor = await findApi.findMentor({
           keyword,
           sortBy,
           skills,
           order,
           category,
         })
-        setFetchedMentor(mentor)
+        console.log(
+          '🚀 ~ file: FindMentorProvider.tsx ~ line 53 ~ fetchData ~ data',
+          resultMentor.data
+        )
+        setFetchedMentor(resultMentor.data.data)
       } catch (error: any) {
         toast.error(error.message)
         // setError(error.message)
