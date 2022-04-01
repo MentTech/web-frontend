@@ -19,7 +19,8 @@ import { toast } from 'react-toastify'
 import Link from 'next/link'
 import Modal from '@components/common/Modal/Modal'
 import StarIcon from '@mui/icons-material/Star'
-import { ProgramApi } from '@api/program-api'
+import { ProgramApi } from '@api/index'
+import { useMenteeSessions } from '@hooks/index'
 
 export interface SessionStatusCardProps {
   session: MentorSession
@@ -49,6 +50,9 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
   const [hover, setHover] = useState(-1)
   const [mentor, setMentor] = useState<Mentor | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [doneModalOpen, setDoneModalOpen] = useState(false)
+
+  const { markSessionDone } = useMenteeSessions()
   useEffect(() => {
     async function fetchMentorInfo() {
       try {
@@ -62,6 +66,25 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
   }, [])
 
   let actions = value ? <Button onClick={handleRatingSubmit}>Gửi đánh giá</Button> : null
+  let doneActions = (
+    <>
+      <button className="btn btn-sm" onClick={() => setDoneModalOpen(false)}>
+        Hủy
+      </button>
+      <button className="btn btn-error btn-sm" onClick={handleDoneSession}>
+        Đồng ý
+      </button>
+    </>
+  )
+
+  async function handleDoneSession() {
+    markSessionDone(
+      session.program?.mentorId as string,
+      session.program?.id as string,
+      session.id as string
+    )
+    setDoneModalOpen(false)
+  }
 
   async function handleRatingSubmit() {
     if (value && comment.length >= 10 && comment.length <= 200) {
@@ -139,16 +162,18 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
           {session.isAccepted && !session.done ? (
             <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
               <button className="btn btn-outline btn-warning btn-sm">Khiếu nại</button>
-              <button className="ml-2 btn btn-success btn-sm text-white">Hoàn thành</button>
+              <button
+                className="ml-2 btn btn-success btn-sm text-white"
+                onClick={() => setDoneModalOpen(true)}
+              >
+                Hoàn thành
+              </button>
             </Stack>
           ) : null}
           {session.done && (
-            <Button
-              sx={{ position: 'absolute', bottom: '5px', right: '5px' }}
-              onClick={() => setIsModalOpen(true)}
-            >
-              Đánh giá
-            </Button>
+            <Box sx={{ textAlign: 'right' }}>
+              <Button onClick={() => setIsModalOpen(true)}>Đánh giá</Button>
+            </Box>
           )}
         </CardContent>
       </Card>
@@ -208,6 +233,16 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
             </Typography>
           )}
         </Box>
+      </Modal>
+      <Modal
+        show={doneModalOpen}
+        title="Hoàn thành phiên mentoring"
+        onClose={() => setDoneModalOpen(false)}
+        actions={doneActions}
+      >
+        <Typography variant="body1" component="div">
+          Chọn "Đồng ý" khi bạn đã hài lòng với phiên mentoring này và đồng ý thanh toán cho mentor!
+        </Typography>
       </Modal>
     </>
   )

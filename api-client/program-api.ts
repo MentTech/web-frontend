@@ -13,6 +13,12 @@ interface RatingApiProps {
   comment: string
 }
 
+interface SessionApiProps {
+  mentorId: string
+  programId: string
+  sessionId: string
+}
+
 export const ProgramApi = {
   menteeRegister({ mentorId, programId }: RegisterApiProps) {
     return axiosClient.post(`/v1/mentor/${mentorId}/program/${programId}/register`)
@@ -24,6 +30,12 @@ export const ProgramApi = {
         rating,
         comment,
       }
+    )
+  },
+  // mentee mark a session is done
+  doneSession({ mentorId, programId, sessionId }: SessionApiProps) {
+    return axiosClient.patch(
+      `/v1/mentor/${mentorId}/program/${programId}/register/${sessionId}/done`
     )
   },
 }
