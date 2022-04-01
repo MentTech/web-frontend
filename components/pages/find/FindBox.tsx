@@ -61,14 +61,14 @@ export const FindBox = () => {
     })
   }
 
-  const { loading, fetchedCategories, fetchedSkills } = useFindMentor()
+  const { fetchedCategories, fetchedSkills } = useFindMentor()
 
   const onDeleteSkill = (skill: { description: string; id: number }) => {
     setSkills(skills.filter((item) => item.id !== skill.id))
   }
 
   return (
-    <LoadingIndicator style={{ marginTop: 40 }} loading={loading}>
+    <>
       <Box className={styles.container}>
         <Box className={styles.glassBox}>
           <Typography className="sb" variant="h3">
@@ -226,6 +226,6 @@ export const FindBox = () => {
           </Collapse>
         </form>
       </Paper>
-    </LoadingIndicator>
+    </>
   )
 }

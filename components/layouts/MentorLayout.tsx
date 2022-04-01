@@ -4,7 +4,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import MailIcon from '@mui/icons-material/Mail'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
-import { Container } from '@mui/material'
+import { Container, ListItemButton } from '@mui/material'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -19,6 +19,8 @@ import { styled, useTheme } from '@mui/material/styles'
 import { useState } from 'react'
 import Link from 'next/link'
 import Footer from '@components/common/Footer/Footer'
+import { useRouter } from 'next/router'
+import { text } from 'stream/consumers'
 
 const drawerWidth = 240
 
@@ -84,6 +86,8 @@ export function MentorLayout({ children }: LayoutProps) {
     setOpen(false)
   }
 
+  const router = useRouter()
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -113,28 +117,21 @@ export function MentorLayout({ children }: LayoutProps) {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Home', 'Message'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-          <Link href="/mentor/programs">
-            <ListItem button>
-              <ListItemIcon>
-                <MailIcon />
-              </ListItemIcon>
-              <ListItemText primary={'Programs'} />
-            </ListItem>
-          </Link>
-          <Link href="/mentor/profile">
-            <ListItem button>
-              <ListItemIcon>
-                <MailIcon />
-              </ListItemIcon>
-              <ListItemText primary={'Profile'} />
-            </ListItem>
-          </Link>
+          {[
+            { title: 'Home', href: '/mentor', icon: <InboxIcon /> },
+            { title: 'Tin nhắn', href: '/mentor/message', icon: <MailIcon /> },
+            { title: 'Chương trình', href: '/mentor/programs', icon: <MailIcon /> },
+            { title: 'Hồ sơ của bạn', href: '/mentor/profile', icon: <MailIcon /> },
+          ].map((item) => {
+            return (
+              <Link href={item.href}>
+                <ListItemButton key={item.title}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.title} />
+                </ListItemButton>
+              </Link>
+            )
+          })}
         </List>
         <Divider />
         {/* <List>

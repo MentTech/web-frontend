@@ -7,3 +7,8 @@ export interface loginPayload {
 export interface LoginSocialPayload {
   accessToken: string
 }
+
+export enum ROLE {
+  mentor = 'mentor',
+  mentee = 'mentee',
+}
