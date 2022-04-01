@@ -136,7 +136,7 @@ export default function MentorHome() {
     setShowEditModal(true)
   }
 
-  function handleFormSubmit(data) {
+  function handleFormSubmit(data: any) {
     addProgram(data)
     handleModalClose()
   }

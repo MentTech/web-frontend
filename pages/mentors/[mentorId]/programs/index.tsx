@@ -1,18 +1,12 @@
-import * as React from 'react'
-import { MainLayout } from '@components/layouts/index'
-import MentorMediaInfo from '@components/common/MentorMediaInfor/MentorMediaInfor'
-import { Card, CardContent, Box, Grid, Stack, Pagination } from '@mui/material'
-import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
-import MentorProgramCard from '@components/common/MentorProgramCard/MentorProgramCard'
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  GetStaticProps,
-  GetStaticPropsContext,
-} from 'next'
-import { Mentor } from '@models/index'
 import { mentorApi } from '@api/mentor-api'
 import Breadcrumb from '@components/common/Breadcrumb/Breadcrumb'
+import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
+import MentorMediaInfo from '@components/common/MentorMediaInfor/MentorMediaInfor'
+import MentorProgramCard from '@components/common/MentorProgramCard/MentorProgramCard'
+import { MainLayout } from '@components/layouts/index'
+import { Mentor } from '@models/index'
+import { Box, Card, CardContent, Grid, Pagination, Stack } from '@mui/material'
+import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 
 export interface MentorSessionsProps {
   mentor: Mentor

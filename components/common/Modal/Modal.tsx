@@ -30,7 +30,7 @@ function Modal({ show, onClose, children, actions, title }: ModalProps) {
   ) : null
 
   if (isBrowser) {
-    return ReactDOM.createPortal(modalContent, document.getElementById('modal-root'))
+    return ReactDOM.createPortal(modalContent, document.getElementById('modal-root') as HTMLElement)
   } else {
     return null
   }

@@ -3,7 +3,6 @@ import { useSession } from 'next-auth/react'
 import { MainLayout } from '@components/layouts'
 import { Box, Button, Card, CardContent, Grid, Typography } from '@mui/material'
 import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
-import { useEffect } from 'react'
 import { useMenteeSessions } from '@hooks/index'
 import Loading from '@components/common/Loading/Loading'
 
@@ -13,7 +12,7 @@ export default function Sessions(props: SessionsProps) {
   const { sessions } = useMenteeSessions()
   return (
     <Box sx={{ my: '24px' }}>
-      <HeadingPrimary>Các session đã đặt lịch</HeadingPrimary>
+      <HeadingPrimary>Các phiên mentoring đã đặt lịch</HeadingPrimary>
       {sessions ? (
         <Grid container spacing={4}>
           {sessions.map((session: any) => (
