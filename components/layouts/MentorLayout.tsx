@@ -135,6 +135,14 @@ export function MentorLayout({ children }: LayoutProps) {
               <ListItemText primary={'Profile'} />
             </ListItem>
           </Link>
+          <Link href="/mentor/sessions">
+            <ListItem button>
+              <ListItemIcon>
+                <MailIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Sessions'} />
+            </ListItem>
+          </Link>
         </List>
         <Divider />
         {/* <List>
