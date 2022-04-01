@@ -1,13 +1,12 @@
-import * as React from 'react'
+import { MentorSession } from '@models/session'
 import useSWR from 'swr'
-import { useSession } from 'next-auth/react'
 
 export function useMenteeSessions() {
   const {
     data: sessions,
     error,
     mutate,
-  } = useSWR<any>('/v1/mentee/mysession', {
+  } = useSWR<Array<MentorSession>>('/v1/mentee/mysession', {
     revalidateOnMount: true,
   })
 

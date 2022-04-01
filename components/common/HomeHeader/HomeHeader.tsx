@@ -93,15 +93,15 @@ export default function HomeHeader(props: HomeHeaderProps) {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               >
                 <Link href="/profile">
-                  <a>
-                    <MenuItem>
-                      <Avatar /> Profile
-                    </MenuItem>
-                  </a>
+                  <MenuItem>
+                    <Avatar /> Trang cá nhân
+                  </MenuItem>
                 </Link>
-                <MenuItem>
-                  <Avatar /> My account
-                </MenuItem>
+                <Link href="/sessions">
+                  <MenuItem>
+                    <Avatar /> Phiên mentoring
+                  </MenuItem>
+                </Link>
                 <Divider />
                 <MenuItem>
                   <ListItemIcon>

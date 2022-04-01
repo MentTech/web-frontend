@@ -4,4 +4,5 @@ export interface MentorProgram {
   detail: string
   credit: number
   createAt?: Date
+  mentorId?: string
 }
