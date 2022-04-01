@@ -16,11 +16,8 @@ import MenuItem from '@mui/material/MenuItem'
 import Toolbar from '@mui/material/Toolbar'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import { signOut } from 'next-auth/react'
 import Link from 'next/link'
-import * as React from 'react'
 import { useState } from 'react'
-import Loading from '@components/common/Loading/Loading'
 
 const pages = ['Mentors']
 const settings = ['Account', 'Dashboard']
@@ -28,7 +25,7 @@ const settings = ['Account', 'Dashboard']
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {
@@ -170,12 +167,14 @@ const Header = () => {
             >
               <Link href="/profile">
                 <MenuItem>
-                  <Avatar /> Profile
+                  <Avatar /> Trang cá nhân
                 </MenuItem>
               </Link>
-              <MenuItem>
-                <Avatar /> My account
-              </MenuItem>
+              <Link href="/sessions">
+                <MenuItem>
+                  <Avatar /> Phiên mentoring
+                </MenuItem>
+              </Link>
               <Divider />
               <MenuItem>
                 <ListItemIcon>

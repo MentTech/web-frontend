@@ -1,4 +1,4 @@
-import MentorToolbar from '@components/common/MentorToolbar/MentorToolBar'
+import MentorToolbar from '@components/common/MentorToolbar/MentorToolbar'
 import { LayoutProps } from '@models/common'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'

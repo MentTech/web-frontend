@@ -13,6 +13,7 @@ import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Carousel from 'react-elastic-carousel'
+//@ts-ignore
 import ReactReadMoreReadLess from 'react-read-more-read-less'
 import axios from 'axios'
 import { config } from '@config/main'

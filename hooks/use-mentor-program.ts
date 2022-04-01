@@ -19,7 +19,7 @@ export function useMentorProgram(mentorId: string) {
     try {
       await mentorApi.deleteMentorProgram(mentorId, programId)
       mutate(
-        programs.filter((program) => program.id !== programId),
+        programs.filter((program: any) => program.id !== programId),
         false
       )
       toast.success('Xóa chương trình thành công')
@@ -42,7 +42,7 @@ export function useMentorProgram(mentorId: string) {
     try {
       await mentorApi.editMentorProgram(mentorId, program)
       mutate(
-        programs.map((p) => (p.id === program.id ? program : p)),
+        programs.map((p: any) => (p.id === program.id ? program : p)),
         false
       )
       toast.success('Sửa program thành công')

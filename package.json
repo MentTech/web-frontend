@@ -22,6 +22,7 @@
     "@reduxjs/toolkit": "^1.7.2",
     "@types/cookies": "^0.7.7",
     "@types/http-proxy": "^1.17.8",
+    "@types/react-dom": "^17.0.14",
     "autoprefixer": "^10.4.2",
     "axios": "^0.26.0",
     "daisyui": "^2.11.1",

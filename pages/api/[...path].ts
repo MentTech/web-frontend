@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import httpProxy from 'http-proxy'
 import { getSession } from 'next-auth/react'
-import jwt_decode, { JwtPayload } from 'jwt-decode'
-import { useProfile } from '@hooks/index'
+import jwt_decode from 'jwt-decode'
+// import { useProfile } from '@hooks/index'
 
 const proxy = httpProxy.createProxyServer()
 
@@ -23,12 +23,12 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<any>) 
     const session = await getSession({ req })
     if (session?.accessToken) {
       // console.log(jwt_decode(session?.accessToken as string))
-      const decodeToken = jwt_decode<MyToken>(session?.accessToken as string)
-      if (decodeToken?.exp < new Date().getTime() / 1000) {
-        const { logout } = useProfile()
-        await logout()
-        resolve(true)
-      }
+      // const decodeToken = jwt_decode<MyToken>(session?.accessToken as string)
+      // if (decodeToken?.exp < new Date().getTime() / 1000) {
+      //   const { logout } = useProfile()
+      //   await logout()
+      //   resolve(true)
+      // }
       req.headers.Authorization = `Bearer ${session?.accessToken}`
     }
     req.headers.cookie = ''

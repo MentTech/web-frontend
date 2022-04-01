@@ -1,7 +1,5 @@
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
-import { Breadcrumbs, Typography } from '@mui/material'
-import * as React from 'react'
-import { useRouter } from 'next/router'
+import { Breadcrumbs } from '@mui/material'
 import Link from 'next/link'
 
 export interface BreadcrumbProps {
@@ -21,7 +19,11 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
   ))
 
   return (
-    <Breadcrumbs sx={{margin: '24px 0px'}} separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+    <Breadcrumbs
+      sx={{ margin: '24px 0px' }}
+      separator={<NavigateNextIcon fontSize="small" />}
+      aria-label="breadcrumb"
+    >
       {breadcrumbs}
     </Breadcrumbs>
   )

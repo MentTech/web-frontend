@@ -1,3 +1,4 @@
+import { useProfile } from '@hooks/index'
 import Logout from '@mui/icons-material/Logout'
 import PersonAdd from '@mui/icons-material/PersonAdd'
 import Settings from '@mui/icons-material/Settings'
@@ -10,9 +11,8 @@ import MenuItem from '@mui/material/MenuItem'
 import Tooltip from '@mui/material/Tooltip'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import styles from './HomeHeader.module.scss'
-import { useProfile } from '@hooks/index'
 
 export interface HomeHeaderProps {}
 
@@ -20,7 +20,7 @@ export default function HomeHeader(props: HomeHeaderProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const { logout, profile } = useProfile()
   const open = Boolean(anchorEl)
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {
@@ -93,15 +93,15 @@ export default function HomeHeader(props: HomeHeaderProps) {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               >
                 <Link href="/profile">
-                  <a>
-                    <MenuItem>
-                      <Avatar /> Profile
-                    </MenuItem>
-                  </a>
+                  <MenuItem>
+                    <Avatar /> Trang cá nhân
+                  </MenuItem>
                 </Link>
-                <MenuItem>
-                  <Avatar /> My account
-                </MenuItem>
+                <Link href="/sessions">
+                  <MenuItem>
+                    <Avatar /> Phiên mentoring
+                  </MenuItem>
+                </Link>
                 <Divider />
                 <MenuItem>
                   <ListItemIcon>

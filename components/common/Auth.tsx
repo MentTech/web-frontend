@@ -1,8 +1,5 @@
-import { useProfile } from '@hooks/index'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
-import { Box } from '@mui/material'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import LinearIndeterminate from './LinearIndeterminate/LinearIndeterminate'
 
 export interface ProfileProps {

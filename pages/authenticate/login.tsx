@@ -24,13 +24,6 @@ export default function Login() {
   const [loading, setLoading] = useState(true)
   const [isMentor, setIsMentor] = useState(false)
   const router = useRouter()
-  // useEffect(() => {
-  //   if (status === 'authenticated') {
-  //     router.push('/')
-  //   } else if (status === 'unauthenticated') {
-  //     setLoading(false)
-  //   }
-  // }, [session, status, router])
 
   const {
     register,

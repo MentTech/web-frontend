@@ -1,3 +1,4 @@
+import { useProfile } from '@hooks/index'
 import MenuIcon from '@mui/icons-material/Menu'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
@@ -9,7 +10,6 @@ import Toolbar from '@mui/material/Toolbar'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import { useState } from 'react'
-import { useProfile } from '@hooks/index'
 
 const pages = ['Products', 'Pricing', 'Blog']
 const settings = ['Profile', 'Account', 'Dashboard']
@@ -24,10 +24,10 @@ const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
   const { logout, profile } = useProfile()
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenNavMenu = (event: any) => {
     setAnchorElNav(event.currentTarget)
   }
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenUserMenu = (event: any) => {
     setAnchorElUser(event.currentTarget)
   }
 
