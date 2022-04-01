@@ -1,7 +1,7 @@
 import DataTable from '@components/common/DataTable/DataTable'
 import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
 import { MentorLayout } from '@components/layouts/index'
-import { Card, CardContent, Grid, Stack, TextField, Typography } from '@mui/material'
+import { Button, Card, CardContent, Grid, Stack, TextField, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import { GridRowModel, GridColDef, GridCellParams } from '@mui/x-data-grid'
 import { useMentorProgram } from '@hooks/index'
@@ -10,10 +10,11 @@ import Modal from '@components/common/Modal/Modal'
 import { useEffect, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Add, AddBox, Delete, Edit } from '@mui/icons-material'
+import { Add, AddBox, Delete, Edit, Search } from '@mui/icons-material'
 import * as yup from 'yup'
 import { MentorProgram } from '@models/index'
 import Loading from '@components/common/Loading/Loading'
+import { useRouter } from 'next/router'
 
 const schema = yup
   .object({
@@ -67,10 +68,15 @@ export default function MentorHome() {
     resolver: yupResolver(editFormSchema),
   })
 
+  const { data, status } = useSession()
+  console.log('🚀 ~ file: programs.tsx ~ line 72 ~ MentorHome ~ data', data)
+
+  const router = useRouter()
+
   const columns: GridColDef[] = [
     { field: 'title', headerName: 'Tên session', width: 200 },
     { field: 'detail', headerName: 'Chi tiết', width: 200 },
-    { field: 'credit', headerName: 'Token', width: 200 },
+    { field: 'credit', headerName: 'Credit', width: 200 },
     {
       field: 'createAt',
       headerName: 'Ngày tạo',
@@ -92,6 +98,25 @@ export default function MentorHome() {
             <Box component="button">
               <Delete sx={{ color: 'red' }} onClick={() => handleDeleteModalOpen(params.row)} />
             </Box>
+          </Stack>
+        )
+      },
+    },
+    {
+      field: 'viewSessions',
+      headerName: 'Danh sách sessions',
+      width: 200,
+      renderCell: (params) => {
+        return (
+          <Stack direction="row" spacing={2} sx={{ width: '100%', justifyContent: 'center' }}>
+            <Button
+              variant="contained"
+              style={{ background: '#570DF8' }}
+              onClick={() => router.push(`/mentor/sessions/${params.id}`)}
+            >
+              <Search style={{ marginRight: 16 }} />
+              Xem
+            </Button>
           </Stack>
         )
       },
@@ -237,7 +262,7 @@ export default function MentorHome() {
                   error={errorsEdit.credit}
                   fullWidth
                   id="outlined-required"
-                  label="Token"
+                  label="Credit"
                   type="number"
                   helperText={errorsEdit.credit?.message}
                 />
@@ -290,7 +315,7 @@ export default function MentorHome() {
                   error={errors.credit}
                   fullWidth
                   id="outlined-required"
-                  label="Token"
+                  label="Credit"
                   type="number"
                   helperText={errors.credit?.message}
                 />

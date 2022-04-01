@@ -29,7 +29,7 @@ export const ProgramDetailPage = () => {
     { label: 'Trang chủ', href: '/' },
     { label: 'Mentors', href: '/mentors' },
     { label: mentor.name as string, href: `/mentors/${mentorId}` },
-    { label: 'Chương trình', href: '/mentors/${mentorId}/programs' },
+    { label: 'Chương trình', href: `/mentors/${mentorId}/programs` },
     { label: currentProgram?.title as string },
   ]
 

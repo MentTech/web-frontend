@@ -5,6 +5,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import { config } from '@config/main'
 import { authApi } from '@api/index'
 import axios from 'axios'
+import { ROLE } from '@models/auth'
 
 export default NextAuth({
   providers: [
@@ -55,7 +56,7 @@ export default NextAuth({
             })
 
             if (res.data?.accessToken) {
-              return res.data
+              return { ...res.data, role: 'mentor' }
             }
           }
         } catch (err) {
@@ -88,6 +89,7 @@ export default NextAuth({
             },
           })
           token.uid = res.data.id
+          token.role = account.provider
         }
       } catch (err) {
         console.log(err)
@@ -98,6 +100,7 @@ export default NextAuth({
     async session({ session, token, user }) {
       session.accessToken = token.accessToken
       session.user.id = token.uid as string
+      session.user.role = token.role === 'mentor' ? ROLE.mentor : ROLE.mentee
       return Promise.resolve(session)
     },
   },

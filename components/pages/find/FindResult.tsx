@@ -1,14 +1,13 @@
-import { LoadingIndicator } from '@components/common/LoadingIndicator/LoadingIndicator'
 import { Grid, Typography } from '@mui/material'
 import { useFindMentor } from 'context/FindMentorProvider'
 import { MentorCard } from './MentorCard'
 
 export const FindResult = () => {
-  const { loading, fetchedMentor = [] } = useFindMentor()
+  const { fetchedMentor = [] } = useFindMentor()
 
   const numMentor = fetchedMentor.length
   return (
-    <LoadingIndicator loading={loading} style={{ marginTop: 40 }}>
+    <>
       <Typography style={{ margin: 16, marginLeft: 0 }} variant="h5">
         {`Tìm được ${numMentor} mentor`}
       </Typography>
@@ -19,6 +18,6 @@ export const FindResult = () => {
           </Grid>
         ))}
       </Grid>
-    </LoadingIndicator>
+    </>
   )
 }

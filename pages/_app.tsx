@@ -13,6 +13,8 @@ import { SWRConfig } from 'swr'
 import { ToastContainer } from 'react-toastify'
 import '../styles/globals.scss'
 import 'react-toastify/dist/ReactToastify.css'
+import { LocalizationProvider } from '@mui/lab'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -35,18 +37,20 @@ function MyApp({
                 shouldRetryOnError: false,
               }}
             >
-              {Component.isPrivate ? (
-                <Auth>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                {Component.isPrivate ? (
+                  <Auth>
+                    <Layout>
+                      <Component {...pageProps} />
+                    </Layout>
+                  </Auth>
+                ) : (
                   <Layout>
                     <Component {...pageProps} />
                   </Layout>
-                </Auth>
-              ) : (
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
-              )}
-              <ToastContainer />
+                )}
+                <ToastContainer />
+              </LocalizationProvider>
             </SWRConfig>
           </SessionProvider>
         </Provider>

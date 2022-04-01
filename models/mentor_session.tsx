@@ -1,5 +1,14 @@
+import { Mentee } from './mentee'
+
 export interface MentorSession {
-  id: string
-  programId: string
-  mentorId: string
+  id: number
+  programId: number
+  userId: number
+  done: boolean
+  additional: string
+  contactInfo: string
+  createdAt: Date | string
+  expectedDate: Date | string
+  isAccepted: boolean
+  userInfo: Mentee
 }

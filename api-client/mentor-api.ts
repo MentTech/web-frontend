@@ -17,7 +17,7 @@ export const mentorApi = {
   editMentorProgram(id: string, program: MentorProgram) {
     return axiosClient.patch(`/v1/mentor/${id}/program/${program.id}`, program)
   },
-  getUnacceptedMentorSessions(id: string, programId: string) {
+  getProgramMentorSessions(id: string, programId: string) {
     return axiosClient.get(`/v1/mentor/${id}/program/${programId}/register`)
   },
   removeUnacceptedMentorSession(id: string, programId: string, sessionId: string) {
@@ -25,5 +25,14 @@ export const mentorApi = {
   },
   acceptUnacceptedMentorSession(id: string, programId: string, sessionId: string, payload: any) {
     return axiosClient.post(`/v1/mentor/${id}/program/${programId}/register/${sessionId}`, payload)
+  },
+  rejectUnacceptedMentorSession(id: string, programId: string, sessionId: string) {
+    return axiosClient.post(`/v1/mentor/${id}/program/${programId}/register/${sessionId}/reject`)
+  },
+  doneMentorSession(id: string, programId: string, sessionId: string) {
+    return axiosClient.patch(`/v1/mentor/${id}/program/${programId}/register/${sessionId}/done`)
+  },
+  updateAcceptedMentorSession(id: string, programId: string, sessionId: string, payload: any) {
+    return axiosClient.patch(`/v1/mentor/${id}/program/${programId}/register/${sessionId}`, payload)
   },
 }
