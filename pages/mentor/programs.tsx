@@ -76,7 +76,7 @@ export default function MentorHome() {
   const columns: GridColDef[] = [
     { field: 'title', headerName: 'Tên session', width: 200 },
     { field: 'detail', headerName: 'Chi tiết', width: 200 },
-    { field: 'credit', headerName: 'Credit', width: 200 },
+    { field: 'credit', headerName: 'Credit', width: 100 },
     {
       field: 'createAt',
       headerName: 'Ngày tạo',
@@ -88,7 +88,7 @@ export default function MentorHome() {
     {
       field: 'actions',
       headerName: 'Actions',
-      width: 200,
+      width: 150,
       renderCell: (params) => {
         return (
           <Stack direction="row" spacing={2} sx={{ width: '100%', justifyContent: 'center' }}>
@@ -105,7 +105,7 @@ export default function MentorHome() {
     {
       field: 'viewSessions',
       headerName: 'Danh sách sessions',
-      width: 200,
+      width: 150,
       renderCell: (params) => {
         return (
           <Stack direction="row" spacing={2} sx={{ width: '100%', justifyContent: 'center' }}>

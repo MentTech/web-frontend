@@ -26,6 +26,12 @@ export interface SessionStatusCardProps {
   session: MentorSession
 }
 
+export interface SessionStatusMessage {
+  message: string
+  color: 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | undefined
+  tooltip: string
+}
+
 const labels: { [index: string]: string } = {
   0.5: 'Useless',
   1: 'Useless+',
@@ -112,24 +118,44 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
     setComment(e.target.value)
   }
 
+  function sessionStatusMessage(session: MentorSession): SessionStatusMessage {
+    if (session.done && session.isAccepted) {
+      return {
+        message: 'Đã hoàn thành',
+        color: 'success',
+        tooltip: 'Bạn đã hoàn thành phiên mentor này!',
+      }
+    }
+    if (session.done && !session.isAccepted) {
+      return {
+        message: 'Đã hủy',
+        color: 'primary',
+        tooltip: 'Phiên mentor đã bị hủy',
+      }
+    }
+    if (!session.done && session.isAccepted) {
+      return {
+        message: 'Đã xác nhận',
+        color: 'info',
+        tooltip: 'Mentor đã được chấp nhận phiên mentoring này!',
+      }
+    }
+
+    return {
+      message: 'Chờ xác nhận',
+      color: 'warning',
+      tooltip: 'Phiên mentoring của bạn đang chờ mentor xác nhận',
+    }
+  }
+
   return (
     <>
       <Card>
         <CardContent sx={{ position: 'relative', minHeight: '220px' }}>
-          <Tooltip
-            title={
-              session.done
-                ? 'Bạn đã hoàn thành phiên mentor này!'
-                : session.isAccepted
-                ? 'Mentor đã được chấp nhận phiên mentoring này!'
-                : 'Phiên mentoring của bạn đang chờ mentor xác nhận'
-            }
-          >
+          <Tooltip title={sessionStatusMessage(session)?.tooltip}>
             <Chip
-              label={
-                session.done ? 'Đã hoàn thành' : session.isAccepted ? 'Đã xác nhận' : 'Chờ xác nhận'
-              }
-              color={session.done ? 'success' : session.isAccepted ? 'info' : 'warning'}
+              label={sessionStatusMessage(session)?.message}
+              color={sessionStatusMessage(session)?.color}
               size="small"
               sx={{ position: 'absolute', top: '10px', left: '15px' }}
             />
@@ -146,12 +172,18 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
             sx={{ my: 2, alignItems: 'center', justifyContent: 'space-between' }}
           >
             <Stack direction="row" sx={{ alignItems: 'center' }}>
-              <Avatar src={mentor?.avatar} sx={{ width: 32, height: 32 }}>
-                M
-              </Avatar>
-              <Typography variant="body1" component="div" sx={{ marginLeft: '10px' }}>
-                {mentor?.name}
-              </Typography>
+              {mentor?.avatar ? (
+                <>
+                  <Avatar src={mentor.avatar} sx={{ width: 32, height: 32 }}>
+                    M
+                  </Avatar>
+                  <Typography variant="body1" component="div" sx={{ marginLeft: '10px' }}>
+                    {mentor?.name}
+                  </Typography>
+                </>
+              ) : (
+                'Đang tải...'
+              )}
             </Stack>
             {!session.done ? (
               <Rating name="no-value" value={null} readOnly />
@@ -170,7 +202,7 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
               </button>
             </Stack>
           ) : null}
-          {session.done && (
+          {session.done && session.isAccepted && (
             <Box sx={{ textAlign: 'right' }}>
               <Button onClick={() => setIsModalOpen(true)}>Đánh giá</Button>
             </Box>
