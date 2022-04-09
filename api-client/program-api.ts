@@ -45,5 +45,11 @@ export const ProgramApi = {
     )
   },
 
-  // mentee all ratings of programs
+  // get all ratings of programs
+  getAllRatingsProgram({ mentorId, programId }: SessionApiProps) {
+    return axiosClient.get(`/v1/mentor/${mentorId}/program/${programId}/rating`)
+  },
+  getAverageRatingProgram(mentorId: string | number, programId: string | number) {
+    return axiosClient.get(`/v1/mentor/${mentorId}/program/${programId}/rating/average`)
+  },
 }

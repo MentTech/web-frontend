@@ -34,15 +34,17 @@ const CurrentMentorProvider = ({ children }: CurrentMentorProviderProps) => {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      setLoading(true)
-      try {
-        const { data: mentor } = await mentorApi.getMentorById(String(mentorId))
-        setCurrentMentor(mentor)
-      } catch (error: any) {
-        toast.error(error.message)
-        // setError(error.message)
-      } finally {
-        setLoading(false)
+      if (mentorId) {
+        setLoading(true)
+        try {
+          const { data: mentor } = await mentorApi.getMentorById(String(mentorId))
+          setCurrentMentor(mentor)
+        } catch (error: any) {
+          toast.error(error.message)
+          // setError(error.message)
+        } finally {
+          setLoading(false)
+        }
       }
     }
     fetchData()

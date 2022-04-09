@@ -14,7 +14,7 @@ import { Box } from '@mui/system'
 import { useCurrentMentor } from 'context/MentorProvider'
 import { useRouter } from 'next/router'
 import Breadcrumb from '@components/common/Breadcrumb/Breadcrumb'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { RequestDialog } from './RequestDialog'
 import { NextPageWithLayout } from '@models/common'
 import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
@@ -25,8 +25,17 @@ import { SimilarMentorProgram } from './SimilarMentorProgram'
 import SuggestMentorsCard from '@components/common/SuggestMentorsCard'
 import { LoadingIndicator } from '@components/common/LoadingIndicator/LoadingIndicator'
 import RatingItem from '@components/common/RatingItem/RatingItem'
+import { ProgramApi } from '@api/index'
+import { Program } from '@models/index'
+
+interface AverageRating {
+  average: number
+  count: number
+}
 
 export const ProgramDetailPage = () => {
+  const [openDialog, setopenDialog] = useState(false)
+  const [avgRating, setAvgRating] = useState<AverageRating | null>(null)
   const { currentMentor: mentor, loading } = useCurrentMentor()
 
   const { id: mentorId, User_mentor, name, avatar } = mentor
@@ -34,7 +43,11 @@ export const ProgramDetailPage = () => {
 
   const router = useRouter()
 
-  const currentProgram = programs.find((program) => program.id === Number(router.query.programId))
+  let currentProgram = null
+
+  if (router.query.programId && loading === false) {
+    currentProgram = programs.find((program) => program.id === Number(router.query.programId))
+  }
 
   const breadcrumbs = [
     { label: 'Trang chủ', href: '/' },
@@ -44,14 +57,32 @@ export const ProgramDetailPage = () => {
     { label: currentProgram?.title as string },
   ]
 
-  const [openDialog, setopenDialog] = useState(false)
+  useEffect(() => {
+    async function fetchAverageRatings() {
+      try {
+        const res = await ProgramApi.getAverageRatingProgram(
+          router.query.mentorId as string,
+          router.query.programId as string
+        )
+        setAvgRating(res.data)
+      } catch (err) {}
+    }
+    if (router.query.mentorId && router.query.programId) {
+      fetchAverageRatings()
+    }
+  }, [router])
 
-  if (loading) return <Box style={{ width: '100vw', height: '100vh' }}></Box>
+  if (loading || !router.query.programId) {
+    return <LoadingIndicator loading={true} />
+  }
+
+  console.log('program', currentProgram)
+  console.log('loading', loading)
 
   return (
     <>
       <LoadingIndicator loading={loading}>
-        {!currentProgram ? (
+        {!currentProgram && !loading ? (
           <Typography className="sb" variant="h5">
             Không tìm thấy chương trình này
           </Typography>
@@ -106,7 +137,10 @@ export const ProgramDetailPage = () => {
                           variant="h5"
                         >{`$${currentProgram?.credit}`}</Typography>
                         <Divider orientation="vertical" flexItem variant="middle" />
-                        <Rating readOnly value={4} />
+                        <Rating readOnly value={avgRating?.average} />
+                        <Typography className="body2">
+                          {`(${avgRating?.count} đánh giá)`}
+                        </Typography>
                       </Box>
                       <Typography className="sb" variant="h6">
                         Thông tin chương trình
@@ -147,7 +181,7 @@ export const ProgramDetailPage = () => {
               setopenDialog={(value: boolean | ((prevState: boolean) => boolean)) =>
                 setopenDialog(value)
               }
-              program={currentProgram}
+              program={currentProgram as Program}
             />
           </>
         )}

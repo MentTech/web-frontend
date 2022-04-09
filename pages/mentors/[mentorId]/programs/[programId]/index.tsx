@@ -11,7 +11,7 @@ const ProgramDetail: NextPageWithLayout = () => {
   )
 }
 
-ProgramDetail.isPrivate = true
+// ProgramDetail.isPrivate = true
 ProgramDetail.Layout = MainLayout
 
 export default ProgramDetail
