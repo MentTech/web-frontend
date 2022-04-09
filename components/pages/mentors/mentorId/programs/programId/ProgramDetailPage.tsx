@@ -9,6 +9,7 @@ import {
   Stack,
   Divider,
   Rating,
+  ratingClasses,
 } from '@mui/material'
 import { Box } from '@mui/system'
 import { useCurrentMentor } from 'context/MentorProvider'
@@ -27,6 +28,9 @@ import { LoadingIndicator } from '@components/common/LoadingIndicator/LoadingInd
 import RatingItem from '@components/common/RatingItem/RatingItem'
 import { ProgramApi } from '@api/index'
 import { Program } from '@models/index'
+import CommonPagination from '@components/common/CommonPagination/CommonPagination'
+import RatingList from '@components/common/RatingList/RatingList'
+import MentorProgramCard from '@components/common/MentorProgramCard/MentorProgramCard'
 
 interface AverageRating {
   average: number
@@ -36,7 +40,17 @@ interface AverageRating {
 export const ProgramDetailPage = () => {
   const [openDialog, setopenDialog] = useState(false)
   const [avgRating, setAvgRating] = useState<AverageRating | null>(null)
+  const [ratings, setRatings] = useState([])
   const { currentMentor: mentor, loading } = useCurrentMentor()
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalPage: 10,
+    limit: 6,
+  })
+  const [filters, setFilters] = useState({
+    page: 1,
+    limit: 6,
+  })
 
   const { id: mentorId, User_mentor, name, avatar } = mentor
   const { programs = [] } = User_mentor
@@ -72,12 +86,30 @@ export const ProgramDetailPage = () => {
     }
   }, [router])
 
+  useEffect(() => {
+    async function fetchRatings() {
+      try {
+        const res = await ProgramApi.getAllRatingsProgram(
+          router.query.mentorId as string,
+          router.query.programId as string,
+          filters
+        )
+        setRatings(res.data.data)
+        setPagination({ ...res.data, data: undefined })
+      } catch (err) {}
+    }
+    if (router.query.mentorId && router.query.programId) {
+      fetchRatings()
+    }
+  }, [filters, router])
+
+  function handlePageChange(page: number) {
+    setFilters({ ...filters, page: page })
+  }
+
   if (loading || !router.query.programId) {
     return <LoadingIndicator loading={true} />
   }
-
-  console.log('program', currentProgram)
-  console.log('loading', loading)
 
   return (
     <>
@@ -149,21 +181,24 @@ export const ProgramDetailPage = () => {
                     </Paper>
                     <Box sx={{ marginTop: '20px' }}>
                       <HeadingPrimary>Đánh giá</HeadingPrimary>
-                      <Stack direction="column">
-                        <Box sx={{ pt: '24px' }}>
-                          <RatingItem
-                            menteeName="lqd"
-                            content="x"
-                            rating={4}
-                            datetime={new Date()}
-                          />
-                          <Divider sx={{ pt: '24px' }} />
-                        </Box>
-                      </Stack>
+                      <RatingList
+                        ratings={ratings}
+                        page={pagination.page}
+                        onPageChange={handlePageChange}
+                        totalPage={pagination.totalPage}
+                      />
                     </Box>
                   </Box>
                   <Box sx={{ marginTop: '20px' }}>
                     <HeadingPrimary>Các chương trình khác</HeadingPrimary>
+                    {/* Todo: Carousel */}
+                    <Grid container spacing={3}>
+                      {programs.map((program, index) => (
+                        <Grid key={index} item xs={12} md={6}>
+                          <MentorProgramCard program={program} />
+                        </Grid>
+                      ))}
+                    </Grid>
                   </Box>
                 </Grid>
                 {/* <Grid item xs={4}>

@@ -1,4 +1,5 @@
 import axiosClient from './axios-client'
+import querystring from 'querystring'
 
 interface RegisterApiProps {
   mentorId: number
@@ -46,8 +47,10 @@ export const ProgramApi = {
   },
 
   // get all ratings of programs
-  getAllRatingsProgram({ mentorId, programId }: SessionApiProps) {
-    return axiosClient.get(`/v1/mentor/${mentorId}/program/${programId}/rating`)
+  getAllRatingsProgram(mentorId: string | number, programId: string | number, filters: any) {
+    return axiosClient.get(`/v1/mentor/${mentorId}/program/${programId}/rating`, {
+      params: filters,
+    })
   },
   getAverageRatingProgram(mentorId: string | number, programId: string | number) {
     return axiosClient.get(`/v1/mentor/${mentorId}/program/${programId}/rating/average`)
