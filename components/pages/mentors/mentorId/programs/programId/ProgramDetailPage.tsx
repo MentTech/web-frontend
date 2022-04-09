@@ -1,5 +1,15 @@
 import { MainLayout } from '@components/layouts'
-import { Avatar, Button, Container, Grid, Paper, Typography } from '@mui/material'
+import {
+  Avatar,
+  Button,
+  Container,
+  Grid,
+  Paper,
+  Typography,
+  Stack,
+  Divider,
+  Rating,
+} from '@mui/material'
 import { Box } from '@mui/system'
 import { useCurrentMentor } from 'context/MentorProvider'
 import { useRouter } from 'next/router'
@@ -14,6 +24,7 @@ import FeedbackCard from '@components/common/FeedbackCard/FeedbackCard'
 import { SimilarMentorProgram } from './SimilarMentorProgram'
 import SuggestMentorsCard from '@components/common/SuggestMentorsCard'
 import { LoadingIndicator } from '@components/common/LoadingIndicator/LoadingIndicator'
+import RatingItem from '@components/common/RatingItem/RatingItem'
 
 export const ProgramDetailPage = () => {
   const { currentMentor: mentor, loading } = useCurrentMentor()
@@ -49,12 +60,12 @@ export const ProgramDetailPage = () => {
             <Container maxWidth="lg">
               <Breadcrumb items={breadcrumbs} />
               <Grid container spacing={2}>
-                <Grid item xs={8}>
+                <Grid item xs={12}>
                   <Box className="df fdc">
-                    <Paper className="df fdc" style={{ padding: 16 }}>
+                    <Paper className="df fdc" style={{ padding: 24 }}>
                       <Box className="df aic jcsb">
                         <Box className="df fdc">
-                          <Typography variant="h4" className="sb">
+                          <Typography variant="h4" className="sb" sx={{ fontSize: '2.3rem' }}>
                             {currentProgram?.title}
                           </Typography>
                           <Box className="df aic">
@@ -79,11 +90,23 @@ export const ProgramDetailPage = () => {
                           Đặt lịch ngay
                         </Button>
                       </Box>
-                      <Box my={2}>
+                      <Box
+                        my={2}
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          fontSize: '1.25rem',
+                          '& hr': {
+                            mx: 2,
+                          },
+                        }}
+                      >
                         <Typography
                           className="sb"
                           variant="h5"
-                        >{`Credit: ${currentProgram?.credit}`}</Typography>
+                        >{`$${currentProgram?.credit}`}</Typography>
+                        <Divider orientation="vertical" flexItem variant="middle" />
+                        <Rating readOnly value={4} />
                       </Box>
                       <Typography className="sb" variant="h6">
                         Thông tin chương trình
@@ -92,37 +115,31 @@ export const ProgramDetailPage = () => {
                     </Paper>
                     <Box sx={{ marginTop: '20px' }}>
                       <HeadingPrimary>Đánh giá</HeadingPrimary>
-                      {/**
-                       * TODO: đập data
-                       */}
-                      <Carousel isRTL={false} breakPoints={breakPointsCarousel}>
-                        <FeedbackCard
-                          mentee={{ name: 'Le Quoc Dat' }}
-                          rating={5}
-                          date={new Date()}
-                        />
-                        <FeedbackCard
-                          mentee={{ name: 'Le Quoc Dat' }}
-                          rating={4}
-                          date={new Date()}
-                        />
-                        <FeedbackCard
-                          mentee={{ name: 'Le Quoc Dat' }}
-                          rating={5}
-                          date={new Date()}
-                        />
-                      </Carousel>
+                      <Stack direction="column">
+                        <Box sx={{ pt: '24px' }}>
+                          <RatingItem
+                            menteeName="lqd"
+                            content="x"
+                            rating={4}
+                            datetime={new Date()}
+                          />
+                          <Divider sx={{ pt: '24px' }} />
+                        </Box>
+                      </Stack>
                     </Box>
                   </Box>
+                  <Box sx={{ marginTop: '20px' }}>
+                    <HeadingPrimary>Các chương trình khác</HeadingPrimary>
+                  </Box>
                 </Grid>
-                <Grid item xs={4}>
+                {/* <Grid item xs={4}>
                   <Box className="df fdc">
                     <SimilarMentorProgram programs={programs} />
                     <Box mt={2}>
                       <SuggestMentorsCard />
                     </Box>
                   </Box>
-                </Grid>
+                </Grid> */}
               </Grid>
             </Container>
             <RequestDialog

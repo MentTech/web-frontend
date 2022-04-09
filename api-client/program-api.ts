@@ -38,4 +38,12 @@ export const ProgramApi = {
       `/v1/mentor/${mentorId}/program/${programId}/register/${sessionId}/done`
     )
   },
+  // mentee get rating
+  getOwnRating({ mentorId, programId, sessionId }: SessionApiProps) {
+    return axiosClient.get(
+      `/v1/mentor/${mentorId}/program/${programId}/register/${sessionId}/rating`
+    )
+  },
+
+  // mentee all ratings of programs
 }

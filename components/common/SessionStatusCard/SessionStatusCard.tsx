@@ -14,12 +14,11 @@ import {
 } from '@mui/material'
 import { MentorSession, Mentor } from '@models/index'
 import { useEffect, useState } from 'react'
-import { mentorApi } from '@api/mentor-api'
 import { toast } from 'react-toastify'
 import Link from 'next/link'
 import Modal from '@components/common/Modal/Modal'
 import StarIcon from '@mui/icons-material/Star'
-import { ProgramApi } from '@api/index'
+import { ProgramApi, mentorApi } from '@api/index'
 import { useMenteeSessions } from '@hooks/index'
 
 export interface SessionStatusCardProps {
@@ -57,6 +56,8 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
   const [mentor, setMentor] = useState<Mentor | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [doneModalOpen, setDoneModalOpen] = useState(false)
+  const [isCancelBookingModal, setCancelBookingModal] = useState(false)
+  const [rating, setRating] = useState<number | null>(null)
 
   const { markSessionDone } = useMenteeSessions()
   useEffect(() => {
@@ -64,11 +65,24 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
       try {
         const res = await mentorApi.getMentorById(session.program?.mentorId as string)
         setMentor(res.data)
+        // get own rating
       } catch (err) {
         toast.error("Can't get mentor's info")
       }
     }
+
+    async function fetchOwnRating() {
+      try {
+        const response = await ProgramApi.getOwnRating({
+          mentorId: session.program?.mentorId as string,
+          sessionId: session.id as string,
+          programId: session.program?.id as string,
+        })
+        console.log('rating', response.data)
+      } catch (err) {}
+    }
     fetchMentorInfo()
+    fetchOwnRating()
   }, [])
 
   let actions = value ? <Button onClick={handleRatingSubmit}>Gửi đánh giá</Button> : null
@@ -82,6 +96,21 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
       </button>
     </>
   )
+
+  let cancelBookingActions = (
+    <>
+      <button className="btn btn-sm" onClick={() => setCancelBookingModal(false)}>
+        Hủy
+      </button>
+      <button className="btn btn-error btn-sm" onClick={handleCancelBooking}>
+        Đồng ý
+      </button>
+    </>
+  )
+
+  async function handleCancelBooking() {
+    console.log('cancel')
+  }
 
   async function handleDoneSession() {
     markSessionDone(
@@ -186,9 +215,9 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
               )}
             </Stack>
             {!session.done ? (
-              <Rating name="no-value" value={null} readOnly />
+              <Rating name="no-value" value={rating} readOnly />
             ) : (
-              <Rating name="read-only" value={4} readOnly />
+              <Rating name="read-only" value={rating} readOnly />
             )}
           </Stack>
           {session.isAccepted && !session.done ? (
@@ -205,6 +234,11 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
           {session.done && session.isAccepted && (
             <Box sx={{ textAlign: 'right' }}>
               <Button onClick={() => setIsModalOpen(true)}>Đánh giá</Button>
+            </Box>
+          )}
+          {!session.isAccepted && !session.done && (
+            <Box sx={{ textAlign: 'right' }}>
+              <Button onClick={() => setCancelBookingModal(true)}>Hủy đặt lịch</Button>
             </Box>
           )}
         </CardContent>
@@ -274,6 +308,16 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
       >
         <Typography variant="body1" component="div">
           Chọn "Đồng ý" khi bạn đã hài lòng với phiên mentoring này và đồng ý thanh toán cho mentor!
+        </Typography>
+      </Modal>
+      <Modal
+        show={isCancelBookingModal}
+        title="Hủy bỏ đặt lịch"
+        onClose={() => setCancelBookingModal(false)}
+        actions={cancelBookingActions}
+      >
+        <Typography variant="body1" component="div">
+          Bạn muốn hủy đặt lịch phiên mentoring này?
         </Typography>
       </Modal>
     </>
