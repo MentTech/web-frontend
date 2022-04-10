@@ -18,7 +18,7 @@ import { toast } from 'react-toastify'
 import Link from 'next/link'
 import Modal from '@components/common/Modal/Modal'
 import StarIcon from '@mui/icons-material/Star'
-import { ProgramApi, mentorApi } from '@api/index'
+import { ProgramApi, mentorApi, sessionApi } from '@api/index'
 import { useMenteeSessions } from '@hooks/index'
 
 export interface SessionStatusCardProps {
@@ -48,7 +48,7 @@ function getLabelText(value: number) {
   return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`
 }
 
-export default function SessionStatusCard({ session }: SessionStatusCardProps) {
+function SessionStatusCard({ session, ...props }: SessionStatusCardProps) {
   const [value, setValue] = useState<number | null>(null)
   const [comment, setComment] = useState('')
   const [validateError, setValidateError] = useState('')
@@ -59,7 +59,7 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
   const [isCancelBookingModal, setCancelBookingModal] = useState(false)
   const [rating, setRating] = useState<number | null>(null)
 
-  const { markSessionDone } = useMenteeSessions()
+  const { markSessionDone, cancelSession } = useMenteeSessions()
   useEffect(() => {
     async function fetchMentorInfo() {
       try {
@@ -73,12 +73,12 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
 
     async function fetchOwnRating() {
       try {
-        const response = await ProgramApi.getOwnRating({
+        const response = await sessionApi.getOwnRating({
           mentorId: session.program?.mentorId as string,
           sessionId: session.id as string,
           programId: session.program?.id as string,
         })
-        console.log('rating', response.data)
+        setRating(response.data.rating)
       } catch (err) {}
     }
     fetchMentorInfo()
@@ -109,7 +109,12 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
   )
 
   async function handleCancelBooking() {
-    console.log('cancel')
+    cancelSession(
+      session.program?.mentorId as string,
+      session.program?.id as string,
+      session.id as string
+    )
+    setCancelBookingModal(false)
   }
 
   async function handleDoneSession() {
@@ -124,7 +129,7 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
   async function handleRatingSubmit() {
     if (value && comment.length >= 10 && comment.length <= 200) {
       try {
-        await ProgramApi.rateSession({
+        await sessionApi.rateSession({
           mentorId: session.program?.mentorId as string,
           programId: session.program?.id as string,
           sessionId: session.id as string,
@@ -231,11 +236,17 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
               </button>
             </Stack>
           ) : null}
-          {session.done && session.isAccepted && (
-            <Box sx={{ textAlign: 'right' }}>
-              <Button onClick={() => setIsModalOpen(true)}>Đánh giá</Button>
-            </Box>
-          )}
+          {session.done && session.isAccepted ? (
+            !rating ? (
+              <Box sx={{ textAlign: 'right' }}>
+                <Button onClick={() => setIsModalOpen(true)}>Đánh giá</Button>
+              </Box>
+            ) : (
+              <Box sx={{ textAlign: 'right' }}>
+                <Button>Sửa đánh giá</Button>
+              </Box>
+            )
+          ) : null}
           {!session.isAccepted && !session.done && (
             <Box sx={{ textAlign: 'right' }}>
               <Button onClick={() => setCancelBookingModal(true)}>Hủy đặt lịch</Button>
@@ -323,3 +334,5 @@ export default function SessionStatusCard({ session }: SessionStatusCardProps) {
     </>
   )
 }
+
+export default SessionStatusCard

@@ -60,7 +60,7 @@ const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
         <MenuIcon />
       </IconButton>
       <Typography variant="h6" noWrap component="div">
-        MENTORING
+        MentTech
       </Typography>
 
       <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -105,10 +105,10 @@ const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
         component="div"
         sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
       >
-        MENTORING
+        MentTech
       </Typography>
       <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-        {pages.map((page) => (
+        {/* {pages.map((page) => (
           <Button
             key={page}
             onClick={handleCloseNavMenu}
@@ -116,7 +116,7 @@ const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
           >
             {page}
           </Button>
-        ))}
+        ))} */}
       </Box>
 
       <Box sx={{ flexGrow: 0 }}>

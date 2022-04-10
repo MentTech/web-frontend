@@ -31,7 +31,7 @@ export default function HomeHeader(props: HomeHeaderProps) {
   return (
     <div id={styles.header}>
       <Link href="/">
-        <a className={styles.logo}>Mentoring</a>
+        <a className={styles.logo}>MentTech</a>
       </Link>
       <ul className={styles.nav}>
         <li>

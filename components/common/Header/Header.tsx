@@ -53,7 +53,7 @@ const Header = () => {
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
             <Link href="/">
-              <a>Mentoring</a>
+              <a>MentTech</a>
             </Link>
           </Typography>
 
@@ -116,20 +116,29 @@ const Header = () => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Account settings">
-              <IconButton
-                onClick={handleClick}
-                size="small"
-                sx={{ ml: 2 }}
-                aria-controls={open ? 'account-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-              >
-                <Avatar src={profile?.avatar} sx={{ width: 32, height: 32 }}>
-                  M
-                </Avatar>
-              </IconButton>
-            </Tooltip>
+            {profile ? (
+              <Tooltip title="Account settings">
+                <IconButton
+                  onClick={handleClick}
+                  size="small"
+                  sx={{ ml: 2 }}
+                  aria-controls={open ? 'account-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                >
+                  <Avatar src={profile?.avatar} sx={{ width: 32, height: 32 }}>
+                    M
+                  </Avatar>
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Link href="/authenticate/login">
+                <a className="inline-block px-6 py-2 border-2 border-blue-400 text-blue-400 font-medium text-xs leading-tight uppercase rounded-full hover:bg-blue-400  hover:text-white focus:outline-none focus:ring-0 transition duration-150 ease-in-out">
+                  Đăng nhập
+                </a>
+              </Link>
+            )}
+
             <Menu
               anchorEl={anchorEl}
               id="account-menu"
