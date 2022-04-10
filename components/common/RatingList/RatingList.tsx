@@ -18,10 +18,11 @@ export default function RatingList({ onPageChange, ratings, page, totalPage }: R
             {ratings.map((rating, index) => (
               <Box key={index}>
                 <RatingItem
-                  menteeName=""
+                  menteeName={rating.user.name}
                   content={rating.comment}
                   rating={rating.rating}
                   datetime={new Date(rating.createAt)}
+                  avatar={rating.user.avatar}
                 />
                 <Divider sx={{ pt: '24px' }} />
               </Box>

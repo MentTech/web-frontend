@@ -37,6 +37,13 @@ interface AverageRating {
   count: number
 }
 
+const breakPoints = [
+  { width: 1, itemsToShow: 1 },
+  { width: 550, itemsToShow: 2, itemsToScroll: 2 },
+  { width: 768, itemsToShow: 3 },
+  { width: 1200, itemsToShow: 4 },
+]
+
 export const ProgramDetailPage = () => {
   const [openDialog, setopenDialog] = useState(false)
   const [avgRating, setAvgRating] = useState<AverageRating | null>(null)
@@ -62,6 +69,10 @@ export const ProgramDetailPage = () => {
   if (router.query.programId && loading === false) {
     currentProgram = programs.find((program) => program.id === Number(router.query.programId))
   }
+
+  const relativePrograms = programs.filter(
+    (program) => program.id !== Number(router.query.programId)
+  )
 
   const breadcrumbs = [
     { label: 'Trang chủ', href: '/' },
@@ -192,13 +203,11 @@ export const ProgramDetailPage = () => {
                   <Box sx={{ marginTop: '20px' }}>
                     <HeadingPrimary>Các chương trình khác</HeadingPrimary>
                     {/* Todo: Carousel */}
-                    <Grid container spacing={3}>
-                      {programs.map((program, index) => (
-                        <Grid key={index} item xs={12} md={6}>
-                          <MentorProgramCard program={program} />
-                        </Grid>
+                    <Carousel isRTL={false} itemPadding={[10, 30]} breakPoints={breakPoints}>
+                      {relativePrograms.map((program, index) => (
+                        <MentorProgramCard key={index} program={program} />
                       ))}
-                    </Grid>
+                    </Carousel>
                   </Box>
                 </Grid>
                 {/* <Grid item xs={4}>

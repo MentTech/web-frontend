@@ -6,16 +6,20 @@ export interface RatingItemProps {
   rating: number
   datetime: Date
   menteeName: string
+  avatar: string
 }
 
-export default function RatingItem({ menteeName, rating, content, datetime }: RatingItemProps) {
+export default function RatingItem({
+  menteeName,
+  rating,
+  content,
+  datetime,
+  avatar,
+}: RatingItemProps) {
   return (
     <Grid container>
       <Grid item sx={{ display: { xs: 'none', sm: 'block' } }}>
-        <Avatar
-          sx={{ width: '48px', height: '48px', mr: '24px' }}
-          src="https://images.unsplash.com/photo-1593642647962-b9e4b4d8f7b1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-        />
+        <Avatar sx={{ width: '48px', height: '48px', mr: '24px' }} src={avatar} />
       </Grid>
       <Grid item xs>
         <Box>
