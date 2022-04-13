@@ -10,6 +10,7 @@ interface FindMentorContextProps {
   loading: boolean
   fetchedCategories: Category[]
   fetchedSkills: Skill[]
+  loadingMentors: boolean
 }
 
 const FindMentorContext = React.createContext<FindMentorContextProps>({
@@ -17,6 +18,7 @@ const FindMentorContext = React.createContext<FindMentorContextProps>({
   loading: false,
   fetchedCategories: [],
   fetchedSkills: [],
+  loadingMentors: false,
 })
 
 interface FindMentorProviderProps {
@@ -25,6 +27,7 @@ interface FindMentorProviderProps {
 
 const FindMentorProvider = ({ children }: FindMentorProviderProps) => {
   const [loading, setLoading] = useState(true)
+  const [loadingMentors, setLoadingMentors] = useState(false)
   // const [error, setError] = useState('')
 
   const router = useRouter()
@@ -37,29 +40,32 @@ const FindMentorProvider = ({ children }: FindMentorProviderProps) => {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      setLoading(true)
       try {
-        const { data: skillArray } = await findApi.getAllSkills()
-        setfetchedSkills(skillArray)
-        const { data: category } = await findApi.getAllCatergories()
-        setfetchedCategories(category)
+        if (fetchedSkills.length === 0 && fetchedCategories.length === 0) {
+          setLoading(true)
+          const { data: skillArray } = await findApi.getAllSkills()
+          setfetchedSkills(skillArray)
+          const { data: category } = await findApi.getAllCatergories()
+          setfetchedCategories(category)
+          setLoading(false)
+        }
+
+        setLoadingMentors(true)
+        const { keyword, sortBy, skills, order, category } = router.query
+
         const resultMentor = await findApi.findMentor({
-          keyword,
-          sortBy,
-          skills,
-          order,
-          category,
+          ...(keyword && { keyword }),
+          ...(sortBy && { sortBy }),
+          ...(skills && { skills }),
+          ...(category && { category }),
+          order: order ? 'asc' : 'desc',
         })
-        console.log(
-          '🚀 ~ file: FindMentorProvider.tsx ~ line 53 ~ fetchData ~ data',
-          resultMentor.data
-        )
+        setLoadingMentors(false)
+
         setFetchedMentor(resultMentor.data.data)
       } catch (error: any) {
         toast.error(error.message)
         // setError(error.message)
-      } finally {
-        setLoading(false)
       }
     }
     fetchData()
@@ -72,6 +78,7 @@ const FindMentorProvider = ({ children }: FindMentorProviderProps) => {
         fetchedMentor,
         fetchedCategories,
         fetchedSkills,
+        loadingMentors,
       }}
     >
       {children}

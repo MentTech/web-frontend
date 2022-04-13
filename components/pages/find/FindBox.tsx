@@ -15,10 +15,10 @@ import * as yup from 'yup'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useRouter } from 'next/router'
-import { ORDER_OPTIONS, SORT_OPTIONS } from '@utils/constant'
+import { Order, ORDER_OPTIONS, SORT_OPTIONS } from '@utils/constant'
 import { useFindMentor } from '../../../context/FindMentorProvider'
 import { LoadingIndicator } from '../../common/LoadingIndicator/LoadingIndicator'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Skill } from '@models/mentor'
 
 export interface FindForm {
@@ -26,7 +26,7 @@ export interface FindForm {
   sortBy: string
   category: string
   skills: string[]
-  order: boolean
+  order: Order
 }
 
 const schema = yup.object({
@@ -34,7 +34,7 @@ const schema = yup.object({
   sortBy: yup.string(),
   category: yup.string(),
   skills: yup.array(),
-  order: yup.boolean(),
+  order: yup.string(),
 })
 
 export const FindBox = () => {
@@ -52,23 +52,27 @@ export const FindBox = () => {
     resolver: yupResolver(schema),
   })
   const onSubmit = (data: FindForm) => {
-    router.push({
-      pathname: '/find',
-      query: {
-        ...data,
-        skills: skills.map((skill) => skill.id),
+    router.push(
+      {
+        pathname: '/find',
+        query: {
+          ...data,
+          skills: skills.map((skill) => skill.id),
+        },
       },
-    })
+      undefined,
+      { scroll: false }
+    )
   }
 
-  const { fetchedCategories, fetchedSkills } = useFindMentor()
+  const { fetchedCategories, fetchedSkills, loading } = useFindMentor()
 
   const onDeleteSkill = (skill: { description: string; id: number }) => {
     setSkills(skills.filter((item) => item.id !== skill.id))
   }
 
   return (
-    <>
+    <LoadingIndicator loading={loading} style={{ marginTop: 40 }} title="Đang tìm kiếm mentor...">
       <Box className={styles.container}>
         <Box className={styles.glassBox}>
           <Typography className="sb" variant="h3">
@@ -205,7 +209,7 @@ export const FindBox = () => {
               </TextField>
 
               <TextField
-                defaultValue={true}
+                defaultValue={Order.ASC}
                 color="primary"
                 select
                 fullWidth
@@ -226,6 +230,6 @@ export const FindBox = () => {
           </Collapse>
         </form>
       </Paper>
-    </>
+    </LoadingIndicator>
   )
 }

@@ -3,9 +3,14 @@ export const SORT_OPTIONS = [
   { title: 'Đánh giá', value: 'rating' },
 ]
 
+export enum Order {
+  ASC = 'asc',
+  DESC = 'desc',
+}
+
 export const ORDER_OPTIONS = [
-  { value: 'true', title: 'Tăng dần' },
-  { value: 'false', title: 'Giảm dần' },
+  { value: Order.ASC, title: 'Tăng dần' },
+  { value: Order.DESC, title: 'Giảm dần' },
 ]
 
 export const breakPointsCarousel = [
