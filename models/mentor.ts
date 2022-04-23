@@ -4,7 +4,7 @@ export interface Degree {
   title: string
   issuer: string
   description: string
-  degreeId: string
+  degreeId?: string
   url: string
   startAt: Date
   expiredAt: Date

@@ -69,7 +69,6 @@ export default function MentorHome() {
   })
 
   const { data, status } = useSession()
-  console.log('🚀 ~ file: programs.tsx ~ line 72 ~ MentorHome ~ data', data)
 
   const router = useRouter()
 

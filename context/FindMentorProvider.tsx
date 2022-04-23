@@ -28,7 +28,6 @@ interface FindMentorProviderProps {
 const FindMentorProvider = ({ children }: FindMentorProviderProps) => {
   const [loading, setLoading] = useState(true)
   const [loadingMentors, setLoadingMentors] = useState(false)
-  // const [error, setError] = useState('')
 
   const router = useRouter()
 

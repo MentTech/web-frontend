@@ -1,5 +1,4 @@
 import { createTheme } from '@mui/material/styles'
-import { red } from '@mui/material/colors'
 
 // Create a theme instance.
 export const theme = createTheme({
@@ -8,12 +7,17 @@ export const theme = createTheme({
       main: '#3F3D56',
       light: '#D0CDE1',
     },
-    secondary: {
-      main: '#19857b',
-    },
+    // secondary: {
+    //   main: '#19857b',
+    // },
     // error: {
     //   main: red.A400,
     // },
+  },
+  typography: {
+    // eslint-disable-next-line quotes
+    fontFamily: '"Inter", sans-serif',
+    fontSize: 16,
   },
   // components: {
   //   MuiContainer: {
