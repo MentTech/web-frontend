@@ -6,13 +6,10 @@ export interface SkillBadgeProps {
 }
 
 export default function SkillBadge({ skills }: SkillBadgeProps) {
-  const handleClick = () => {
-    console.info('You clicked the Chip.')
-  }
   return (
     <Stack direction="row" spacing={2}>
       {skills.map((item, index) => (
-        <Chip key={index} label={item} onClick={handleClick} />
+        <Chip key={index} label={item} clickable={false} />
       ))}
     </Stack>
   )
