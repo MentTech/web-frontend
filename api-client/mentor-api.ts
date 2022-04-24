@@ -38,4 +38,7 @@ export const mentorApi = {
   applyMentor(payload: any) {
     return axiosClient.post(`/v1/mentor/apply`, payload)
   },
+  getSuggestMentorsById(id: string, num: number) {
+    return axiosClient.get(`/v1/mentor/${id}/suggest`, { params: { num } })
+  },
 }
