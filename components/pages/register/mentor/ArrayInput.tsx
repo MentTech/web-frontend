@@ -14,7 +14,7 @@ interface ArrayInputProps {
 export const ArrayInput = ({ value, onChange, title, emptyText, labelInput }: ArrayInputProps) => {
   const [inputValue, setInputValue] = useState('')
 
-  const ref = useRef(null)
+  const ref = useRef<any>(null)
 
   const onChangeValue = (input: string) => {
     if (!value.find((item: string | number) => item === input) && !!input) {
@@ -58,7 +58,10 @@ export const ArrayInput = ({ value, onChange, title, emptyText, labelInput }: Ar
           if (e.key === 'Enter') {
             onChangeValue(inputValue)
             e.preventDefault()
-            ref.current?.focus()
+
+            if (ref.current) {
+              ref.current?.focus?.()
+            }
             return false
           }
         }}

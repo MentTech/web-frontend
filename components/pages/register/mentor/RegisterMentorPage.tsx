@@ -13,11 +13,10 @@ import {
   MenuItem,
   Paper,
   TextField,
-  TextFieldProps,
   Typography,
 } from '@mui/material'
 import { Box } from '@mui/system'
-import { setToastError } from '@utils/method'
+import { setToastError, setToastSuccess } from '@utils/method'
 import { theme } from '@utils/theme'
 import { useFindMentor } from 'context/FindMentorProvider'
 import { useState } from 'react'
@@ -75,7 +74,6 @@ export const RegisterMentorPage = () => {
   } = useForm<RegisterMentorPayload>({
     resolver: yupResolver(schema),
   })
-  console.log('🚀 ~ file: RegisterMentorPage.tsx ~ line 78 ~ RegisterMentorPage ~ errors', errors)
 
   const hasError = () => {
     return Object.keys(errors).length > 0
@@ -94,9 +92,16 @@ export const RegisterMentorPage = () => {
         avatar: 'temp',
       }
       setLoadingSubmit(true)
-      await mentorApi.applyMentor(payload)
+      const response = await mentorApi.applyMentor(payload)
+      if (response.status === 201) {
+        setToastSuccess(
+          'Đăng ký thành công! Hãy kiểm tra email để xác nhận thông tin đăng ký mentor'
+        )
+      }
     } catch (error) {
-      setToastError(error)
+      if (String(error).includes('409')) {
+        setToastError('Email đã được sử dụng')
+      } else setToastError(error)
     } finally {
       setLoadingSubmit(false)
     }
@@ -240,7 +245,7 @@ export const RegisterMentorPage = () => {
                   isDate: true,
                 },
               ]}
-              style={{ marginTop: 16, marginBottom: 16 }}
+              boxStyle={{ marginTop: 16, marginBottom: 16 }}
             />
 
             <ArrayInput

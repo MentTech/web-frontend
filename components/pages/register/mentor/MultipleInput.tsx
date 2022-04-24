@@ -29,7 +29,7 @@ interface MultipleInputProps {
   onChange: Function
   buttonTitle: string
   arrayField: ArrayField[]
-  style?: CSSProperties
+  boxStyle?: any
   emptyText: string
 }
 
@@ -39,7 +39,7 @@ export const MultipleInput = ({
   title,
   buttonTitle,
   arrayField,
-  style,
+  boxStyle,
   emptyText,
 }: MultipleInputProps) => {
   const onAdd = () => {
@@ -75,7 +75,7 @@ export const MultipleInput = ({
   }, [])
 
   return (
-    <Box className="df fdc" style={{ ...style }}>
+    <Box className="df fdc" style={{ ...boxStyle }}>
       <Typography component={'span'} style={{ marginRight: 16 }}>
         {`${title}: `}
         {value.length === 0 && (
