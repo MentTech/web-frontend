@@ -35,6 +35,9 @@ export const mentorApi = {
   updateAcceptedMentorSession(id: string, programId: string, sessionId: string, payload: any) {
     return axiosClient.patch(`/v1/mentor/${id}/program/${programId}/register/${sessionId}`, payload)
   },
+  applyMentor(payload: any) {
+    return axiosClient.post(`/v1/mentor/apply`, payload)
+  },
   getSuggestMentorsById(id: string, num: number) {
     return axiosClient.get(`/v1/mentor/${id}/suggest`, { params: { num } })
   },

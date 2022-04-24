@@ -2,9 +2,18 @@ import { LoadingIndicator } from '@components/common/LoadingIndicator/LoadingInd
 import { Grid, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { useFindMentor } from 'context/FindMentorProvider'
+import { useRouter } from 'next/router'
 import { MentorCard } from './MentorCard'
 
 export const FindResult = () => {
+  const router = useRouter()
+
+  const { keyword, skills, category } = router.query
+
+  if (!keyword && !skills && !category) {
+    return null
+  }
+
   const { fetchedMentor = [], loadingMentors } = useFindMentor()
 
   const numMentor = fetchedMentor.length
