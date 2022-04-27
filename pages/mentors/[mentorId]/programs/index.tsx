@@ -40,14 +40,6 @@ export default function MentorSessions({ mentor, mentorId }: MentorSessionsProps
               ))}
             </Grid>
           </Box>
-          <Stack spacing={2} sx={{ marginTop: '32px' }}>
-            <Pagination
-              count={10}
-              variant="outlined"
-              shape="rounded"
-              sx={{ ul: { justifyContent: 'center' } }}
-            />
-          </Stack>
         </CardContent>
       </Card>
     </>

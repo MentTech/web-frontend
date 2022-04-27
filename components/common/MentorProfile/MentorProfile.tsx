@@ -1,16 +1,6 @@
 import ProfileCard from '@components/common/ProfileCard/ProfileCard'
 import SkillBadge from '@components/common/SkillBadge/SkillBadge'
-import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  Grid,
-  Stack,
-  Typography,
-  FormControl,
-  ListItem,
-} from '@mui/material'
+import { Avatar, Box, Card, CardContent, Grid, Stack, Typography, FormControl } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { useProfile } from '@hooks/index'
 import Modal from '@components/common/Modal/Modal'
