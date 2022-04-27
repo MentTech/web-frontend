@@ -19,7 +19,12 @@ import Typography from '@mui/material/Typography'
 import Link from 'next/link'
 import { useState } from 'react'
 
-const pages = ['Mentors']
+const pages = [
+  {
+    title: 'Tìm kiếm mentor',
+    path: '/find',
+  },
+]
 const settings = ['Account', 'Dashboard']
 
 const Header = () => {
@@ -41,6 +46,8 @@ const Header = () => {
       console.log(err)
     }
   }
+
+  console.log('avatar', profile?.avatar)
 
   return (
     <AppBar position="fixed">
@@ -87,9 +94,11 @@ const Header = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleClose}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
+                <Link key={page.title} href={page.path}>
+                  <MenuItem onClick={handleClose}>
+                    <Typography textAlign="center">{page.title}</Typography>
+                  </MenuItem>
+                </Link>
               ))}
             </Menu>
           </Box>
@@ -100,18 +109,16 @@ const Header = () => {
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
           >
             <Link href="/">
-              <a>Mentoring</a>
+              <a>MentTech</a>
             </Link>
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} component="ul">
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleClose}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
+              <Link key={page.path} href={page.path}>
+                <Button onClick={handleClose} sx={{ my: 2, color: 'white', display: 'block' }}>
+                  {page.title}
+                </Button>
+              </Link>
             ))}
           </Box>
 
@@ -174,6 +181,10 @@ const Header = () => {
               transformOrigin={{ horizontal: 'right', vertical: 'top' }}
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
+              <Link href="/tokens">
+                <MenuItem>Tokens: {profile?.coin}</MenuItem>
+              </Link>
+              <Divider />
               <Link href="/profile">
                 <MenuItem>
                   <Avatar /> Trang cá nhân
@@ -185,7 +196,7 @@ const Header = () => {
                 </MenuItem>
               </Link>
               <Divider />
-              <MenuItem>
+              {/* <MenuItem>
                 <ListItemIcon>
                   <PersonAdd fontSize="small" />
                 </ListItemIcon>
@@ -196,12 +207,12 @@ const Header = () => {
                   <Settings fontSize="small" />
                 </ListItemIcon>
                 Settings
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem onClick={handleLogout}>
                 <ListItemIcon>
                   <Logout fontSize="small" />
                 </ListItemIcon>
-                Logout
+                Đăng xuất
               </MenuItem>
             </Menu>
           </Box>

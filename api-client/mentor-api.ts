@@ -41,4 +41,7 @@ export const mentorApi = {
   getSuggestMentorsById(id: string, num: number) {
     return axiosClient.get(`/v1/mentor/${id}/suggest`, { params: { num } })
   },
+  updateProfile(data: any) {
+    return axiosClient.patch('/v1/mentor/profile', data)
+  },
 }

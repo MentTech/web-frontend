@@ -8,9 +8,10 @@ export interface ModalProps {
   children?: React.ReactNode
   actions?: React.ReactNode
   title?: string
+  size?: 'small' | 'medium' | 'large'
 }
 
-function Modal({ show, onClose, children, actions, title }: ModalProps) {
+function Modal({ show, onClose, children, actions, title, size }: ModalProps) {
   const [isBrowser, setIsBrowser] = useState(false)
   useEffect(() => {
     setIsBrowser(true)
@@ -21,7 +22,10 @@ function Modal({ show, onClose, children, actions, title }: ModalProps) {
 
   const modalContent = show ? (
     <div className={styles.modal_overlay_custom} onClick={onClose}>
-      <div className={styles.modal_box} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={`${styles.modal_box} ${styles[size as string]}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <h2 className={styles.modal_header}>{title}</h2>
         {children}
         <div className="modal-action">{actions}</div>

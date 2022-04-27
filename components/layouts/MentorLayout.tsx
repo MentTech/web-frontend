@@ -4,6 +4,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import MailIcon from '@mui/icons-material/Mail'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
+import Person from '@mui/icons-material/Person'
+import MenuBook from '@mui/icons-material/MenuBook'
 import { Container, ListItemButton } from '@mui/material'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
@@ -89,7 +91,7 @@ export function MentorLayout({ children }: LayoutProps) {
   const router = useRouter()
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', backgroundColor: '#F3F2EF', minHeight: '100vh' }}>
       <CssBaseline />
 
       <AppBar position="fixed" open={open}>
@@ -120,8 +122,8 @@ export function MentorLayout({ children }: LayoutProps) {
           {[
             { title: 'Home', href: '/mentor', icon: <InboxIcon /> },
             { title: 'Tin nhắn', href: '/mentor/message', icon: <MailIcon /> },
-            { title: 'Chương trình', href: '/mentor/programs', icon: <MailIcon /> },
-            { title: 'Hồ sơ của bạn', href: '/mentor/profile', icon: <MailIcon /> },
+            { title: 'Chương trình', href: '/mentor/programs', icon: <MenuBook /> },
+            { title: 'Hồ sơ của bạn', href: '/mentor/profile', icon: <Person /> },
           ].map((item) => {
             return (
               <Link href={item.href}>

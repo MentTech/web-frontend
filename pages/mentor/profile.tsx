@@ -1,17 +1,17 @@
 import * as React from 'react'
-import Profile from '@components/common/Profile/Profile'
 import { MentorLayout } from '@components/layouts/index'
+import MentorProfile from '@components/common/MentorProfile/MentorProfile'
 
 export interface MentorProfileProps {}
 
-export default function MentorProfile(props: MentorProfileProps) {
+export default function MentorProfilePage(props: MentorProfileProps) {
   return (
     <div>
-      <Profile />
+      <MentorProfile />
     </div>
   )
 }
 
-MentorProfile.Layout = MentorLayout
+MentorProfilePage.Layout = MentorLayout
 
-MentorProfile.isPrivate = true
+MentorProfilePage.isPrivate = true

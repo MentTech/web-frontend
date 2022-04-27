@@ -218,9 +218,9 @@ export default function Login() {
               </div>
               <div className="flex items-center justify-center mt-6">
                 <div className="inline-flex items-center text-xs font-thin text-center text-gray-500 hover:text-gray-700 dark:text-gray-100 dark:hover:text-white">
-                  <span className="ml-2">You don&#x27;t have an account?</span>
+                  <span className="ml-2">Bạn chưa có tài khoản?</span>
                   <Link href="/authenticate/register">
-                    <a className="px-1 text-blue-500 cursor-pointer">Register</a>
+                    <a className="px-1 text-blue-500 cursor-pointer">Đăng ký</a>
                   </Link>
                 </div>
               </div>

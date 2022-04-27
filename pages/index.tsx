@@ -5,6 +5,7 @@ import { useState } from 'react'
 import Rating from '@mui/material/Rating'
 import Carousel from 'react-elastic-carousel'
 import styles from '../styles/Home.module.scss'
+import Header from '@components/common/Header/Header'
 
 const breakPoints = [
   { width: 1, itemsToShow: 1 },
@@ -19,7 +20,8 @@ const Home: NextPageWithLayout = () => {
     <>
       {/* Header section */}
       <div className={styles.headerSession}>
-        <HomeHeader />
+        <Header />
+
         <div className={styles.HeaderContent}>
           <div className={styles.HeaderContentLeft}>
             <svg

@@ -18,7 +18,7 @@ export default function HeadingPrimary({ children }: HeadingPrimaryProps) {
           marginTop: '8px',
           content: '" "',
           display: 'block',
-          width: '120px',
+          width: '150px',
           height: '5px',
           borderBottom: '5px solid #175E4C',
           borderRadius: '50px',

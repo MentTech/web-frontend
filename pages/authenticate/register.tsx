@@ -235,9 +235,9 @@ export default function Register(props: RegisterProps) {
 
         <div className="flex items-center justify-center mt-6">
           <div className="inline-flex items-center text-xs font-thin text-center text-gray-500 hover:text-gray-700 dark:text-gray-100 dark:hover:text-white">
-            <span className="ml-2">Already have an account?</span>
+            <span className="ml-2">Bạn đã có tài khoản?</span>
             <Link href="/authenticate/login">
-              <a className="px-1 text-blue-500">Login</a>
+              <a className="px-1 text-blue-500">Đăng nhập</a>
             </Link>
           </div>
         </div>

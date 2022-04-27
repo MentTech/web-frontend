@@ -1,23 +1,27 @@
 import Breadcrumb from '@components/common/Breadcrumb/Breadcrumb'
 import FeedbackCard from '@components/common/FeedbackCard/FeedbackCard'
 import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
-import LinearIndeterminate from '@components/common/LinearIndeterminate/LinearIndeterminate'
 import MentorMediaInfo from '@components/common/MentorMediaInfor/MentorMediaInfor'
 import MentorProgramCard from '@components/common/MentorProgramCard/MentorProgramCard'
 import SkillBadge from '@components/common/SkillBadge/SkillBadge'
 import { MainLayout } from '@components/layouts'
 import { Mentor } from '@models/mentor'
 import { Favorite } from '@mui/icons-material'
-import { Avatar, Box, Card, CardContent, Grid, Stack, Typography } from '@mui/material'
+import { Box, Card, CardContent, Grid, Stack, Typography } from '@mui/material'
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Carousel from 'react-elastic-carousel'
+import { favoriteApi } from '@api/favorite-api'
+import Loading from '@components/common/Loading/Loading'
+import SuggestMentorsCard from '@components/common/SuggestMentorsCard'
+import { config } from '@config/main'
+import axios from 'axios'
+import { useFavorite } from '@hooks/index'
 //@ts-ignore
 import ReactReadMoreReadLess from 'react-read-more-read-less'
-import axios from 'axios'
-import { config } from '@config/main'
-import SuggestMentorsCard from '@components/common/SuggestMentorsCard'
+import { toast } from 'react-toastify'
+import { useSession } from 'next-auth/react'
 
 const breakPoints = [
   { width: 1, itemsToShow: 1 },
@@ -32,7 +36,11 @@ export interface MentorProfileProps {
 function Profile({ mentor }: MentorProfileProps) {
   const router = useRouter()
   if (router.isFallback) {
-    return <LinearIndeterminate />
+    return (
+      <Box sx={{ mt: 4 }}>
+        <Loading />
+      </Box>
+    )
   }
   const breadcrumbs = [
     { label: 'Home', href: '/' },
@@ -40,11 +48,39 @@ function Profile({ mentor }: MentorProfileProps) {
     { label: mentor.name as string },
   ]
 
+  const { data: session, status } = useSession()
+
   const { mentorId } = router.query
   const skillDescs = mentor?.User_mentor.skills?.map((item) => item.description)
 
   const { User_mentor } = mentor
   const { programs } = User_mentor
+
+  const { favorites, addFavorite, removeFavorite } = useFavorite()
+
+  let isFavorited = false
+  if (favorites) {
+    isFavorited = favorites.findIndex((item: any) => item.id === mentorId) !== -1
+  }
+
+  console.log('session', session)
+
+  function addToWishList() {
+    if (status === 'unauthenticated') {
+      return router.push('/authenticate/login')
+    }
+    addFavorite(mentorId as string)
+    toast.success('Đã thêm vào danh sách yêu thích')
+  }
+
+  function removeFromWishList() {
+    if (status === 'unauthenticated') {
+      return router.push('/authenticate/login')
+    }
+    removeFavorite(mentorId as string)
+    toast.error('Đã xóa khỏi danh sách yêu thích')
+  }
+
   return (
     <>
       <Breadcrumb items={breadcrumbs} />
@@ -54,6 +90,7 @@ function Profile({ mentor }: MentorProfileProps) {
             <Card sx={{ borderRadius: '20px', boxShadow: 'none' }}>
               <CardContent sx={{ padding: '20px', position: 'relative' }}>
                 <button
+                  onClick={isFavorited ? removeFromWishList : addToWishList}
                   style={{
                     position: 'absolute',
                     top: '24px',
@@ -67,12 +104,12 @@ function Profile({ mentor }: MentorProfileProps) {
                     sx={{
                       width: '28px',
                       height: '28px',
-                      color: '#F54E19',
+                      color: isFavorited ? '#F54E19' : 'rgba(0, 0, 0, 0.39)',
                     }}
                   />
                 </button>
-                <MentorMediaInfo mentor={mentor} />
 
+                <MentorMediaInfo mentor={mentor} />
                 {/* GiỚi thiệu */}
                 <Box sx={{ marginTop: '20px' }}>
                   <HeadingPrimary>Giới thiệu</HeadingPrimary>
@@ -133,22 +170,29 @@ function Profile({ mentor }: MentorProfileProps) {
               <Typography sx={{ fontWeight: '600', fontSize: '24px', textAlign: 'center' }}>
                 Chương trình mentorship
               </Typography>
-              {programs?.slice(0, 2).map((item) => (
-                <MentorProgramCard program={item} key={item.id} />
-              ))}
-              <Link href={`/mentors/${mentorId}/programs`}>
-                <a
-                  style={{
-                    color: '#fff',
-                    backgroundColor: '#00BFA6',
-                    padding: '8px 16px',
-                    borderRadius: '10px',
-                    textAlign: 'center',
-                  }}
-                >
-                  Xem toàn bộ
-                </a>
-              </Link>
+              {programs?.length === 0 ? (
+                <Typography sx={{ textAlign: 'center' }}>Chưa có chương trình nào.</Typography>
+              ) : (
+                programs
+                  ?.slice(0, 2)
+                  .map((item) => <MentorProgramCard program={item} key={item.id} />)
+              )}
+              {programs && programs.length > 0 && (
+                <Link href={`/mentors/${mentorId}/programs`}>
+                  <a
+                    style={{
+                      color: '#fff',
+                      backgroundColor: '#00BFA6',
+                      padding: '8px 16px',
+                      borderRadius: '10px',
+                      textAlign: 'center',
+                    }}
+                  >
+                    Xem toàn bộ
+                  </a>
+                </Link>
+              )}
+
               <SuggestMentorsCard />
             </Stack>
           </Grid>
@@ -179,6 +223,7 @@ export const getStaticProps: GetStaticProps<MentorProfileProps> = async (
       notFound: true,
     }
   }
+
   try {
     const res = await axios.get(`${config.backendURL}/v1/mentor/${mentorId}`)
     return {
@@ -192,7 +237,6 @@ export const getStaticProps: GetStaticProps<MentorProfileProps> = async (
       notFound: true,
     }
   }
-  // get mentor by id
 }
 
 Profile.Layout = MainLayout

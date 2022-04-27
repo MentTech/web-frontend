@@ -63,3 +63,7 @@ html {
 .list-item-hover:hover {
   background-color: #f5f5f5;
 }
+
+.MuiCalendarPicker-root {
+  z-index: 2600;
+}
