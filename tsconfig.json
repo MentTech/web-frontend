@@ -6,6 +6,7 @@
       "dom.iterable",
       "esnext"
     ],
+    "skipLibCheck": true,
     "noImplicitAny": true,
     "allowJs": true,
     "strict": true,
@@ -47,8 +48,7 @@
       "@utils/*": [
         "./utils/*"
       ]
-    },
-    "skipLibCheck": true
+    }
   },
   "include": [
     "next-env.d.ts",

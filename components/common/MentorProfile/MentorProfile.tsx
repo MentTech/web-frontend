@@ -11,6 +11,19 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import Chip from '@mui/material/Chip'
 import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
 
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+import { EditorState, convertToRaw, convertFromHTML, ContentState } from 'draft-js'
+import { toast } from 'react-toastify'
+import { useMentorInfor } from '@hooks/index'
+//@ts-ignore
+import draftToHtml from 'draftjs-to-html'
+import dynamic from 'next/dynamic'
+
+//@ts-ignore
+const Editor = dynamic(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), {
+  ssr: false,
+})
+
 interface ChipData {
   key: number
   label: string
@@ -34,17 +47,25 @@ export default function MentorProfile(props: ProfileProps) {
     { key: 3, label: 'React' },
     { key: 4, label: 'Vue.js' },
   ])
+  const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty())
+
+  function onEditorStateChange(editorState: EditorState) {
+    setEditorState(editorState)
+  }
+
   const handleDelete = (chipToDelete: ChipData) => () => {
     setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key))
   }
   const handleChange = (newValue: Date | null) => {
     setValue(newValue)
   }
-  const { profile, editProfile } = useProfile()
+  const { profile } = useProfile()
 
-  const editProfileActions = (
+  const { mentorInfor, editProfile } = useMentorInfor(profile?.id)
+
+  const editAboutActions = (
     <>
-      <button className="btn btn-active btn-primary" type="submit" form="createProgramForm">
+      <button className="btn btn-active btn-primary" onClick={handleEditAbout}>
         Lưu
       </button>
       <button className="btn btn-active btn-ghost" onClick={handleCloseEditAboutModal}>
@@ -83,10 +104,22 @@ export default function MentorProfile(props: ProfileProps) {
   )
 
   function handleOpenEditAboutModal() {
+    if (mentorInfor?.User_mentor) {
+      const blocksFromHTML = convertFromHTML(mentorInfor?.User_mentor?.introduction)
+      setEditorState(
+        EditorState.createWithContent(
+          ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap)
+        )
+      )
+    }
     setShowEditAboutModal(true)
   }
 
-  function handleEditProfile() {}
+  async function handleEditAbout() {
+    handleCloseEditAboutModal()
+    await editProfile({ introduction: draftToHtml(convertToRaw(editorState.getCurrentContent())) })
+    toast.success('Cập nhật giới thiệu thành công!')
+  }
 
   function handleCloseEditAboutModal() {
     setShowEditAboutModal(false)
@@ -161,7 +194,13 @@ export default function MentorProfile(props: ProfileProps) {
         </Card>
         <ProfileCard padding="20px 44px" onEditClick={handleOpenEditAboutModal}>
           <HeadingPrimary>Giới thiệu</HeadingPrimary>
-          <Typography>{profile?.about ? profile.about : 'Chưa có thông tin.'}</Typography>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: mentorInfor?.User_mentor?.introduction
+                ? mentorInfor?.User_mentor?.introduction
+                : 'Chưa có thông tin.',
+            }}
+          ></div>
         </ProfileCard>
         <ProfileCard padding="20px 44px" onEditClick={handleOpenEditPersonalProfile}>
           <HeadingPrimary>Thông tin cá nhân</HeadingPrimary>
@@ -211,16 +250,18 @@ export default function MentorProfile(props: ProfileProps) {
         size="small"
         show={showEditAboutModal}
         title="Chỉnh sửa giới thiệu"
-        actions={editProfileActions}
+        actions={editAboutActions}
         onClose={handleCloseEditAboutModal}
       >
         <Typography>
           Bạn có thể viết về kinh nghiệm, kỹ năng hoặc những thành tựu mà bạn đã đạt được
-          <textarea
-            className="textarea textarea-primary d-block w-full h-48 mt-4 "
-            placeholder="Nhập giới thiệu"
-            defaultValue={profile?.about}
-          ></textarea>
+          <Editor
+            editorState={editorState}
+            toolbarClassName="toolbarClassName"
+            wrapperClassName="demo-wrapper mt-4"
+            editorClassName="demo-editor textarea textarea-primary mt-3 min-h-4"
+            onEditorStateChange={onEditorStateChange}
+          />
         </Typography>
       </Modal>
       <Modal

@@ -113,15 +113,24 @@ function Profile({ mentor }: MentorProfileProps) {
                 {/* GiỚi thiệu */}
                 <Box sx={{ marginTop: '20px' }}>
                   <HeadingPrimary>Giới thiệu</HeadingPrimary>
-                  <ReactReadMoreReadLess
+                  {/* <ReactReadMoreReadLess
                     charLimit={200}
                     readMoreText={'Read more ▼'}
                     readLessText={'Read less ▲'}
                     readMoreClassName="read-more-less--more"
                     readLessClassName="read-more-less--less"
                   >
-                    {mentor.User_mentor.introduction}
-                  </ReactReadMoreReadLess>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: mentor.User_mentor.introduction as string,
+                      }}
+                    ></div>
+                  </ReactReadMoreReadLess> */}
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: mentor.User_mentor.introduction as string,
+                    }}
+                  ></div>
                 </Box>
                 {/* Kỹ năng */}
                 <Box sx={{ marginTop: '20px' }}>
