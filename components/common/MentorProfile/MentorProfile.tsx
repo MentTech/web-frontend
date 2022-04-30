@@ -1,7 +1,6 @@
 import ProfileCard from '@components/common/ProfileCard/ProfileCard'
 import SkillBadge from '@components/common/SkillBadge/SkillBadge'
 import { Avatar, Box, Card, CardContent, Grid, Stack, Typography, FormControl } from '@mui/material'
-import { styled } from '@mui/material/styles'
 import { useProfile } from '@hooks/index'
 import Modal from '@components/common/Modal/Modal'
 import { useState } from 'react'
@@ -20,18 +19,10 @@ import draftToHtml from 'draftjs-to-html'
 import dynamic from 'next/dynamic'
 import UpdateProfileMentorForm from '@components/common/UpdateProfileMentorForm/UpdateProfileMentorForm'
 import { EditorProps } from 'react-draft-wysiwyg'
+import UpdateSkillForm from '../UpdateSkillForm/UpdateSkillForm'
 const Editor = dynamic<EditorProps>(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), {
   ssr: false,
 })
-
-interface ChipData {
-  key: number
-  label: string
-}
-
-const ListItem = styled('li')(({ theme }) => ({
-  margin: theme.spacing(0.5),
-}))
 
 export interface ProfileProps {}
 
@@ -39,26 +30,13 @@ export default function MentorProfile(props: ProfileProps) {
   const [showEditAboutModal, setShowEditAboutModal] = useState(false)
   const [showEditPersonalInfor, setShowEditPersonalInfor] = useState(false)
   const [showSkillModal, setShowSkillModal] = useState(false)
-  const [value, setValue] = useState<Date | null>(new Date('2014-08-18T21:11:54'))
-  const [chipData, setChipData] = useState<readonly ChipData[]>([
-    { key: 0, label: 'Angular' },
-    { key: 1, label: 'jQuery' },
-    { key: 2, label: 'Polymer' },
-    { key: 3, label: 'React' },
-    { key: 4, label: 'Vue.js' },
-  ])
+
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty())
 
   function onEditorStateChange(editorState: EditorState) {
     setEditorState(editorState)
   }
 
-  const handleDelete = (chipToDelete: ChipData) => () => {
-    setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key))
-  }
-  const handleChange = (newValue: Date | null) => {
-    setValue(newValue)
-  }
   const { profile, updateProfile } = useProfile()
 
   const { mentorInfor, editMentorProfile } = useMentorInfor(profile?.id)
@@ -72,24 +50,6 @@ export default function MentorProfile(props: ProfileProps) {
         Hủy
       </button>
     </>
-  )
-
-  const editSkillActions = (
-    <>
-      <button className="btn btn-active btn-primary" type="submit" form="createProgramForm">
-        Lưu
-      </button>
-      <button className="btn btn-active btn-ghost" onClick={handleCloseSkillModal}>
-        Hủy
-      </button>
-    </>
-  )
-
-  const renderDatePickerInput = ({ inputRef, inputProps, InputProps }: any) => (
-    <Box sx={{ position: 'relative', width: '100%' }}>
-      <input className="input input-primary input-bordered w-full" ref={inputRef} {...inputProps} />
-      <div className="absolute right-4 top-6">{InputProps?.endAdornment}</div>
-    </Box>
   )
 
   function handleOpenEditAboutModal() {
@@ -137,6 +97,8 @@ export default function MentorProfile(props: ProfileProps) {
     await updateProfile({ ...data, phone: data.phone.toString() })
     toast.success('Cập nhật thông tin thành công!')
   }
+
+  function handleEditSkillSubmit() {}
 
   console.log(mentorInfor)
 
@@ -235,7 +197,7 @@ export default function MentorProfile(props: ProfileProps) {
         <ProfileCard padding="20px 44px" onEditClick={handleShowSkillModal}>
           <HeadingPrimary>Kỹ năng</HeadingPrimary>
           <Typography>
-            <SkillBadge skills={['Java', 'C++', 'C#', 'Python']} />
+            <SkillBadge skills={mentorInfor?.User_mentor?.skills} />
           </Typography>
         </ProfileCard>
         <ProfileCard padding="20px 44px">
@@ -271,37 +233,12 @@ export default function MentorProfile(props: ProfileProps) {
         onClose={handleCloseEditInforModal}
         show={showEditPersonalInfor}
       />
-      <Modal
+      <UpdateSkillForm
+        mentorSkills={mentorInfor?.User_mentor?.skills}
+        onSubmit={handleEditSkillSubmit}
         show={showSkillModal}
-        title="Cập nhật kỹ năng"
-        actions={editSkillActions}
         onClose={handleCloseSkillModal}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            listStyle: 'none',
-            p: 0.5,
-            m: 0,
-          }}
-          component="ul"
-        >
-          {chipData.map((data) => {
-            return (
-              <ListItem key={data.key}>
-                <Chip color="secondary" label={data.label} onDelete={handleDelete(data)} />
-              </ListItem>
-            )
-          })}
-        </Box>
-        <input
-          type="text"
-          placeholder="Thêm kỹ năng"
-          className="input input-bordered input-primary w-full mt-5"
-        />
-      </Modal>
+      />
     </>
   )
 }

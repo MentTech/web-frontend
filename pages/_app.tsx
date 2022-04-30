@@ -6,9 +6,7 @@ import { AppPropsWithLayout } from '@models/common'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { createEmotionCache, theme } from '@utils/index'
-import { store } from 'app/store'
 import { SessionProvider } from 'next-auth/react'
-import { Provider } from 'react-redux'
 import { SWRConfig } from 'swr'
 import { ToastContainer } from 'react-toastify'
 import '../styles/globals.scss'
@@ -29,31 +27,29 @@ function MyApp({
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Provider store={store}>
-          <SessionProvider session={session}>
-            <SWRConfig
-              value={{
-                fetcher: (url) => axiosClient.get(url).then((res) => res.data),
-                shouldRetryOnError: false,
-              }}
-            >
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                {Component.isPrivate ? (
-                  <Auth>
-                    <Layout>
-                      <Component {...pageProps} />
-                    </Layout>
-                  </Auth>
-                ) : (
+        <SessionProvider session={session}>
+          <SWRConfig
+            value={{
+              fetcher: (url) => axiosClient.get(url).then((res) => res.data),
+              shouldRetryOnError: false,
+            }}
+          >
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              {Component.isPrivate ? (
+                <Auth>
                   <Layout>
                     <Component {...pageProps} />
                   </Layout>
-                )}
-                <ToastContainer />
-              </LocalizationProvider>
-            </SWRConfig>
-          </SessionProvider>
-        </Provider>
+                </Auth>
+              ) : (
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              )}
+              <ToastContainer />
+            </LocalizationProvider>
+          </SWRConfig>
+        </SessionProvider>
       </ThemeProvider>
     </CacheProvider>
   )
