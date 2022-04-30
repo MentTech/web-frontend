@@ -18,9 +18,9 @@ import { useMentorInfor } from '@hooks/index'
 //@ts-ignore
 import draftToHtml from 'draftjs-to-html'
 import dynamic from 'next/dynamic'
-
-//@ts-ignore
-const Editor = dynamic(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), {
+import UpdateProfileMentorForm from '@components/common/UpdateProfileMentorForm/UpdateProfileMentorForm'
+import { EditorProps } from 'react-draft-wysiwyg'
+const Editor = dynamic<EditorProps>(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), {
   ssr: false,
 })
 
@@ -59,9 +59,9 @@ export default function MentorProfile(props: ProfileProps) {
   const handleChange = (newValue: Date | null) => {
     setValue(newValue)
   }
-  const { profile } = useProfile()
+  const { profile, updateProfile } = useProfile()
 
-  const { mentorInfor, editProfile } = useMentorInfor(profile?.id)
+  const { mentorInfor, editMentorProfile } = useMentorInfor(profile?.id)
 
   const editAboutActions = (
     <>
@@ -69,17 +69,6 @@ export default function MentorProfile(props: ProfileProps) {
         Lưu
       </button>
       <button className="btn btn-active btn-ghost" onClick={handleCloseEditAboutModal}>
-        Hủy
-      </button>
-    </>
-  )
-
-  const editPersonalInforActions = (
-    <>
-      <button className="btn btn-active btn-primary" type="submit" form="createProgramForm">
-        Lưu
-      </button>
-      <button className="btn btn-active btn-ghost" onClick={handleCloseEditInforModal}>
         Hủy
       </button>
     </>
@@ -117,7 +106,9 @@ export default function MentorProfile(props: ProfileProps) {
 
   async function handleEditAbout() {
     handleCloseEditAboutModal()
-    await editProfile({ introduction: draftToHtml(convertToRaw(editorState.getCurrentContent())) })
+    await editMentorProfile({
+      introduction: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+    })
     toast.success('Cập nhật giới thiệu thành công!')
   }
 
@@ -140,6 +131,14 @@ export default function MentorProfile(props: ProfileProps) {
   function handleShowSkillModal() {
     setShowSkillModal(true)
   }
+
+  async function handleEditInforSubmit(data: any) {
+    handleCloseEditInforModal()
+    await updateProfile({ ...data, phone: data.phone.toString() })
+    toast.success('Cập nhật thông tin thành công!')
+  }
+
+  console.log(mentorInfor)
 
   return (
     <>
@@ -211,18 +210,15 @@ export default function MentorProfile(props: ProfileProps) {
                   Họ và tên: {profile?.name}
                 </Typography>
                 <Typography variant="h6" component="h2" fontSize="16px">
-                  Ngày sinh: {profile?.birthDay}
-                </Typography>
-                <Typography variant="h6" component="h2" fontSize="16px">
-                  Email: {profile?.email}
+                  Ngày sinh: {new Date(profile?.birthday).toLocaleDateString()}
                 </Typography>
               </Grid>
               <Grid item md={6}>
                 <Typography variant="h6" component="h2" fontSize="16px">
-                  Công việc:
+                  Email: {profile?.email}
                 </Typography>
                 <Typography variant="h6" component="h2" fontSize="16px">
-                  Nơi làm việc:
+                  Số điện thoại: {profile?.phone}
                 </Typography>
               </Grid>
             </Grid>
@@ -255,97 +251,26 @@ export default function MentorProfile(props: ProfileProps) {
       >
         <Typography>
           Bạn có thể viết về kinh nghiệm, kỹ năng hoặc những thành tựu mà bạn đã đạt được
-          <Editor
-            editorState={editorState}
-            toolbarClassName="toolbarClassName"
-            wrapperClassName="demo-wrapper mt-4"
-            editorClassName="demo-editor textarea textarea-primary mt-3 min-h-4"
-            onEditorStateChange={onEditorStateChange}
-          />
         </Typography>
+        <Editor
+          editorState={editorState}
+          toolbarClassName="toolbarClassName"
+          wrapperClassName="demo-wrapper mt-4"
+          editorClassName="demo-editor textarea textarea-primary mt-3 min-h-4"
+          onEditorStateChange={onEditorStateChange}
+        />
       </Modal>
-      <Modal
-        show={showEditPersonalInfor}
-        title="Chỉnh sửa thông tin cá nhân"
-        actions={editPersonalInforActions}
+      <UpdateProfileMentorForm
+        data={{
+          name: profile?.name,
+          email: profile?.email,
+          birthday: profile?.birthday,
+          phone: profile?.phone,
+        }}
+        onSubmit={handleEditInforSubmit}
         onClose={handleCloseEditInforModal}
-        size="medium"
-      >
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <form id="editInforForm" className="flex w-full">
-            <Grid container direction="row" spacing={4}>
-              <Grid item sm={6}>
-                <FormControl fullWidth>
-                  <label className="label">
-                    <span className="label-text">Họ và tên</span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Nhập họ tên của bạn"
-                    className="input input-primary input-bordered w-full"
-                  />
-                </FormControl>
-              </Grid>
-
-              <Grid item sm={6}>
-                <FormControl fullWidth>
-                  <label className="label">
-                    <span className="label-text">Email</span>
-                  </label>
-                  <input
-                    type="email"
-                    placeholder="Nhập họ tên của bạn"
-                    className="input input-primary input-bordered w-full"
-                  />
-                </FormControl>
-              </Grid>
-
-              <Grid item sm={6}>
-                <FormControl fullWidth>
-                  <label className="label">
-                    <span className="label-text">Ngày sinh</span>
-                  </label>
-                  <DatePicker
-                    label="Date desktop"
-                    inputFormat="MM/dd/yyyy"
-                    value={value}
-                    PopperProps={{
-                      placement: 'right-start',
-                    }}
-                    onChange={handleChange}
-                    renderInput={renderDatePickerInput}
-                  />
-                </FormControl>
-              </Grid>
-
-              <Grid item sm={6}>
-                <FormControl fullWidth>
-                  <label className="label">
-                    <span className="label-text">Công việc</span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Nhập công việc của bạn"
-                    className="input input-primary input-bordered w-full"
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item sm={6}>
-                <FormControl fullWidth>
-                  <label className="label">
-                    <span className="label-text">Nơi làm việc</span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Nhập nơi làm việc của bạn"
-                    className="input input-primary input-bordered w-full"
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
-          </form>
-        </LocalizationProvider>
-      </Modal>
+        show={showEditPersonalInfor}
+      />
       <Modal
         show={showSkillModal}
         title="Cập nhật kỹ năng"

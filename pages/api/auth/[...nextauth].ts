@@ -18,18 +18,22 @@ export default NextAuth({
       clientSecret: config.facebook.clientSecret,
     }),
     CredentialsProvider({
-      name: 'credentials',
+      id: 'mentee',
+      name: 'mentee',
       credentials: {
         email: { label: 'Email', type: 'email', placeholder: 'Email' },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
         try {
+          console.log('signin')
           if (credentials?.email && credentials?.password) {
-            const res = await authApi.loginApiServer({
+            const res = await axios.post(`${config.backendURL}/v1/auth/signin`, {
               email: credentials?.email,
               password: credentials?.password,
             })
+
+            console.log('Login', res.data)
             if (res.data?.accessToken) {
               return res.data
             }

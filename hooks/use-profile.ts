@@ -1,5 +1,6 @@
 import useSWR from 'swr'
 import { signOut, SignOutParams } from 'next-auth/react'
+import { profileApi } from '@api/index'
 
 export function useProfile() {
   const {
@@ -19,6 +20,15 @@ export function useProfile() {
     await mutate(true)
   }
 
+  async function updateProfile(data: any) {
+    try {
+      await profileApi.updateProfile(data)
+      mutate()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return {
     profile,
     mutate,
@@ -26,5 +36,6 @@ export function useProfile() {
     isValidating,
     logout,
     isFirstLoading,
+    updateProfile,
   }
 }

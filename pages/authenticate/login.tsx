@@ -49,7 +49,7 @@ export default function Login() {
         }
       })
     } else {
-      signIn('credentials', {
+      signIn('mentee', {
         email: data.email,
         password: data.password,
         redirect: false,
