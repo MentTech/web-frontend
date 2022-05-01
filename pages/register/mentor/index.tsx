@@ -6,7 +6,7 @@ import FindMentorProvider from 'context/FindMentorProvider'
 const RegisterMentor: NextPageWithLayout = () => {
   return (
     <>
-      <FindMentorProvider>
+      <FindMentorProvider notFetchMentor={true}>
         <RegisterMentorPage />
       </FindMentorProvider>
     </>

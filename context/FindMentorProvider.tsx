@@ -23,9 +23,10 @@ const FindMentorContext = React.createContext<FindMentorContextProps>({
 
 interface FindMentorProviderProps {
   children: React.ReactNode
+  notFetchMentor?: boolean
 }
 
-const FindMentorProvider = ({ children }: FindMentorProviderProps) => {
+const FindMentorProvider = ({ children, notFetchMentor }: FindMentorProviderProps) => {
   const [loading, setLoading] = useState(true)
   const [loadingMentors, setLoadingMentors] = useState(false)
 
@@ -49,6 +50,7 @@ const FindMentorProvider = ({ children }: FindMentorProviderProps) => {
           setLoading(false)
         }
 
+        if (notFetchMentor) return
         setLoadingMentors(true)
         const { keyword, sortBy, skills, order, category } = router.query
 
