@@ -75,7 +75,7 @@ export default NextAuth({
       try {
         if (account) {
           // check account provider
-          if (account.provider === 'credentials' || account.provider === 'mentor') {
+          if (account.provider === 'mentee' || account.provider === 'mentor') {
             token.accessToken = user?.accessToken
           } else {
             // send social token to server
