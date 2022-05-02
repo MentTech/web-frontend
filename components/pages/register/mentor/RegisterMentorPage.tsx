@@ -24,6 +24,7 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { MultipleInput } from '@components/pages/register/mentor/MultipleInput'
 import { ArrayInput } from './ArrayInput'
+import UserAvatar from '@components/common/UserAvatar'
 
 interface RegisterMentorPayload {
   email: string
@@ -66,6 +67,11 @@ export const RegisterMentorPage = () => {
   const [loadingSubmit, setLoadingSubmit] = useState(false)
 
   const [birthday, setBirthday] = useState<Date | null>(new Date())
+  const [avatarURL, setAvatarURL] = useState('')
+
+  const onChangeAvatar = (value: string) => {
+    setAvatarURL(value)
+  }
 
   const {
     register,
@@ -81,6 +87,9 @@ export const RegisterMentorPage = () => {
 
   const onSubmit = async (data: RegisterMentorPayload) => {
     try {
+      if (!avatarURL) {
+        throw new Error('Hãy cập nhật avatar của bạn')
+      }
       const payload = {
         ...data,
         birthday: birthday?.toISOString(),
@@ -89,7 +98,7 @@ export const RegisterMentorPage = () => {
         achievements: acchivements,
         experiences: experiences,
         categoryId: Number(data.categoryId),
-        avatar: 'temp',
+        avatar: avatarURL,
       }
       setLoadingSubmit(true)
       const response = await mentorApi.applyMentor(payload)
@@ -122,13 +131,34 @@ export const RegisterMentorPage = () => {
         <Box className="df fdc jcc" p={2}>
           <Box>
             <HeadingPrimary>Thông tin liên hệ</HeadingPrimary>
-            <TextField fullWidth style={{ marginTop: 16 }} {...register('name')} label={'Tên'} />
-            <TextField fullWidth style={{ marginTop: 16 }} {...register('email')} label={'Email'} />
+            <Box className="df aic w100">
+              <Box className="df fdc " style={{ flex: 1 }}>
+                <TextField
+                  fullWidth
+                  style={{ marginTop: 16 }}
+                  {...register('name')}
+                  label={'Tên'}
+                />
+                <TextField
+                  fullWidth
+                  style={{ marginTop: 16 }}
+                  {...register('email')}
+                  label={'Email'}
+                />
+              </Box>
+              <Box style={{ marginLeft: 16 }} className="df aic jcc h100">
+                <UserAvatar
+                  avatarURL={avatarURL}
+                  setAvatarURL={(value: string) => onChangeAvatar(value)}
+                />
+              </Box>
+            </Box>
+
             <Box className="w100 df aic">
               <TextField
                 {...register('phone')}
                 label={'Số điện thoại'}
-                style={{ marginRight: 16, marginTop: 16 }}
+                style={{ marginRight: 16, marginTop: 16, width: '50%' }}
               />
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DesktopDatePicker
@@ -138,7 +168,7 @@ export const RegisterMentorPage = () => {
                     setBirthday(date)
                   }}
                   renderInput={(params) => (
-                    <TextField fullWidth style={{ marginTop: 16 }} {...params} />
+                    <TextField fullWidth style={{ marginTop: 16, width: '50%' }} {...params} />
                   )}
                 />
               </LocalizationProvider>

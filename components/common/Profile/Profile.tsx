@@ -97,7 +97,8 @@ export default function Profile(props: ProfileProps) {
           Các lĩnh vực quan tâm
         </Typography>
         <Typography>
-          <SkillBadge skills={['Java', 'C++', 'C#', 'Python']} />
+          {/* TODO: get skill */}
+          {/* <SkillBadge skills={['Java', 'C++', 'C#', 'Python']} /> */}
         </Typography>
       </ProfileCard>
     </Stack>
