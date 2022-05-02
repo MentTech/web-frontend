@@ -135,7 +135,8 @@ function Profile({ mentor }: MentorProfileProps) {
                 {/* Kỹ năng */}
                 <Box sx={{ marginTop: '20px' }}>
                   <HeadingPrimary>Kỹ năng</HeadingPrimary>
-                  <SkillBadge skills={skillDescs as string[]} />
+                  {/* TODO: get skills */}
+                  {/* <SkillBadge skills={skillDescs as string[]} /> */}
                 </Box>
                 {/* Kinh nghiệm */}
                 <Box sx={{ marginTop: '20px' }}>
