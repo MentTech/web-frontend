@@ -1,8 +1,6 @@
-import React, { useState, useRef } from 'react'
 import { Avatar, Box, Tooltip } from '@mui/material'
-import { COLOR } from '@utils/color'
-import axios from 'axios'
 import { setToastError } from '@utils/method'
+import React, { useRef, useState } from 'react'
 import { LoadingIndicator } from './LoadingIndicator/LoadingIndicator'
 
 interface UserAvatarProps {
@@ -15,43 +13,32 @@ export default function UserAvatar({ avatarURL, user, setAvatarURL }: UserAvatar
   const refInput = useRef<any>(null)
   const [loading, setLoading] = useState(false)
 
-  const onUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onUpdate = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target?.files?.[0]
 
     if (file) {
       if (file.name.match(/\.(jpg|jpeg|png|gif)$/)) {
         try {
           setLoading(true)
-          file?.arrayBuffer().then((buffer) => {
-            const reader = new FileReader()
-            reader.readAsDataURL(file)
-            reader.onload = async () => {
-              const base64data = reader.result
-              console.log(
-                '🚀 ~ file: UserAvatar.tsx ~ line 30 ~ reader.onload= ~ base64data',
-                base64data
-              )
+          var formdata = new FormData()
+          formdata.append('file', file)
 
-              await axios
-                .post(
-                  'https://images.menttech.live/',
-                  { file: base64data },
-                  {
-                    headers: {
-                      'Content-Type': 'multipart/form-data',
-                      enctype: 'multipart/form-data',
-                    },
-                  }
-                )
-                .then((res: { data: any }) => {
-                  setAvatarURL(`https://images.menttech.live/${res.data.filename}`)
-                })
-                .catch((error: any) => {
-                  setToastError(error)
-                })
-              setAvatarURL(base64data as string)
-            }
-          })
+          var requestOptions = {
+            method: 'POST',
+            body: formdata,
+          }
+
+          await fetch('https://images.menttech.live/', requestOptions)
+            .then((response) => response.json())
+            .then((response) => {
+              setAvatarURL(`https://images.menttech.live/${response.filename}`)
+            })
+            .catch((error) => {
+              setToastError(error)
+            })
+            .finally(() => {
+              setLoading(false)
+            })
         } catch (error) {
           setToastError(error)
         } finally {
@@ -79,8 +66,8 @@ export default function UserAvatar({ avatarURL, user, setAvatarURL }: UserAvatar
         <Avatar
           alt={user}
           sx={{
-            width: 100,
-            height: 100,
+            width: 150,
+            height: 150,
           }}
           src={`${avatarURL}` || '123'}
         >

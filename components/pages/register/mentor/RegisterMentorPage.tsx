@@ -98,7 +98,7 @@ export const RegisterMentorPage = () => {
         achievements: acchivements,
         experiences: experiences,
         categoryId: Number(data.categoryId),
-        avatar: 'temp',
+        avatar: avatarURL,
       }
       setLoadingSubmit(true)
       const response = await mentorApi.applyMentor(payload)
@@ -146,8 +146,11 @@ export const RegisterMentorPage = () => {
                   label={'Email'}
                 />
               </Box>
-              <Box style={{ marginLeft: 16 }} className="df aic jcc">
-                <UserAvatar avatarURL={avatarURL} setAvatarURL={(value) => setAvatarURL(value)} />
+              <Box style={{ marginLeft: 16 }} className="df aic jcc h100">
+                <UserAvatar
+                  avatarURL={avatarURL}
+                  setAvatarURL={(value: string) => onChangeAvatar(value)}
+                />
               </Box>
             </Box>
 
