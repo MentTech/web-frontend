@@ -1,19 +1,49 @@
-import { useProfile } from '@hooks/index'
-import { MainLayout } from '@components/layouts'
-import { NextPageWithLayout } from '@models/common'
-import { Typography, Box, Grid, Paper, Avatar, Stack, CardContent, Card } from '@mui/material'
+import { profileApi } from '@api/profile-api'
+import LinearIndeterminate from '@components/common/LinearIndeterminate/LinearIndeterminate'
 import ProfileCard from '@components/common/ProfileCard/ProfileCard'
-import { styled } from '@mui/material/styles'
-import SkillBadge from '@components/common/SkillBadge/SkillBadge'
+import UserAvatar from '@components/common/UserAvatar'
+import { MainLayout } from '@components/layouts'
+import { useProfile } from '@hooks/index'
+import { NextPageWithLayout } from '@models/common'
+import { Avatar, Box, Card, CardContent, Grid, Stack, Typography } from '@mui/material'
+import { setToastError, setToastSuccess } from '@utils/method'
+import { useEffect, useState } from 'react'
 
 export interface ProfileProps {}
 
 const Profile: NextPageWithLayout = (props: ProfileProps) => {
   const { profile } = useProfile()
+  const { name, avatar, email, birthday, createAt, phone } = profile || {}
+  const [avatarURL, setavatarURL] = useState(avatar)
+
+  const onChangeAvatar = (value: string) => setavatarURL(value)
+
+  const [loadingUpdate, setLoadingUpdate] = useState(false)
+
+  useEffect(() => {
+    const updateAvatar = async () => {
+      try {
+        setLoadingUpdate(true)
+        const result = await profileApi.updateAvatar({ avatar: avatarURL })
+        if (result.status === 200) {
+          setToastSuccess('Cập nhật avatar thành công')
+        }
+      } catch (error) {
+        setToastError(error)
+      } finally {
+        setLoadingUpdate(false)
+      }
+    }
+    if (avatarURL) {
+      updateAvatar()
+    }
+  }, [avatarURL])
+
   return (
     <>
       <Box sx={{ flexGrow: 1, marginTop: 4 }}>
-        <Grid container spacing={3}>
+        {loadingUpdate && <LinearIndeterminate />}
+        <Grid container spacing={3} style={{ paddingTop: loadingUpdate ? 0 : 4 }}>
           <Grid item md={8}>
             <Stack spacing={3}>
               <Card sx={{ minHeight: '465px', position: 'relative' }}>
@@ -30,26 +60,18 @@ const Profile: NextPageWithLayout = (props: ProfileProps) => {
                     sx={{ position: 'absolute', top: '40%', left: 60, display: 'flex' }}
                   >
                     <Grid item md={3}>
-                      <Avatar
-                        alt="Remy Sharp"
-                        src={profile?.avatar}
-                        sx={{
-                          width: 176,
-                          height: 176,
-                          border: '2px solid #fff',
-                        }}
-                      />
+                      <UserAvatar avatarURL={avatarURL} setAvatarURL={onChangeAvatar} />
                     </Grid>
 
                     <Grid item md={9} sx={{ textAlign: 'left' }}>
                       <Typography
-                        component="h2"
+                        className="sb"
                         variant="h3"
                         marginLeft="20px"
                         marginTop="90px"
                         fontSize="32px"
                       >
-                        {profile?.name}
+                        {name}
                       </Typography>
                       <Typography
                         variant="h5"
@@ -58,20 +80,14 @@ const Profile: NextPageWithLayout = (props: ProfileProps) => {
                         fontSize="20px"
                         color="rgba(66, 66, 66, 0.39)"
                       >
-                        {profile?.email}
+                        {email}
                       </Typography>
                     </Grid>
                   </Grid>
                 </CardContent>
               </Card>
-              <ProfileCard padding="20px 44px">
-                <Typography
-                  variant="h4"
-                  component="h2"
-                  marginBottom={2}
-                  fontWeight="500"
-                  fontSize="24px"
-                >
+              <ProfileCard padding="20px 20px">
+                <Typography variant="h6" className="sb" marginBottom={2}>
                   Giới thiệu
                 </Typography>
                 <Typography>
@@ -81,36 +97,30 @@ const Profile: NextPageWithLayout = (props: ProfileProps) => {
                   cloud.
                 </Typography>
               </ProfileCard>
-              <ProfileCard padding="20px 44px">
-                <Typography variant="h4" component="h2" marginBottom={2} fontSize="24px">
+              <ProfileCard padding="20px 20px">
+                <Typography variant="h6" className="sb" marginBottom={2}>
                   Thông tin cá nhân
                 </Typography>
                 <Typography>
-                  <Grid container>
-                    <Grid item md={6}>
-                      <Typography variant="h6" component="h2" fontSize="16px">
-                        Họ và tên: {profile?.name}
+                  <Box className="df aic ">
+                    <Box className="df fdc" style={{ width: '50%' }}>
+                      <Typography>Họ và tên: {name}</Typography>
+                      <Typography>Ngày sinh: {new Date(birthday).toLocaleDateString()}</Typography>
+                      <Typography>Công việc:</Typography>
+                      <Typography>
+                        Tham gia lúc: {new Date(createAt).toLocaleDateString()}
                       </Typography>
-                      <Typography variant="h6" component="h2" fontSize="16px">
-                        Ngày sinh: {profile?.birthDay}
-                      </Typography>
-                      <Typography variant="h6" component="h2" fontSize="16px">
-                        Email: {profile?.email}
-                      </Typography>
-                    </Grid>
-                    <Grid item md={6}>
-                      <Typography variant="h6" component="h2" fontSize="16px">
-                        Công việc:
-                      </Typography>
-                      <Typography variant="h6" component="h2" fontSize="16px">
-                        Nơi làm việc:
-                      </Typography>
-                    </Grid>
-                  </Grid>
+                    </Box>
+                    <Box className="df fdc" style={{ width: '50%' }}>
+                      <Typography>Email: {email}</Typography>
+                      <Typography>Số điện thoại: {phone}</Typography>
+                      <Typography>Nơi làm việc:</Typography>
+                    </Box>
+                  </Box>
                 </Typography>
               </ProfileCard>
-              <ProfileCard padding="20px 44px">
-                <Typography variant="h4" component="h2" marginBottom={2} fontSize="24px">
+              <ProfileCard padding="20px 20px">
+                <Typography variant="h6" className="sb" marginBottom={2}>
                   Các lĩnh vực quan tâm
                 </Typography>
                 <Typography>
@@ -123,7 +133,7 @@ const Profile: NextPageWithLayout = (props: ProfileProps) => {
           <Grid item md={4} xs={12}>
             <Card sx={{ textAlign: 'center', padding: '24px 32px' }}>
               <CardContent sx={{ width: '100%' }}>
-                <Typography variant="h5" component="h2">
+                <Typography variant="h5" className="sb">
                   Có thể bạn quan tâm
                 </Typography>
                 <Stack spacing={2} sx={{ marginTop: '24px' }}>

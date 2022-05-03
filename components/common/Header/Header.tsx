@@ -1,8 +1,6 @@
 import { useProfile } from '@hooks/index'
 import Logout from '@mui/icons-material/Logout'
 import MenuIcon from '@mui/icons-material/Menu'
-import PersonAdd from '@mui/icons-material/PersonAdd'
-import Settings from '@mui/icons-material/Settings'
 import AppBar from '@mui/material/AppBar'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
@@ -16,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Toolbar from '@mui/material/Toolbar'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useState } from 'react'
 
@@ -46,6 +45,8 @@ const Header = () => {
       console.log(err)
     }
   }
+
+  const { data: session } = useSession()
 
   console.log('avatar', profile?.avatar)
 
