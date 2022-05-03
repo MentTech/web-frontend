@@ -1,6 +1,7 @@
 import { profileApi } from '@api/profile-api'
 import LinearIndeterminate from '@components/common/LinearIndeterminate/LinearIndeterminate'
 import ProfileCard from '@components/common/ProfileCard/ProfileCard'
+import SuggestMentorsCard from '@components/common/SuggestMentorsCard'
 import UserAvatar from '@components/common/UserAvatar'
 import { MainLayout } from '@components/layouts'
 import { useProfile } from '@hooks/index'
@@ -131,6 +132,8 @@ const Profile: NextPageWithLayout = (props: ProfileProps) => {
             </Stack>
           </Grid>
           <Grid item md={4} xs={12}>
+            {/* TODO: lấy danh sách mentor không cần id mentor */}
+            {/* <SuggestMentorsCard /> */}
             <Card sx={{ textAlign: 'center', padding: '24px 32px' }}>
               <CardContent sx={{ width: '100%' }}>
                 <Typography variant="h5" className="sb">

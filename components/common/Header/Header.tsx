@@ -46,10 +46,6 @@ const Header = () => {
     }
   }
 
-  const { data: session } = useSession()
-
-  console.log('avatar', profile?.avatar)
-
   return (
     <AppBar position="fixed">
       <Container maxWidth="xl">
