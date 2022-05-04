@@ -124,9 +124,9 @@ export function MentorLayout({ children }: LayoutProps) {
             { title: 'Tin nhắn', href: '/mentor/message', icon: <MailIcon /> },
             { title: 'Chương trình', href: '/mentor/programs', icon: <MenuBook /> },
             { title: 'Hồ sơ của bạn', href: '/mentor/profile', icon: <Person /> },
-          ].map((item) => {
+          ].map((item, index) => {
             return (
-              <Link href={item.href}>
+              <Link href={item.href} key={index}>
                 <ListItemButton key={item.title}>
                   <ListItemIcon>{item.icon}</ListItemIcon>
                   <ListItemText primary={item.title} />

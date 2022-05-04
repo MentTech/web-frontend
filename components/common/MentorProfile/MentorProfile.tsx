@@ -98,10 +98,6 @@ export default function MentorProfile(props: ProfileProps) {
     toast.success('Cập nhật thông tin thành công!')
   }
 
-  function handleEditSkillSubmit() {}
-
-  console.log(mentorInfor)
-
   return (
     <>
       <Stack spacing={3}>
@@ -165,7 +161,7 @@ export default function MentorProfile(props: ProfileProps) {
         </ProfileCard>
         <ProfileCard padding="20px 44px" onEditClick={handleOpenEditPersonalProfile}>
           <HeadingPrimary>Thông tin cá nhân</HeadingPrimary>
-          <Typography>
+          <Box>
             <Grid container>
               <Grid item md={6}>
                 <Typography variant="h6" component="h2" fontSize="16px">
@@ -184,7 +180,7 @@ export default function MentorProfile(props: ProfileProps) {
                 </Typography>
               </Grid>
             </Grid>
-          </Typography>
+          </Box>
         </ProfileCard>
         <ProfileCard padding="20px 44px">
           <HeadingPrimary>Kinh nghiệm</HeadingPrimary>
@@ -196,9 +192,9 @@ export default function MentorProfile(props: ProfileProps) {
         </ProfileCard>
         <ProfileCard padding="20px 44px" onEditClick={handleShowSkillModal}>
           <HeadingPrimary>Kỹ năng</HeadingPrimary>
-          <Typography>
+          <Box>
             <SkillBadge skills={mentorInfor?.User_mentor?.skills} />
-          </Typography>
+          </Box>
         </ProfileCard>
         <ProfileCard padding="20px 44px">
           <HeadingPrimary>Lĩnh vực</HeadingPrimary>
@@ -233,12 +229,7 @@ export default function MentorProfile(props: ProfileProps) {
         onClose={handleCloseEditInforModal}
         show={showEditPersonalInfor}
       />
-      <UpdateSkillForm
-        mentorSkills={mentorInfor?.User_mentor?.skills}
-        onSubmit={handleEditSkillSubmit}
-        show={showSkillModal}
-        onClose={handleCloseSkillModal}
-      />
+      <UpdateSkillForm show={showSkillModal} onClose={handleCloseSkillModal} />
     </>
   )
 }

@@ -1,8 +1,9 @@
 import useSWR from 'swr'
 import { mentorApi } from '@api/mentor-api'
+import { Skill } from '@models/index'
 
 export function useMentorInfor(mentorId: string) {
-  const { data: mentorInfor, error, mutate } = useSWR(`/v1/mentor/${mentorId}`)
+  const { data: mentorInfor, mutate } = useSWR(`/v1/mentor/${mentorId}`)
 
   async function editMentorProfile(data: any) {
     try {
@@ -13,9 +14,37 @@ export function useMentorInfor(mentorId: string) {
     }
   }
 
+  function removeASkill(id: number) {
+    mutate(
+      {
+        ...mentorInfor,
+        User_mentor: {
+          ...mentorInfor.User_mentor,
+          skills: mentorInfor.User_mentor.skills.filter((skill: Skill) => skill.id !== id),
+        },
+      },
+      false
+    )
+  }
+
+  function addASkill(skill: Skill) {
+    mutate(
+      {
+        ...mentorInfor,
+        User_mentor: {
+          ...mentorInfor.User_mentor,
+          skills: [...mentorInfor.User_mentor.skills, skill],
+        },
+      },
+      false
+    )
+  }
+
   return {
     mentorInfor,
     mutate,
     editMentorProfile,
+    removeASkill,
+    addASkill,
   }
 }
