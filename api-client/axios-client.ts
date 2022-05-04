@@ -16,6 +16,10 @@ axiosClient.interceptors.response.use(
     return response
   },
   function (error) {
+    if (String(error).includes('401')) {
+      console.info('Redirecting to login')
+      window.location.href = `${location.origin}/authenticate/login`
+    }
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     return Promise.reject(error)
