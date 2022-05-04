@@ -15,11 +15,20 @@ import * as yup from 'yup'
 import { MentorProgram } from '@models/index'
 import Loading from '@components/common/Loading/Loading'
 import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+import { ContentState, convertFromHTML, convertToRaw, EditorState } from 'draft-js'
+import { EditorProps } from 'react-draft-wysiwyg'
+//@ts-ignore
+import draftToHtml from 'draftjs-to-html'
+const Editor = dynamic<EditorProps>(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), {
+  ssr: false,
+})
 
 const schema = yup
   .object({
     title: yup.string().required(),
-    detail: yup.string().required(),
+    detail: yup.object().required(),
     credit: yup.number().max(500000000).min(1).required(),
   })
   .required()
@@ -30,15 +39,27 @@ export default function MentorHome() {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [selectedCell, setSelectedCell] = useState<GridRowModel<MentorProgram> | null>(null)
+  //const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty())
+
   const { data: session } = useSession()
   const { programs, addProgram, deleteProgram, editProgram } = useMentorProgram(
     session?.user?.id as string
   )
 
+  // function onEditorStateChange(editorState: EditorState) {
+  //   setEditorState(editorState)
+  // }
+
   useEffect(() => {
     if (selectedCell) {
       setEditValue('title', selectedCell.title)
-      setEditValue('detail', selectedCell.detail)
+      const blocksFromHTML = convertFromHTML(selectedCell.detail)
+      setEditValue(
+        'detail',
+        EditorState.createWithContent(
+          ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap)
+        )
+      )
       setEditValue('credit', selectedCell.credit)
     }
   }, [selectedCell])
@@ -46,7 +67,7 @@ export default function MentorHome() {
   const editFormSchema = yup
     .object({
       title: yup.string().default(selectedCell?.title).required(),
-      detail: yup.string().default(selectedCell?.detail).required(),
+      detail: yup.object().required(),
       credit: yup.number().default(selectedCell?.credit).max(500000000).min(1).required(),
     })
     .required()
@@ -74,7 +95,6 @@ export default function MentorHome() {
 
   const columns: GridColDef[] = [
     { field: 'title', headerName: 'Tên session', width: 200 },
-    { field: 'detail', headerName: 'Chi tiết', width: 200 },
     { field: 'credit', headerName: 'Credit', width: 100 },
     {
       field: 'createAt',
@@ -161,12 +181,16 @@ export default function MentorHome() {
   }
 
   function handleFormSubmit(data: any) {
-    addProgram(data)
     handleModalClose()
+    addProgram({ ...data, detail: draftToHtml(convertToRaw(data.detail.getCurrentContent())) })
   }
 
   function handleEditFormSubmit(data: any) {
-    editProgram({ ...data, id: selectedCell?.id })
+    editProgram({
+      ...data,
+      id: selectedCell?.id,
+      detail: draftToHtml(convertToRaw(data.detail.getCurrentContent())),
+    })
     handleCloseEditModal()
   }
 
@@ -241,16 +265,21 @@ export default function MentorHome() {
               control={controlEdit}
               defaultValue={selectedCell?.detail}
               render={({ field }) => (
-                <TextField
-                  {...field}
-                  error={errorsEdit.detail}
-                  fullWidth
-                  id="outlined-required"
-                  label="Chi tiết"
-                  helperText={errorsEdit.detail?.message}
+                <Editor
+                  editorState={field.value}
+                  toolbarClassName="toolbarClassName"
+                  wrapperClassName="demo-wrapper mt-4"
+                  editorClassName={`demo-editor textarea mt-3 min-h-4 ${
+                    errorsEdit.detail ? 'textarea-error' : 'textarea-bordered'
+                  }`}
+                  placeholder="Chi tiết"
+                  onEditorStateChange={field.onChange}
                 />
               )}
             />
+            <label className="label">
+              <span className="label-text-alt">{errorsEdit?.detail?.message}</span>
+            </label>
             <Controller
               name="credit"
               control={controlEdit}
@@ -294,16 +323,21 @@ export default function MentorHome() {
               control={control}
               defaultValue={''}
               render={({ field }) => (
-                <TextField
-                  {...field}
-                  error={errors.detail}
-                  fullWidth
-                  id="outlined-required"
-                  label="Chi tiết"
-                  helperText={errors.detail?.message}
+                <Editor
+                  editorState={field.value}
+                  toolbarClassName="toolbarClassName"
+                  wrapperClassName="demo-wrapper mt-4"
+                  editorClassName={`demo-editor textarea mt-3 min-h-4 ${
+                    errors.detail ? 'textarea-error' : 'textarea-bordered'
+                  }`}
+                  placeholder="Chi tiết"
+                  onEditorStateChange={field.onChange}
                 />
               )}
             />
+            <label className="label">
+              <span className="label-text-alt">{errors?.detail?.message}</span>
+            </label>
             <Controller
               name="credit"
               control={control}
