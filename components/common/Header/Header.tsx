@@ -3,6 +3,7 @@ import Logout from '@mui/icons-material/Logout'
 import MenuIcon from '@mui/icons-material/Menu'
 import PersonAdd from '@mui/icons-material/PersonAdd'
 import Settings from '@mui/icons-material/Settings'
+import { Favorite, School, Person } from '@mui/icons-material'
 import AppBar from '@mui/material/AppBar'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
@@ -187,12 +188,17 @@ const Header = () => {
               <Divider />
               <Link href="/profile">
                 <MenuItem>
-                  <Avatar /> Trang cá nhân
+                  <Person sx={{ mr: 2 }} /> Trang cá nhân
                 </MenuItem>
               </Link>
               <Link href="/sessions">
                 <MenuItem>
-                  <Avatar /> Phiên mentoring
+                  <School sx={{ mr: 2 }} /> Phiên mentoring
+                </MenuItem>
+              </Link>
+              <Link href="/favorites">
+                <MenuItem>
+                  <Favorite sx={{ mr: 2 }} /> Yêu thích
                 </MenuItem>
               </Link>
               <Divider />

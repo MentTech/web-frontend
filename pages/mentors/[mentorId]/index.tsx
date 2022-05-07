@@ -60,16 +60,16 @@ function Profile({ mentor }: MentorProfileProps) {
 
   let isFavorited = false
   if (favorites) {
-    isFavorited = favorites.findIndex((item: any) => item.id === mentorId) !== -1
+    isFavorited = favorites.findIndex((item: any) => item == mentorId) !== -1
   }
 
-  console.log('session', session)
+  console.log('favorite', favorites)
 
   function addToWishList() {
     if (status === 'unauthenticated') {
       return router.push('/authenticate/login')
     }
-    addFavorite(mentorId as string)
+    addFavorite(Number(mentorId))
     toast.success('Đã thêm vào danh sách yêu thích')
   }
 
@@ -77,8 +77,8 @@ function Profile({ mentor }: MentorProfileProps) {
     if (status === 'unauthenticated') {
       return router.push('/authenticate/login')
     }
-    removeFavorite(mentorId as string)
-    toast.error('Đã xóa khỏi danh sách yêu thích')
+    removeFavorite(Number(mentorId))
+    toast.success('Đã xóa khỏi danh sách yêu thích')
   }
 
   return (

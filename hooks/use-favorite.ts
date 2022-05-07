@@ -10,14 +10,14 @@ export function useFavorite() {
     revalidateOnMount: true,
   })
 
-  async function addFavorite(mentorId: string) {
+  async function addFavorite(mentorId: number) {
     try {
       await favoriteApi.addAFavoriteMentor(mentorId)
     } catch (err) {}
     mutate(favorites?.concat(mentorId), false)
   }
 
-  async function removeFavorite(mentorId: string) {
+  async function removeFavorite(mentorId: number) {
     try {
       await favoriteApi.removeAFavoriteMentor(mentorId)
     } catch (err) {}
