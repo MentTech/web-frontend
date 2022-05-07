@@ -188,7 +188,13 @@ export const ProgramDetailPage = () => {
                       <Typography className="sb" variant="h6">
                         Thông tin chương trình
                       </Typography>
-                      <Typography>{currentProgram?.detail}</Typography>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: currentProgram?.detail
+                            ? currentProgram.detail
+                            : 'Chưa có thông tin.',
+                        }}
+                      ></div>
                     </Paper>
                     <Box sx={{ marginTop: '20px' }}>
                       <HeadingPrimary>Đánh giá</HeadingPrimary>

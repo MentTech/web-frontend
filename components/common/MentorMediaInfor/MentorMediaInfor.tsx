@@ -1,7 +1,6 @@
 import * as React from 'react'
-import { Box, Avatar, Typography, Rating, Stack, Grid } from '@mui/material'
+import { Box, Avatar, Typography, Rating, Stack, Grid, Chip } from '@mui/material'
 import { LocationOn, AccessTime } from '@mui/icons-material'
-import SkillBadge from '@components/common/SkillBadge/SkillBadge'
 import { Mentor } from '@models/index'
 
 export interface MentorMediaInfoProps {
@@ -38,7 +37,7 @@ export default function MentorMediaInfo({ mentor }: MentorMediaInfoProps) {
             }}
           >
             <Rating readOnly value={4.5} precision={0.5} />
-            <Typography>4.5 (3 đánh giá)</Typography>
+            <Typography>4.5 (3 đánh giá) 200 mentee</Typography>
           </Stack>
           <Stack direction={'row'} spacing={4} sx={{ marginBottom: '20px' }}>
             <span>
@@ -50,11 +49,7 @@ export default function MentorMediaInfo({ mentor }: MentorMediaInfoProps) {
               Thường trả lời sau vài giờ
             </span>
           </Stack>
-          {/* <SkillBadge
-            skills={
-              ['Software Architecture', 'Front-end', 'Javascipt']
-            }
-          /> */}
+          <Chip label={mentor?.User_mentor?.category?.name} />
         </Grid>
       </Grid>
     </>

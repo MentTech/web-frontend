@@ -55,7 +55,7 @@ export interface UserMentor {
   achievements?: Array<string>
   skills?: Array<Skill>
   introduction?: string
-  category?: object
+  category?: Category
   rating?: Number
   programs?: Array<Program>
 }

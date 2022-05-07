@@ -3,9 +3,8 @@ import Modal from '@components/common/Modal/Modal'
 import ProfileCard from '@components/common/ProfileCard/ProfileCard'
 import SkillBadge from '@components/common/SkillBadge/SkillBadge'
 import { useProfile } from '@hooks/index'
-import { Avatar, Box, Card, CardContent, Grid, Stack, Typography } from '@mui/material'
+import { Avatar, Box, Card, CardContent, Grid, Stack, Typography, Chip } from '@mui/material'
 import { useState } from 'react'
-
 import { useMentorInfor } from '@hooks/index'
 import { ContentState, convertFromHTML, convertToRaw, EditorState } from 'draft-js'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
@@ -16,6 +15,8 @@ import draftToHtml from 'draftjs-to-html'
 import dynamic from 'next/dynamic'
 import { EditorProps } from 'react-draft-wysiwyg'
 import UpdateSkillForm from '../UpdateSkillForm/UpdateSkillForm'
+import UpdateMentorCategory from '../UpdateMentorCategory/UpdateMentorCategory'
+import { useCategory } from '@hooks/index'
 const Editor = dynamic<EditorProps>(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), {
   ssr: false,
 })
@@ -26,16 +27,20 @@ export default function MentorProfile(props: ProfileProps) {
   const [showEditAboutModal, setShowEditAboutModal] = useState(false)
   const [showEditPersonalInfor, setShowEditPersonalInfor] = useState(false)
   const [showSkillModal, setShowSkillModal] = useState(false)
-
+  const [showCategoryModal, setCategoryModal] = useState(false)
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty())
 
   function onEditorStateChange(editorState: EditorState) {
     setEditorState(editorState)
   }
 
+  const { categories } = useCategory()
+
   const { profile, updateProfile } = useProfile()
 
   const { mentorInfor, editMentorProfile } = useMentorInfor(profile?.id)
+
+  const matchedCategory = mentorInfor?.User_mentor?.category
 
   const editAboutActions = (
     <>
@@ -88,11 +93,27 @@ export default function MentorProfile(props: ProfileProps) {
     setShowSkillModal(true)
   }
 
+  function handleShowCategoryModal() {
+    setCategoryModal(true)
+  }
+
+  function closeCategoryModal() {
+    setCategoryModal(false)
+  }
+
+  async function handleCategorySubmit(data: string) {
+    closeCategoryModal()
+    await editMentorProfile({ categoryId: data })
+    toast.success('Cập nhật lĩnh vực thành công!')
+  }
+
   async function handleEditInforSubmit(data: any) {
     handleCloseEditInforModal()
     await updateProfile({ ...data, phone: data.phone.toString() })
     toast.success('Cập nhật thông tin thành công!')
   }
+
+  console.log('infor', mentorInfor)
 
   return (
     <>
@@ -192,8 +213,15 @@ export default function MentorProfile(props: ProfileProps) {
             <SkillBadge skills={mentorInfor?.User_mentor?.skills} />
           </Box>
         </ProfileCard>
-        <ProfileCard padding="20px 44px">
+        <ProfileCard padding="20px 44px" onEditClick={handleShowCategoryModal}>
           <HeadingPrimary>Lĩnh vực</HeadingPrimary>
+          <Box>
+            {matchedCategory ? (
+              <Chip label={matchedCategory.name} clickable={false} />
+            ) : (
+              'Chưa có thông tin.'
+            )}
+          </Box>
         </ProfileCard>
       </Stack>
       <Modal
@@ -226,6 +254,12 @@ export default function MentorProfile(props: ProfileProps) {
         show={showEditPersonalInfor}
       />
       <UpdateSkillForm show={showSkillModal} onClose={handleCloseSkillModal} />
+      <UpdateMentorCategory
+        show={showCategoryModal}
+        onClose={closeCategoryModal}
+        onSubmit={handleCategorySubmit}
+        selectedCategory={matchedCategory}
+      />
     </>
   )
 }

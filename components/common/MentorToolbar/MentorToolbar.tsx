@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography'
 import { useState } from 'react'
 
 const pages = ['Products', 'Pricing', 'Blog']
-const settings = ['Profile', 'Account', 'Dashboard']
+const settings = ['Hồ sơ', 'Phiên mentoring']
 
 export interface MentorToolbar {
   handleMenuOpen: () => void
@@ -149,7 +149,7 @@ const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
             </MenuItem>
           ))}
           <MenuItem onClick={handleLogout}>
-            <Typography textAlign="center">Logout</Typography>
+            <Typography textAlign="center">Đăng xuất</Typography>
           </MenuItem>
         </Menu>
       </Box>

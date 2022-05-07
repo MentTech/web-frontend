@@ -51,7 +51,7 @@ function Profile({ mentor }: MentorProfileProps) {
   const { data: session, status } = useSession()
 
   const { mentorId } = router.query
-  const skillDescs = mentor?.User_mentor.skills?.map((item) => item.description)
+  const skillDescs = mentor?.User_mentor.skills
 
   const { User_mentor } = mentor
   const { programs } = User_mentor
@@ -136,7 +136,7 @@ function Profile({ mentor }: MentorProfileProps) {
                 <Box sx={{ marginTop: '20px' }}>
                   <HeadingPrimary>Kỹ năng</HeadingPrimary>
                   {/* TODO: get skills */}
-                  {/* <SkillBadge skills={skillDescs as string[]} /> */}
+                  <SkillBadge skills={skillDescs} />
                 </Box>
                 {/* Kinh nghiệm */}
                 <Box sx={{ marginTop: '20px' }}>
@@ -162,6 +162,16 @@ function Profile({ mentor }: MentorProfileProps) {
                       </p>
                     </li>
                   </ul>
+                </Box>
+                {/* Chứng chỉ */}
+                <Box sx={{ marginTop: '20px' }}>
+                  <HeadingPrimary>Chứng chỉ</HeadingPrimary>
+                  <Stack spacing={2}>
+                    <Typography variant="h6">Chứng chỉ 1</Typography>
+                    <Typography variant="h6">Chứng chỉ 2</Typography>
+                    <Typography variant="h6">Chứng chỉ 3</Typography>
+                    <Typography variant="h6">Chứng chỉ 4</Typography>
+                  </Stack>
                 </Box>
                 {/* Đánh giá */}
                 <Box sx={{ marginTop: '20px' }}>

@@ -22,7 +22,6 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Footer from '@components/common/Footer/Footer'
 import { useRouter } from 'next/router'
-import { text } from 'stream/consumers'
 
 const drawerWidth = 240
 
