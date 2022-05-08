@@ -1,7 +1,7 @@
 import { Chip, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { COLOR } from '@utils/color'
-import { Key, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 interface ArrayInputProps {
   title: string

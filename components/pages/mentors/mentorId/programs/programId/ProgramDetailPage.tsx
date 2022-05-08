@@ -1,36 +1,17 @@
-import { MainLayout } from '@components/layouts'
-import {
-  Avatar,
-  Button,
-  Container,
-  Grid,
-  Paper,
-  Typography,
-  Stack,
-  Divider,
-  Rating,
-  ratingClasses,
-} from '@mui/material'
+import { ProgramApi } from '@api/index'
+import Breadcrumb from '@components/common/Breadcrumb/Breadcrumb'
+import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
+import { LoadingIndicator } from '@components/common/LoadingIndicator/LoadingIndicator'
+import MentorProgramCard from '@components/common/MentorProgramCard/MentorProgramCard'
+import RatingList from '@components/common/RatingList/RatingList'
+import { Program } from '@models/index'
+import { Avatar, Button, Container, Divider, Grid, Paper, Rating, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { useCurrentMentor } from 'context/MentorProvider'
 import { useRouter } from 'next/router'
-import Breadcrumb from '@components/common/Breadcrumb/Breadcrumb'
-import { useState, useEffect } from 'react'
-import { RequestDialog } from './RequestDialog'
-import { NextPageWithLayout } from '@models/common'
-import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
+import { useEffect, useState } from 'react'
 import Carousel from 'react-elastic-carousel'
-import { breakPointsCarousel } from '@utils/constant'
-import FeedbackCard from '@components/common/FeedbackCard/FeedbackCard'
-import { SimilarMentorProgram } from './SimilarMentorProgram'
-import SuggestMentorsCard from '@components/common/SuggestMentorsCard'
-import { LoadingIndicator } from '@components/common/LoadingIndicator/LoadingIndicator'
-import RatingItem from '@components/common/RatingItem/RatingItem'
-import { ProgramApi } from '@api/index'
-import { Program } from '@models/index'
-import CommonPagination from '@components/common/CommonPagination/CommonPagination'
-import RatingList from '@components/common/RatingList/RatingList'
-import MentorProgramCard from '@components/common/MentorProgramCard/MentorProgramCard'
+import { RequestDialog } from './RequestDialog'
 
 interface AverageRating {
   average: number
@@ -64,7 +45,7 @@ export const ProgramDetailPage = () => {
 
   const router = useRouter()
 
-  let currentProgram = null
+  let currentProgram: Program | null | undefined = null
 
   if (router.query.programId && loading === false) {
     currentProgram = programs.find((program) => program.id === Number(router.query.programId))
@@ -157,7 +138,9 @@ export const ProgramDetailPage = () => {
                         <Button
                           style={{ background: '#3F3D56' }}
                           onClick={() => {
-                            setopenDialog(true)
+                            router.push(
+                              `/mentors/${mentorId}/programs/${currentProgram?.id}/checkout`
+                            )
                           }}
                           variant="contained"
                         >
