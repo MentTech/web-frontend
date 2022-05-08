@@ -26,14 +26,11 @@ export default NextAuth({
       },
       async authorize(credentials, req) {
         try {
-          console.log('signin')
           if (credentials?.email && credentials?.password) {
             const res = await axios.post(`${config.backendURL}/v1/auth/signin`, {
               email: credentials?.email,
               password: credentials?.password,
             })
-
-            console.log('Login', res.data)
             if (res.data?.accessToken) {
               return res.data
             }

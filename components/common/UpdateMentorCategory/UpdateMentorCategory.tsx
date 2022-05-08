@@ -38,8 +38,6 @@ export default function UpdateMentorCategory({
 
   const { categories } = useCategory()
 
-  console.log(selected)
-
   useEffect(() => {
     if (categories && selectedCategory) {
       setSelected(categories.find((category: Category) => category.id === selectedCategory?.id))

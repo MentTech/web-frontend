@@ -1,5 +1,5 @@
 import axiosClient from './axios-client'
-import { MentorProgram } from '@models/index'
+import { Experience, MentorProgram } from '@models/index'
 
 export const mentorApi = {
   getMentorById(id: string) {
@@ -43,5 +43,8 @@ export const mentorApi = {
   },
   updateProfile(data: any) {
     return axiosClient.patch('/v1/mentor/profile', data)
+  },
+  updateExperience(mentorId: string, experience: Experience) {
+    return axiosClient.patch(`/v1/mentor/${mentorId}/experience/${experience.id}`, experience)
   },
 }

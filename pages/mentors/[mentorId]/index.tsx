@@ -63,8 +63,6 @@ function Profile({ mentor }: MentorProfileProps) {
     isFavorited = favorites.findIndex((item: any) => item == mentorId) !== -1
   }
 
-  console.log('favorite', favorites)
-
   function addToWishList() {
     if (status === 'unauthenticated') {
       return router.push('/authenticate/login')

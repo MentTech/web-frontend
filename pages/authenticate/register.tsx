@@ -52,7 +52,6 @@ export default function Register(props: RegisterProps) {
   const inputBirthDayRef = useRef<HTMLDivElement>(null)
 
   const onSubmit = async (data: RegisterForm) => {
-    console.log(data)
     try {
       const res = await authApi.registerApiServer({ ...data, confirmPassword: undefined })
       if (res.status === 201) {

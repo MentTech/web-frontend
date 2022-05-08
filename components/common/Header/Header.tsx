@@ -48,8 +48,6 @@ const Header = () => {
     }
   }
 
-  console.log('avatar', profile?.avatar)
-
   return (
     <AppBar position="fixed">
       <Container maxWidth="xl">

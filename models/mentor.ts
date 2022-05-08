@@ -11,6 +11,7 @@ export interface Degree {
 }
 
 export interface Experience {
+  id: string
   title: string
   company: string
   description: string

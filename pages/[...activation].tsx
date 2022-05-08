@@ -7,7 +7,6 @@ export interface ActivateAccountProps {}
 export default function ActivateAccount(props: ActivateAccountProps) {
   const router = useRouter()
   if (router.query.activation) {
-    console.log(router.query.activation[1])
     activateAccount(router.query.activation[1])
   }
 

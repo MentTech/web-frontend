@@ -8,12 +8,15 @@ export interface ProfileProps {
 
 export default function Auth({ children }: ProfileProps) {
   const router = useRouter()
-  const { data, status } = useSession()
-  if (status === 'authenticated') {
-    return <div>{children}</div>
+  const { data, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      // The user is not authenticated, handle it here.
+      router.push('/authenticate/login')
+    },
+  })
+  if (status === 'loading') {
+    return <LinearIndeterminate />
   }
-  if (status === 'unauthenticated') {
-    router.push('/authenticate/login')
-  }
-  return <LinearIndeterminate />
+  return <div>{children}</div>
 }

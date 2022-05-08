@@ -41,7 +41,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<any>) 
     proxy.on('proxyReq', (proxyReq, req, res, options) => {
       const rewritePath = req.url?.replace('/api', '') || ''
       proxyReq.path = rewritePath
-      console.log(proxyReq.path)
     })
 
     proxy.once('proxyRes', () => {

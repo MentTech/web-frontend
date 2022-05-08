@@ -3,7 +3,17 @@ import Modal from '@components/common/Modal/Modal'
 import ProfileCard from '@components/common/ProfileCard/ProfileCard'
 import SkillBadge from '@components/common/SkillBadge/SkillBadge'
 import { useProfile } from '@hooks/index'
-import { Avatar, Box, Card, CardContent, Grid, Stack, Typography, Chip } from '@mui/material'
+import {
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  Stack,
+  Typography,
+  Chip,
+  Divider,
+} from '@mui/material'
 import { useState } from 'react'
 import { useMentorInfor } from '@hooks/index'
 import { ContentState, convertFromHTML, convertToRaw, EditorState } from 'draft-js'
@@ -17,6 +27,9 @@ import { EditorProps } from 'react-draft-wysiwyg'
 import UpdateSkillForm from '../UpdateSkillForm/UpdateSkillForm'
 import UpdateMentorCategory from '../UpdateMentorCategory/UpdateMentorCategory'
 import { useCategory } from '@hooks/index'
+import ExperienceCard from '../ExperienceCard/ExperienceCard'
+import { Experience } from '@models/mentor'
+import EditExperience from '../EditExperience/EditExperience'
 const Editor = dynamic<EditorProps>(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), {
   ssr: false,
 })
@@ -25,6 +38,8 @@ export interface ProfileProps {}
 
 export default function MentorProfile(props: ProfileProps) {
   const [showEditAboutModal, setShowEditAboutModal] = useState(false)
+  const [showEditExperienceModal, setShowEditExperienceModal] = useState(false)
+  const [selectedExperience, setSelectedExperience] = useState<Experience | null>(null)
   const [showEditPersonalInfor, setShowEditPersonalInfor] = useState(false)
   const [showSkillModal, setShowSkillModal] = useState(false)
   const [showCategoryModal, setCategoryModal] = useState(false)
@@ -38,9 +53,11 @@ export default function MentorProfile(props: ProfileProps) {
 
   const { profile, updateProfile } = useProfile()
 
-  const { mentorInfor, editMentorProfile } = useMentorInfor(profile?.id)
+  const { mentorInfor, editMentorProfile, updateCategory } = useMentorInfor(profile?.id)
 
   const matchedCategory = mentorInfor?.User_mentor?.category
+
+  const experiences = mentorInfor?.User_mentor?.experiences
 
   const editAboutActions = (
     <>
@@ -111,6 +128,23 @@ export default function MentorProfile(props: ProfileProps) {
     handleCloseEditInforModal()
     await updateProfile({ ...data, phone: data.phone.toString() })
     toast.success('Cập nhật thông tin thành công!')
+  }
+
+  function handleOpenEditExperienceModal(experience: Experience) {
+    setSelectedExperience(experience)
+    setShowEditExperienceModal(true)
+  }
+
+  function closeEditExperienceModal() {
+    setShowEditExperienceModal(false)
+  }
+
+  async function handleEditExperience(data: Experience) {
+    // edit experience
+    console.log(data)
+    closeEditExperienceModal()
+    await updateCategory(profile.id, data)
+    toast.success('Cập nhật kinh nghiệm thành công!')
   }
 
   console.log('infor', mentorInfor)
@@ -201,7 +235,19 @@ export default function MentorProfile(props: ProfileProps) {
         </ProfileCard>
         <ProfileCard padding="20px 44px">
           <HeadingPrimary>Kinh nghiệm</HeadingPrimary>
-          {/* <Typography></Typography> */}
+          <Stack>
+            {experiences
+              ? experiences.map((experience: Experience) => (
+                  <>
+                    <ExperienceCard
+                      experience={experience}
+                      onEditClick={() => handleOpenEditExperienceModal(experience)}
+                    />
+                    <Divider sx={{ mt: 2, mb: 2 }} />
+                  </>
+                ))
+              : 'Chưa có thông tin.'}
+          </Stack>
         </ProfileCard>
         <ProfileCard padding="20px 44px">
           <HeadingPrimary>Thành tích</HeadingPrimary>
@@ -260,6 +306,15 @@ export default function MentorProfile(props: ProfileProps) {
         onSubmit={handleCategorySubmit}
         selectedCategory={matchedCategory}
       />
+      {selectedExperience && (
+        <EditExperience
+          show={showEditExperienceModal}
+          title="Chỉnh sửa kinh nghiệm"
+          onClose={closeEditExperienceModal}
+          experience={selectedExperience}
+          onEditClick={handleEditExperience}
+        />
+      )}
     </>
   )
 }
