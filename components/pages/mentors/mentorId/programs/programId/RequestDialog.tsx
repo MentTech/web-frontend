@@ -8,13 +8,12 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
+  DialogTitle
 } from '@mui/material'
-import { color } from '@mui/system'
 import { COLOR } from '@utils/color'
 import { setToastError, setToastSuccess } from '@utils/method'
 import { useState } from 'react'
-
+ßß
 interface RequestDialogProps {
   openDialog: boolean
   setopenDialog: Function
@@ -43,7 +42,9 @@ export const RequestDialog = ({ openDialog, setopenDialog, program }: RequestDia
         programId: id,
       })
       setToastSuccess('Đã đăng ký chương trình thành công!')
-    } catch (error) {
+    } catch (error: any) {
+      if (error.message === 'Can not get balance')
+        setToastError('Không đủ số dư trong tài khoản, vui lòng nạp thêm!')
       setToastError(error)
     } finally {
       setLoading(false)
