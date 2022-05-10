@@ -32,7 +32,6 @@ import { SyntheticEvent, useState } from 'react'
 interface SessionListItemProps {
   session: MentorSession
   canAcceptReject: boolean
-  canDone: boolean
   canUpdate: boolean
 }
 
@@ -41,16 +40,11 @@ interface InputSessionInfoProps {
   expectedDate: Date | string
 }
 
-const SessionListItem = ({
-  session,
-  canAcceptReject,
-  canDone,
-  canUpdate,
-}: SessionListItemProps) => {
+const SessionListItem = ({ session, canAcceptReject, canUpdate }: SessionListItemProps) => {
   const { data } = useSession()
   const mentorId = data?.user.id
   const { userId, programId, createdAt, userInfo, id } = session
-  const { onAccept, onReject, onDone, onUpdate, currentLoadingSession } = useMentorSessions()
+  const { onAccept, onReject, onUpdate, currentLoadingSession } = useMentorSessions()
   const [openDialog, setOpenDialog] = useState(false)
   const [sessionInfo, setSessionInfo] = useState<InputSessionInfoProps>({
     additional: '',
@@ -94,15 +88,7 @@ const SessionListItem = ({
               </Button>
             </>
           )}
-          {canDone && (
-            <Button
-              variant="contained"
-              style={{ background: colors.blue[500] }}
-              onClick={() => onDone(session.id)}
-            >
-              Hoàn tất
-            </Button>
-          )}
+
           {canUpdate && (
             <Button
               variant="contained"
@@ -115,24 +101,26 @@ const SessionListItem = ({
         </LoadingIndicator>
       </ListItem>
       {(canUpdate || canAcceptReject) && openDialog && (
-        <Dialog onClose={() => setOpenDialog(false)} open={openDialog}>
+        <Dialog maxWidth="lg" onClose={() => setOpenDialog(false)} open={openDialog}>
           <DialogTitle>Thêm thông tin cho session</DialogTitle>
           <DialogContent>
-            <DateTimePicker
-              renderInput={(props) => (
-                <TextField
-                  fullWidth
-                  label="Thời gian dự kiến"
-                  style={{ marginTop: 16 }}
-                  variant="outlined"
-                  {...props}
-                />
-              )}
-              value={sessionInfo.expectedDate}
-              onChange={(value) =>
-                setSessionInfo({ ...sessionInfo, expectedDate: value || new Date() })
-              }
-            />
+            {!canUpdate && (
+              <DateTimePicker
+                renderInput={(props) => (
+                  <TextField
+                    fullWidth
+                    label="Thời gian dự kiến"
+                    style={{ marginTop: 16 }}
+                    variant="outlined"
+                    {...props}
+                  />
+                )}
+                value={sessionInfo.expectedDate}
+                onChange={(value) => {
+                  setSessionInfo({ ...sessionInfo, expectedDate: value || new Date() })
+                }}
+              />
+            )}
             <TextField
               fullWidth
               label="Ghi chú"
@@ -141,6 +129,7 @@ const SessionListItem = ({
               onChange={(e) => setSessionInfo({ ...sessionInfo, additional: e.target.value })}
               variant="outlined"
               style={{ marginTop: 16 }}
+              value={sessionInfo.additional}
             />
           </DialogContent>
           <DialogActions>
@@ -160,7 +149,7 @@ const SessionListItem = ({
               onClick={() =>
                 canAcceptReject && !canUpdate
                   ? onAccept(session.id, sessionInfo.additional, sessionInfo.expectedDate)
-                  : onUpdate(session.id, sessionInfo.additional, sessionInfo.expectedDate)
+                  : onUpdate(session.id, sessionInfo.additional)
               }
             >
               Xác nhận
@@ -221,7 +210,6 @@ export const MentorSessionsPage = () => {
                   canAcceptReject={
                     programSession.isAccepted === false && programSession.done === false
                   }
-                  canDone={programSession.done === false && programSession.isAccepted === true}
                   canUpdate={programSession.done === false && programSession.isAccepted === true}
                 />
               ))
