@@ -31,6 +31,7 @@ import ExperienceCard from '../ExperienceCard/ExperienceCard'
 import { Experience } from '@models/mentor'
 import EditExperience from '../EditExperience/EditExperience'
 import AddExperienceForm from '../AddExperienceForm/AddExperienceForm'
+import AvatarModal from '../AvatarModal/AvatarModal'
 const Editor = dynamic<EditorProps>(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), {
   ssr: false,
 })
@@ -46,6 +47,7 @@ export default function MentorProfile(props: ProfileProps) {
   const [showCategoryModal, setCategoryModal] = useState(false)
   const [showAddExperience, setShowAddExperience] = useState(false)
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty())
+  const [showAvatarModal, setShowAvatarModal] = useState(false)
 
   function onEditorStateChange(editorState: EditorState) {
     setEditorState(editorState)
@@ -169,6 +171,10 @@ export default function MentorProfile(props: ProfileProps) {
     toast.success('Xóa kinh nghiệm thành công!')
   }
 
+  function handleShowAvatarModal() {
+    setShowAvatarModal(true)
+  }
+
   return (
     <>
       <Stack spacing={3}>
@@ -188,15 +194,30 @@ export default function MentorProfile(props: ProfileProps) {
               }}
             ></Box>
             <Stack direction="row" sx={{ position: 'absolute', left: '40px', bottom: '80px' }}>
-              <Avatar
-                alt="Remy Sharp"
-                src={profile?.avatar}
-                sx={{
-                  width: 176,
-                  height: 176,
-                  border: '2px solid #fff',
-                }}
-              />
+              <Box sx={{ width: 176, height: 176, backgroundColor: '#fff', borderRadius: '50%' }}>
+                <Avatar
+                  alt="avatar"
+                  src={profile?.avatar}
+                  sx={{
+                    width: 176,
+                    height: 176,
+                    border: '2px solid #fff',
+                    cursor: 'pointer',
+                    '&:hover': {
+                      opacity: 0.8,
+                    },
+                    '&:after': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                    },
+                  }}
+                  onClick={handleShowAvatarModal}
+                />
+              </Box>
+
               <Box>
                 <Typography
                   component="h2"
@@ -341,6 +362,13 @@ export default function MentorProfile(props: ProfileProps) {
         onClose={closeAddExperienceModal}
         onSubmit={handleAddExperience}
       />
+      {profile && (
+        <AvatarModal
+          show={showAvatarModal}
+          onClose={() => setShowAvatarModal(false)}
+          avatar={profile.avatar}
+        />
+      )}
     </>
   )
 }

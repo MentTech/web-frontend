@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
+import { Divider } from '@mui/material'
 import styles from './Modal.module.scss'
 
 export interface ModalProps {
@@ -28,7 +29,9 @@ function Modal({ show, onClose, children, actions, title, size, additionalAction
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className={styles.modal_header}>{title}</h2>
+        {/* <Divider /> */}
         {children}
+        {/* <Divider /> */}
         <div className={`${additionalAction ? 'flex items-center justify-between' : ''} mt-2`}>
           {additionalAction && <div className="flex justify-start">{additionalAction}</div>}
           <div className="modal-action m-0">{actions}</div>
