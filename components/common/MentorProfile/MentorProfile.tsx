@@ -30,6 +30,7 @@ import { useCategory } from '@hooks/index'
 import ExperienceCard from '../ExperienceCard/ExperienceCard'
 import { Experience } from '@models/mentor'
 import EditExperience from '../EditExperience/EditExperience'
+import AddExperienceForm from '../AddExperienceForm/AddExperienceForm'
 const Editor = dynamic<EditorProps>(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), {
   ssr: false,
 })
@@ -43,6 +44,7 @@ export default function MentorProfile(props: ProfileProps) {
   const [showEditPersonalInfor, setShowEditPersonalInfor] = useState(false)
   const [showSkillModal, setShowSkillModal] = useState(false)
   const [showCategoryModal, setCategoryModal] = useState(false)
+  const [showAddExperience, setShowAddExperience] = useState(false)
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty())
 
   function onEditorStateChange(editorState: EditorState) {
@@ -53,7 +55,8 @@ export default function MentorProfile(props: ProfileProps) {
 
   const { profile, updateProfile } = useProfile()
 
-  const { mentorInfor, editMentorProfile, updateCategory } = useMentorInfor(profile?.id)
+  const { mentorInfor, editMentorProfile, updateExperience, addExperience, removeExperience } =
+    useMentorInfor(profile?.id)
 
   const matchedCategory = mentorInfor?.User_mentor?.category
 
@@ -141,13 +144,30 @@ export default function MentorProfile(props: ProfileProps) {
 
   async function handleEditExperience(data: Experience) {
     // edit experience
-    console.log(data)
     closeEditExperienceModal()
-    await updateCategory(profile.id, data)
+    await updateExperience(profile.id, data)
     toast.success('Cập nhật kinh nghiệm thành công!')
   }
 
-  console.log('infor', mentorInfor)
+  function handleOpenAddExperience() {
+    setShowAddExperience(true)
+  }
+
+  function closeAddExperienceModal() {
+    setShowAddExperience(false)
+  }
+
+  async function handleAddExperience(data: Experience) {
+    closeAddExperienceModal()
+    await addExperience(profile.id, data)
+    toast.success('Thêm kinh nghiệm thành công!')
+  }
+
+  async function handleDeleteExperience() {
+    closeEditExperienceModal()
+    await removeExperience(profile.id, selectedExperience?.id as string)
+    toast.success('Xóa kinh nghiệm thành công!')
+  }
 
   return (
     <>
@@ -233,7 +253,7 @@ export default function MentorProfile(props: ProfileProps) {
             </Grid>
           </Box>
         </ProfileCard>
-        <ProfileCard padding="20px 44px">
+        <ProfileCard padding="20px 44px" onAddClick={handleOpenAddExperience}>
           <HeadingPrimary>Kinh nghiệm</HeadingPrimary>
           <Stack>
             {experiences
@@ -313,8 +333,14 @@ export default function MentorProfile(props: ProfileProps) {
           onClose={closeEditExperienceModal}
           experience={selectedExperience}
           onEditClick={handleEditExperience}
+          onDeleteClick={handleDeleteExperience}
         />
       )}
+      <AddExperienceForm
+        show={showAddExperience}
+        onClose={closeAddExperienceModal}
+        onSubmit={handleAddExperience}
+      />
     </>
   )
 }

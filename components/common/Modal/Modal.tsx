@@ -7,11 +7,12 @@ export interface ModalProps {
   onClose: () => void
   children?: React.ReactNode
   actions?: React.ReactNode
+  additionalAction?: React.ReactNode
   title?: string
   size?: 'small' | 'medium' | 'large'
 }
 
-function Modal({ show, onClose, children, actions, title, size }: ModalProps) {
+function Modal({ show, onClose, children, actions, title, size, additionalAction }: ModalProps) {
   const [isBrowser, setIsBrowser] = useState(false)
   useEffect(() => {
     setIsBrowser(true)
@@ -28,7 +29,10 @@ function Modal({ show, onClose, children, actions, title, size }: ModalProps) {
       >
         <h2 className={styles.modal_header}>{title}</h2>
         {children}
-        <div className="modal-action">{actions}</div>
+        <div className={`${additionalAction ? 'flex items-center justify-between' : ''} mt-2`}>
+          {additionalAction && <div className="flex justify-start">{additionalAction}</div>}
+          <div className="modal-action m-0">{actions}</div>
+        </div>
       </div>
     </div>
   ) : null

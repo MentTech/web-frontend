@@ -44,7 +44,13 @@ export const mentorApi = {
   updateProfile(data: any) {
     return axiosClient.patch('/v1/mentor/profile', data)
   },
+  addExperience(mentorId: string, experience: Experience) {
+    return axiosClient.post(`/v1/mentor/${mentorId}/experience`, experience)
+  },
   updateExperience(mentorId: string, experience: Experience) {
     return axiosClient.patch(`/v1/mentor/${mentorId}/experience/${experience.id}`, experience)
+  },
+  deleteExperience(mentorId: string, experienceId: string) {
+    return axiosClient.delete(`/v1/mentor/${mentorId}/experience/${experienceId}`)
   },
 }

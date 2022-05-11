@@ -1,4 +1,4 @@
-import { Edit } from '@mui/icons-material'
+import { Edit, Add } from '@mui/icons-material'
 import { Box, IconButton } from '@mui/material'
 import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
@@ -8,10 +8,16 @@ import * as React from 'react'
 export interface IProfileCardProps {
   children?: React.ReactNode
   onEditClick?: () => void
+  onAddClick?: () => void
   [x: string]: any
 }
 
-export default function ProfileCard({ children, onEditClick, ...rest }: IProfileCardProps) {
+export default function ProfileCard({
+  children,
+  onEditClick,
+  onAddClick,
+  ...rest
+}: IProfileCardProps) {
   return (
     <Card
       sx={{ minWidth: 275, position: 'relative', borderRadius: '20px', boxShadow: 'none', ...rest }}
@@ -27,13 +33,18 @@ export default function ProfileCard({ children, onEditClick, ...rest }: IProfile
             height: '24px',
             right: '32px',
             padding: '4px',
-            cursor: 'pointer',
           }}
-          onClick={onEditClick}
         >
-          <IconButton aria-label="edit">
-            <Edit color="primary" />
-          </IconButton>
+          {onAddClick && (
+            <IconButton aria-label="edit" onClick={onAddClick}>
+              <Add color="primary" />
+            </IconButton>
+          )}
+          {onEditClick && (
+            <IconButton aria-label="edit" onClick={onEditClick}>
+              <Edit color="primary" />
+            </IconButton>
+          )}
         </Box>
         {children}
       </CardContent>

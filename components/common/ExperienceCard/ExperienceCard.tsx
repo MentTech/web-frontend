@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { Box, Typography, Avatar, IconButton } from '@mui/material'
-import { Edit } from '@mui/icons-material'
+import { Box, Typography, IconButton } from '@mui/material'
+import { Edit, BusinessCenter } from '@mui/icons-material'
 import { Experience } from '@models/index'
 import moment from 'moment'
 
@@ -13,7 +13,7 @@ export default function ExperienceCard({ experience, onEditClick }: ExperienceCa
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
       <Box sx={{ display: 'flex', flex: '7' }}>
-        <Avatar />
+        <BusinessCenter />
         <Box sx={{ ml: 2 }}>
           <Typography variant="h5" component="div" sx={{ fontSize: '24px', fontWeight: '600' }}>
             {experience.title}
