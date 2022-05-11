@@ -43,7 +43,7 @@ const MentorSessionsProvider = ({ children }: MentorSessionsProviderProps) => {
 
   const { programId } = router.query
 
-  if (!mentorId || !programId) {
+  if (!mentorId ) {
     return <LinearIndeterminate />
   }
 
@@ -106,18 +106,26 @@ const MentorSessionsProvider = ({ children }: MentorSessionsProviderProps) => {
     }
   }
 
-  const onUpdate = async (sessionId: string, contactInfo: string) => {
+  const onUpdate = async (
+    sessionId: string,
+    changeInfo: {
+      contactInfo?: string
+      additional?: string
+    }
+  ) => {
     setcurrentLoadingSession(Number(sessionId))
     try {
+      const { additional, contactInfo } = changeInfo
       await mentorApi.updateAcceptedMentorSession(String(mentorId), String(programId), sessionId, {
         contactInfo,
+        additional,
       })
       setprogramSessions(
         programSessions.map((item) =>
-          item.id === Number(sessionId) ? { ...item, contactInfo } : item
+          item.id === Number(sessionId) ? { ...item, ...changeInfo } : item
         )
       )
-      setToastSuccess('Đã từ chối phiên mentoring')
+      setToastSuccess('Đã cập nhật thông tin phiên mentoring')
     } catch (error: any) {
       setToastError(error)
     } finally {

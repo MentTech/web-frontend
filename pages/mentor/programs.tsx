@@ -124,7 +124,7 @@ export default function MentorHome() {
     {
       field: 'viewSessions',
       headerName: 'Danh sách sessions',
-      width: 150,
+      width: 250,
       renderCell: (params) => {
         return (
           <Stack direction="row" spacing={2} sx={{ width: '100%', justifyContent: 'center' }}>

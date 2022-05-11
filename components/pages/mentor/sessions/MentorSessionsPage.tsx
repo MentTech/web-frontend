@@ -36,18 +36,18 @@ interface SessionListItemProps {
 }
 
 interface InputSessionInfoProps {
+  contactInfo: string
   additional: string
   expectedDate: Date | string
 }
 
 const SessionListItem = ({ session, canAcceptReject, canUpdate }: SessionListItemProps) => {
-  const { data } = useSession()
-  const mentorId = data?.user.id
-  const { userId, programId, createdAt, userInfo, id } = session
+  const { createdAt, userInfo, id } = session
   const { onAccept, onReject, onUpdate, currentLoadingSession } = useMentorSessions()
   const [openDialog, setOpenDialog] = useState(false)
   const [sessionInfo, setSessionInfo] = useState<InputSessionInfoProps>({
-    additional: '',
+    additional: session.additional,
+    contactInfo: session.contactInfo,
     expectedDate: new Date(),
   })
 
@@ -101,8 +101,16 @@ const SessionListItem = ({ session, canAcceptReject, canUpdate }: SessionListIte
         </LoadingIndicator>
       </ListItem>
       {(canUpdate || canAcceptReject) && openDialog && (
-        <Dialog maxWidth="lg" onClose={() => setOpenDialog(false)} open={openDialog}>
-          <DialogTitle>Thêm thông tin cho session</DialogTitle>
+        <Dialog
+          PaperProps={{
+            style: {
+              minWidth: '500px',
+            },
+          }}
+          onClose={() => setOpenDialog(false)}
+          open={openDialog}
+        >
+          <DialogTitle>{canUpdate ? 'Cập nhật' : 'Thêm'} thông tin session</DialogTitle>
           <DialogContent>
             {!canUpdate && (
               <DateTimePicker
@@ -126,10 +134,10 @@ const SessionListItem = ({ session, canAcceptReject, canUpdate }: SessionListIte
               label="Ghi chú"
               multiline
               rows={3}
-              onChange={(e) => setSessionInfo({ ...sessionInfo, additional: e.target.value })}
+              onChange={(e) => setSessionInfo({ ...sessionInfo, contactInfo: e.target.value })}
               variant="outlined"
               style={{ marginTop: 16 }}
-              value={sessionInfo.additional}
+              value={sessionInfo.contactInfo}
             />
           </DialogContent>
           <DialogActions>
@@ -138,6 +146,7 @@ const SessionListItem = ({ session, canAcceptReject, canUpdate }: SessionListIte
                 setOpenDialog(false)
                 setSessionInfo({
                   additional: '',
+                  contactInfo: '',
                   expectedDate: new Date(),
                 })
               }}
@@ -148,8 +157,8 @@ const SessionListItem = ({ session, canAcceptReject, canUpdate }: SessionListIte
               style={{ marginLeft: 16 }}
               onClick={() =>
                 canAcceptReject && !canUpdate
-                  ? onAccept(session.id, sessionInfo.additional, sessionInfo.expectedDate)
-                  : onUpdate(session.id, sessionInfo.additional)
+                  ? onAccept(session.id, sessionInfo.contactInfo, sessionInfo.expectedDate)
+                  : onUpdate(session.id, sessionInfo.contactInfo)
               }
             >
               Xác nhận

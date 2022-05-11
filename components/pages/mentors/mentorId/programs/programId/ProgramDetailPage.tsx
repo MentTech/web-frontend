@@ -138,9 +138,7 @@ export const ProgramDetailPage = () => {
                         <Button
                           style={{ background: '#3F3D56' }}
                           onClick={() => {
-                            router.push(
-                              `/mentors/${mentorId}/programs/${currentProgram?.id}/checkout`
-                            )
+                            setopenDialog(true)
                           }}
                           variant="contained"
                         >
