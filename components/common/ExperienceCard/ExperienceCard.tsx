@@ -6,7 +6,7 @@ import moment from 'moment'
 
 export interface ExperienceCardProps {
   experience: Experience
-  onEditClick: () => void
+  onEditClick?: () => void
 }
 
 export default function ExperienceCard({ experience, onEditClick }: ExperienceCardProps) {
@@ -34,13 +34,15 @@ export default function ExperienceCard({ experience, onEditClick }: ExperienceCa
           </Typography>
         </Box>
       </Box>
-      <Box sx={{ flex: '3', textAlign: 'right' }}>
-        <Box sx={{ ml: 2, mt: -1, display: 'inline-block' }} onClick={onEditClick}>
-          <IconButton aria-label="edit">
-            <Edit color="primary" />
-          </IconButton>
+      {onEditClick && (
+        <Box sx={{ flex: '3', textAlign: 'right' }}>
+          <Box sx={{ ml: 2, mt: -1, display: 'inline-block' }} onClick={onEditClick}>
+            <IconButton aria-label="edit">
+              <Edit color="primary" />
+            </IconButton>
+          </Box>
         </Box>
-      </Box>
+      )}
     </Box>
   )
 }

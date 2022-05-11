@@ -52,7 +52,7 @@ export interface Program {
 export interface UserMentor {
   linkedin?: string
   degree?: Array<Degree>
-  experiences?: Array<Experience>
+  experiences: Array<Experience>
   achievements?: Array<string>
   skills?: Array<Skill>
   introduction?: string

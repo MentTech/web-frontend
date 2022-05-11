@@ -5,9 +5,9 @@ import MentorMediaInfo from '@components/common/MentorMediaInfor/MentorMediaInfo
 import MentorProgramCard from '@components/common/MentorProgramCard/MentorProgramCard'
 import SkillBadge from '@components/common/SkillBadge/SkillBadge'
 import { MainLayout } from '@components/layouts'
-import { Mentor } from '@models/mentor'
+import { Experience, Mentor } from '@models/mentor'
 import { Favorite } from '@mui/icons-material'
-import { Box, Card, CardContent, Grid, Stack, Typography } from '@mui/material'
+import { Box, Card, CardContent, Divider, Grid, Stack, Typography } from '@mui/material'
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -22,6 +22,7 @@ import { useFavorite } from '@hooks/index'
 import ReactReadMoreReadLess from 'react-read-more-read-less'
 import { toast } from 'react-toastify'
 import { useSession } from 'next-auth/react'
+import ExperienceCard from '@components/common/ExperienceCard/ExperienceCard'
 
 const breakPoints = [
   { width: 1, itemsToShow: 1 },
@@ -54,7 +55,7 @@ function Profile({ mentor }: MentorProfileProps) {
   const skillDescs = mentor?.User_mentor.skills
 
   const { User_mentor } = mentor
-  const { programs } = User_mentor
+  const { programs, experiences } = User_mentor
 
   const { favorites, addFavorite, removeFavorite } = useFavorite()
 
@@ -139,27 +140,16 @@ function Profile({ mentor }: MentorProfileProps) {
                 {/* Kinh nghiệm */}
                 <Box sx={{ marginTop: '20px' }}>
                   <HeadingPrimary>Kinh nghiệm</HeadingPrimary>
-
-                  {/* List */}
-                  <ul>
-                    <li>
-                      <Typography variant="h6">Project Manager</Typography>
-                      <Typography>ABC Company</Typography>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate
-                        libero et velit interdum, ac aliquet odio mattis.
-                      </p>
-                    </li>
-                    <hr />
-                    <li>
-                      <Typography variant="h6">Project Manager</Typography>
-                      <Typography>ABC Company</Typography>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate
-                        libero et velit interdum, ac aliquet odio mattis.
-                      </p>
-                    </li>
-                  </ul>
+                  <Stack>
+                    {experiences
+                      ? experiences.map((experience: Experience) => (
+                          <>
+                            <ExperienceCard experience={experience} />
+                            <Divider sx={{ mt: 2, mb: 2 }} />
+                          </>
+                        ))
+                      : 'Chưa có thông tin.'}
+                  </Stack>
                 </Box>
                 {/* Chứng chỉ */}
                 <Box sx={{ marginTop: '20px' }}>
@@ -175,9 +165,37 @@ function Profile({ mentor }: MentorProfileProps) {
                 <Box sx={{ marginTop: '20px' }}>
                   <HeadingPrimary>Đánh giá</HeadingPrimary>
                   <Carousel isRTL={false} breakPoints={breakPoints}>
-                    <FeedbackCard mentee={{ name: 'Le Quoc Dat' }} rating={5} date={new Date()} />
-                    <FeedbackCard mentee={{ name: 'Le Quoc Dat' }} rating={4} date={new Date()} />
-                    <FeedbackCard mentee={{ name: 'Le Quoc Dat' }} rating={5} date={new Date()} />
+                    <div className="flex items-center justify-center px-5 py-5 mt-5">
+                      <div className="w-full mx-auto max-w-xl rounded-lg bg-white dark:bg-gray-800 shadow-lg px-5 pt-5 pb-10 text-gray-800 dark:text-gray-50">
+                        <div className="w-full pt-1 text-center pb-5 -mt-16 mx-auto">
+                          <a href="#" className="block relative">
+                            <img
+                              alt="profil"
+                              src={mentor.avatar}
+                              className="mx-auto object-cover rounded-full h-20 w-20 "
+                            />
+                          </a>
+                        </div>
+                        <div className="w-full mb-10">
+                          <div className="text-3xl text-indigo-500 text-left leading-tight h-3">
+                            “
+                          </div>
+                          <p className="text-sm text-gray-600 dark:text-gray-100 text-center px-5">
+                            To get social media testimonials like these, keep your customers engaged
+                            with your social media accounts by posting regularly yourself
+                          </p>
+                          <div className="text-3xl text-indigo-500 text-right leading-tight h-3 -mt-3">
+                            ”
+                          </div>
+                        </div>
+                        <div className="w-full">
+                          <p className="text-md text-indigo-500 font-bold text-center">Tom Hardy</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-300 text-center">
+                            @thom.hardy
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </Carousel>
                 </Box>
               </CardContent>

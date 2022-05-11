@@ -31,8 +31,8 @@ export function useProfile() {
 
   async function updateAvatar(avatar: string) {
     try {
-      profileApi.updateAvatar(avatar)
-      mutate()
+      await profileApi.updateAvatar(avatar)
+      await mutate()
     } catch (err) {
       console.log(err)
     }
