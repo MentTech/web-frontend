@@ -1,5 +1,5 @@
 import { Program } from '@models/mentor'
-import { Card, CardContent, Typography } from '@mui/material'
+import { Button, Card, CardContent, Typography } from '@mui/material'
 import Link from 'next/link'
 
 export interface MentorProgramCardProps {
@@ -33,15 +33,21 @@ export default function MentorProgramCard({ program }: MentorProgramCardProps) {
           {credit} credit / 1 giờ
         </Typography>
         <Link href={`/mentors/${String(mentorId)}/programs/${id}`}>
-          <a
+          <Button
             style={{
-              color: '#00BFA6',
-              fontStyle: 'italic',
-              fontSize: '20px',
+              background: 'transparent',
+              boxShadow: 'none',
+              borderRadius: 20,
+              border: '1px solid #FFF',
             }}
+            variant="contained"
+            disableRipple
+            disableElevation
           >
-            Đặt lịch ngay
-          </a>
+            <Typography style={{ textDecoration: 'none', color: '#00BFA6' }} variant="body2">
+              Đặt lịch ngay
+            </Typography>
+          </Button>
         </Link>
       </CardContent>
     </Card>

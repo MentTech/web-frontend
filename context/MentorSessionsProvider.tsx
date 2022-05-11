@@ -12,7 +12,6 @@ interface MentorSessionsProps {
   programSessions: MentorSession[]
   onAccept: Function
   onReject: Function
-  onDone: Function
   onUpdate: Function
 }
 
@@ -23,7 +22,6 @@ const MentorSessions = React.createContext<MentorSessionsProps>({
   programSessions: [],
   onAccept: () => {},
   onReject: () => {},
-  onDone: () => {},
   onUpdate: () => {},
 })
 
@@ -45,7 +43,7 @@ const MentorSessionsProvider = ({ children }: MentorSessionsProviderProps) => {
 
   const { programId } = router.query
 
-  if (!mentorId || !programId) {
+  if (!mentorId ) {
     return <LinearIndeterminate />
   }
 
@@ -108,36 +106,26 @@ const MentorSessionsProvider = ({ children }: MentorSessionsProviderProps) => {
     }
   }
 
-  const onDone = async (sessionId: string) => {
-    setcurrentLoadingSession(Number(sessionId))
-    try {
-      await mentorApi.doneMentorSession(String(mentorId), String(programId), sessionId)
-      setprogramSessions(
-        programSessions.map((item) =>
-          item.id === Number(sessionId) ? { ...item, done: true } : item
-        )
-      )
-      setToastSuccess('Đã từ chối phiên mentoring')
-    } catch (error: any) {
-      setToastError(error)
-    } finally {
-      setcurrentLoadingSession(-1)
+  const onUpdate = async (
+    sessionId: string,
+    changeInfo: {
+      contactInfo?: string
+      additional?: string
     }
-  }
-
-  const onUpdate = async (sessionId: string, contactInfo: string, expectedDate: Date) => {
+  ) => {
     setcurrentLoadingSession(Number(sessionId))
     try {
+      const { additional, contactInfo } = changeInfo
       await mentorApi.updateAcceptedMentorSession(String(mentorId), String(programId), sessionId, {
         contactInfo,
-        expectedDate,
+        additional,
       })
       setprogramSessions(
         programSessions.map((item) =>
-          item.id === Number(sessionId) ? { ...item, contactInfo, expectedDate } : item
+          item.id === Number(sessionId) ? { ...item, ...changeInfo } : item
         )
       )
-      setToastSuccess('Đã từ chối phiên mentoring')
+      setToastSuccess('Đã cập nhật thông tin phiên mentoring')
     } catch (error: any) {
       setToastError(error)
     } finally {
@@ -153,7 +141,6 @@ const MentorSessionsProvider = ({ children }: MentorSessionsProviderProps) => {
         programSessions,
         onAccept,
         onReject,
-        onDone,
         onUpdate,
       }}
     >

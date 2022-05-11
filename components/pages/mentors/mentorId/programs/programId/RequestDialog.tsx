@@ -10,7 +10,6 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material'
-import { color } from '@mui/system'
 import { COLOR } from '@utils/color'
 import { setToastError, setToastSuccess } from '@utils/method'
 import { useState } from 'react'
@@ -31,7 +30,7 @@ const styles = () => ({
 })
 
 export const RequestDialog = ({ openDialog, setopenDialog, program }: RequestDialogProps) => {
-  const { title, detail, id, mentorId } = program
+  const { title, detail, id, mentorId, credit } = program
 
   const [loading, setLoading] = useState(false)
 
@@ -43,7 +42,10 @@ export const RequestDialog = ({ openDialog, setopenDialog, program }: RequestDia
         programId: id,
       })
       setToastSuccess('Đã đăng ký chương trình thành công!')
-    } catch (error) {
+      setopenDialog(false)
+    } catch (error: any) {
+      if (error.message.includes('Can not get balance'))
+        setToastError('Không đủ số dư trong tài khoản, vui lòng nạp thêm!')
       setToastError(error)
     } finally {
       setLoading(false)
@@ -51,12 +53,22 @@ export const RequestDialog = ({ openDialog, setopenDialog, program }: RequestDia
   }
 
   return (
-    <Dialog maxWidth="md" open={openDialog} onClose={() => setopenDialog(false)}>
-      <DialogTitle>Đặt lịch với mentor</DialogTitle>
-      <DialogContent>
+    <Dialog
+      maxWidth="lg"
+      open={openDialog}
+      onClose={() => setopenDialog(false)}
+      PaperProps={{
+        style: {
+          padding: 8,
+        },
+      }}
+    >
+      <DialogTitle>Đặt lịch với mentor {}</DialogTitle>
+      <DialogContent style={{ marginBottom: 20 }}>
         <DialogContentText>{`Tên chương trình: ${title}`}</DialogContentText>
         <DialogContentText>{`Thời lượng dự kiến: 90 phút`}</DialogContentText>
-        <DialogContentText style={{ minHeight: 150 }}>{`Nội dung: ${detail}`}</DialogContentText>
+        <DialogContentText>{`Nội dung: ${detail}`}</DialogContentText>
+        <DialogContentText>{`Chi phí: ${credit} coin`}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button
@@ -67,6 +79,7 @@ export const RequestDialog = ({ openDialog, setopenDialog, program }: RequestDia
           variant="contained"
           onClick={() => setopenDialog(false)}
           disableRipple
+          disableElevation
         >
           Hủy
         </Button>
@@ -76,6 +89,7 @@ export const RequestDialog = ({ openDialog, setopenDialog, program }: RequestDia
           onClick={() => onClickRegister()}
           disabled={loading}
           style={{ background: colors.blue[500], width: 120, height: 35 }}
+          disableElevation
         >
           {loading ? <CircularProgress size={20} /> : 'Xác nhận'}
         </Button>
