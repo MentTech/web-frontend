@@ -1,9 +1,6 @@
-import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
 import MentorProgramCard from '@components/common/MentorProgramCard/MentorProgramCard'
-import SuggestMentorsCard from '@components/common/SuggestMentorsCard'
 import { Program } from '@models/mentor'
-import { Grid, Stack, Typography } from '@mui/material'
-import { Box } from '@mui/system'
+import { Stack, Typography } from '@mui/material'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
