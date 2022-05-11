@@ -1,4 +1,3 @@
-import { Experience } from '@models/mentor'
 import * as React from 'react'
 import Modal from '../Modal/Modal'
 import { Stack, Box, Grid } from '@mui/material'
@@ -9,14 +8,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import * as yup from 'yup'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { Experience } from '@models/mentor'
 
-export interface EditExperienceProps {
-  title: string
+export interface AddExperienceFormProps {
   show: boolean
+  onSubmit: (data: Experience) => void
   onClose: () => void
-  experience: Experience
-  onEditClick: (data: Experience) => void
-  onDeleteClick: () => void
 }
 
 const renderDatePickerInput = ({ inputRef, inputProps, InputProps }: any) => (
@@ -29,7 +26,7 @@ const renderDatePickerInput = ({ inputRef, inputProps, InputProps }: any) => (
 const schema = yup.object({
   title: yup.string().required('Title is required'),
   company: yup.string().required('Company is required'),
-  startAt: yup.date().required('Start date is required'),
+  startAt: yup.date().default(new Date()).required('Start date is required'),
   // end date must be greater than start date if isCurrent is false
   endAt: yup.date().when('isCurrent', {
     is: false,
@@ -43,26 +40,17 @@ const schema = yup.object({
   isCurrent: yup.boolean(),
 })
 
-export default function EditExperience({
-  show,
-  title,
-  onClose,
-  experience,
-  onEditClick,
-  onDeleteClick,
-}: EditExperienceProps) {
-  useEffect(() => {
-    setValue('title', experience.title)
-    setValue('company', experience.company)
-    setValue('description', experience.description)
-    setValue('startAt', experience.startAt)
-    setValue('endAt', experience.endAt)
-    if (experience.endAt === null) {
-      setValue('isCurrent', true)
-    } else {
-      setValue('isCurrent', false)
-    }
-  }, [experience])
+export default function AddExperienceForm({ show, onSubmit, onClose }: AddExperienceFormProps) {
+  const actions = (
+    <>
+      <button className="btn btn-active btn-primary" type="submit" form="addExperience">
+        Lưu
+      </button>
+      <button className="btn btn-active btn-ghost" onClick={onClose}>
+        Hủy
+      </button>
+    </>
+  )
 
   const {
     register,
@@ -76,41 +64,21 @@ export default function EditExperience({
     resolver: yupResolver(schema),
   })
 
-  function editSubmit(data: any) {
-    onEditClick({ ...data, id: experience.id })
-  }
-
   const mode = watch('isCurrent')
 
-  const modalActions = (
-    <>
-      <button className="btn btn-active btn-primary" type="submit" form="editExperience">
-        Lưu
-      </button>
-      <button className="btn btn-active btn-ghost" onClick={onClose}>
-        Hủy
-      </button>
-    </>
-  )
-
-  const additionalAction = (
-    <>
-      <button className="btn btn-error float-left" onClick={onDeleteClick}>
-        Xóa kinh nghiệm
-      </button>
-    </>
-  )
+  useEffect(() => {
+    if (mode === true) {
+      setValue('endAt', null)
+    }
+  }, [mode])
+  function handleAddSubmit(data: any) {
+    onSubmit({ ...data, isCurrent: undefined })
+  }
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Modal
-        show={show}
-        title={title}
-        onClose={onClose}
-        actions={modalActions}
-        additionalAction={additionalAction}
-      >
-        <form id="editExperience" onSubmit={handleSubmit(editSubmit)}>
+    <Modal title="Thêm kinh nghiệm" show={show} actions={actions} onClose={onClose}>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <form id="addExperience" onSubmit={handleSubmit(handleAddSubmit)}>
           <Stack>
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -233,7 +201,7 @@ export default function EditExperience({
             </Box>
           </Stack>
         </form>
-      </Modal>
-    </LocalizationProvider>
+      </LocalizationProvider>
+    </Modal>
   )
 }

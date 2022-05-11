@@ -23,7 +23,16 @@ export function useProfile() {
   async function updateProfile(data: any) {
     try {
       await profileApi.updateProfile(data)
-      mutate()
+      await mutate()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async function updateAvatar(avatar: string) {
+    try {
+      await profileApi.updateAvatar(avatar)
+      await mutate()
     } catch (err) {
       console.log(err)
     }
@@ -37,5 +46,6 @@ export function useProfile() {
     logout,
     isFirstLoading,
     updateProfile,
+    updateAvatar,
   }
 }

@@ -30,6 +30,8 @@ import { useCategory } from '@hooks/index'
 import ExperienceCard from '../ExperienceCard/ExperienceCard'
 import { Experience } from '@models/mentor'
 import EditExperience from '../EditExperience/EditExperience'
+import AddExperienceForm from '../AddExperienceForm/AddExperienceForm'
+import AvatarModal from '../AvatarModal/AvatarModal'
 const Editor = dynamic<EditorProps>(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), {
   ssr: false,
 })
@@ -43,7 +45,9 @@ export default function MentorProfile(props: ProfileProps) {
   const [showEditPersonalInfor, setShowEditPersonalInfor] = useState(false)
   const [showSkillModal, setShowSkillModal] = useState(false)
   const [showCategoryModal, setCategoryModal] = useState(false)
+  const [showAddExperience, setShowAddExperience] = useState(false)
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty())
+  const [showAvatarModal, setShowAvatarModal] = useState(false)
 
   function onEditorStateChange(editorState: EditorState) {
     setEditorState(editorState)
@@ -53,7 +57,8 @@ export default function MentorProfile(props: ProfileProps) {
 
   const { profile, updateProfile } = useProfile()
 
-  const { mentorInfor, editMentorProfile, updateCategory } = useMentorInfor(profile?.id)
+  const { mentorInfor, editMentorProfile, updateExperience, addExperience, removeExperience } =
+    useMentorInfor(profile?.id)
 
   const matchedCategory = mentorInfor?.User_mentor?.category
 
@@ -141,13 +146,34 @@ export default function MentorProfile(props: ProfileProps) {
 
   async function handleEditExperience(data: Experience) {
     // edit experience
-    console.log(data)
     closeEditExperienceModal()
-    await updateCategory(profile.id, data)
+    await updateExperience(profile.id, data)
     toast.success('Cập nhật kinh nghiệm thành công!')
   }
 
-  console.log('infor', mentorInfor)
+  function handleOpenAddExperience() {
+    setShowAddExperience(true)
+  }
+
+  function closeAddExperienceModal() {
+    setShowAddExperience(false)
+  }
+
+  async function handleAddExperience(data: Experience) {
+    closeAddExperienceModal()
+    await addExperience(profile.id, data)
+    toast.success('Thêm kinh nghiệm thành công!')
+  }
+
+  async function handleDeleteExperience() {
+    closeEditExperienceModal()
+    await removeExperience(profile.id, selectedExperience?.id as string)
+    toast.success('Xóa kinh nghiệm thành công!')
+  }
+
+  function handleShowAvatarModal() {
+    setShowAvatarModal(true)
+  }
 
   return (
     <>
@@ -168,15 +194,30 @@ export default function MentorProfile(props: ProfileProps) {
               }}
             ></Box>
             <Stack direction="row" sx={{ position: 'absolute', left: '40px', bottom: '80px' }}>
-              <Avatar
-                alt="Remy Sharp"
-                src={profile?.avatar}
-                sx={{
-                  width: 176,
-                  height: 176,
-                  border: '2px solid #fff',
-                }}
-              />
+              <Box sx={{ width: 176, height: 176, backgroundColor: '#fff', borderRadius: '50%' }}>
+                <Avatar
+                  alt="avatar"
+                  src={profile?.avatar}
+                  sx={{
+                    width: 176,
+                    height: 176,
+                    border: '2px solid #fff',
+                    cursor: 'pointer',
+                    '&:hover': {
+                      opacity: 0.8,
+                    },
+                    '&:after': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                    },
+                  }}
+                  onClick={handleShowAvatarModal}
+                />
+              </Box>
+
               <Box>
                 <Typography
                   component="h2"
@@ -233,7 +274,7 @@ export default function MentorProfile(props: ProfileProps) {
             </Grid>
           </Box>
         </ProfileCard>
-        <ProfileCard padding="20px 44px">
+        <ProfileCard padding="20px 44px" onAddClick={handleOpenAddExperience}>
           <HeadingPrimary>Kinh nghiệm</HeadingPrimary>
           <Stack>
             {experiences
@@ -313,6 +354,19 @@ export default function MentorProfile(props: ProfileProps) {
           onClose={closeEditExperienceModal}
           experience={selectedExperience}
           onEditClick={handleEditExperience}
+          onDeleteClick={handleDeleteExperience}
+        />
+      )}
+      <AddExperienceForm
+        show={showAddExperience}
+        onClose={closeAddExperienceModal}
+        onSubmit={handleAddExperience}
+      />
+      {profile && (
+        <AvatarModal
+          show={showAvatarModal}
+          onClose={() => setShowAvatarModal(false)}
+          avatar={profile.avatar}
         />
       )}
     </>

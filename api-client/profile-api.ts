@@ -8,4 +8,9 @@ export const profileApi = {
   updateProfile(data: any) {
     return axiosClient.patch('/v1/users/profile', data)
   },
+  updateAvatar(avatar: string) {
+    return axiosClient.patch(`/v1/users/avatar`, {
+      avatar,
+    })
+  },
 }

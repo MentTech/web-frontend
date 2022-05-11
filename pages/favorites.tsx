@@ -6,6 +6,7 @@ import { Typography } from '@mui/material'
 import { Box } from '@mui/material'
 import { useState } from 'react'
 import FavoriteCard from '@components/common/FavoriteCard/FavoriteCard'
+import FavoriteItemCard from '@components/common/FavoriteItemCard/FavoriteItemCard'
 
 export default function Favorites() {
   const [value, setValue] = useState(0)
@@ -18,7 +19,8 @@ export default function Favorites() {
     <Box sx={{ my: '24px' }}>
       <HeadingPrimary>Danh sách yêu thích</HeadingPrimary>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: '20px' }}></Box>
-      {favorites && favorites.map((favorite: any, index: any) => <FavoriteCard key={index} />)}
+      {favorites &&
+        favorites.map((favorite: any, index: any) => <FavoriteItemCard mentorId={favorite} />)}
     </Box>
   )
 }

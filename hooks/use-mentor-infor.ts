@@ -14,9 +14,27 @@ export function useMentorInfor(mentorId: string) {
     }
   }
 
-  async function updateCategory(mentorId: string, experience: Experience) {
+  async function updateExperience(mentorId: string, experience: Experience) {
     try {
       await mentorApi.updateExperience(mentorId, experience)
+      mutate()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async function addExperience(mentorId: string, experience: Experience) {
+    try {
+      await mentorApi.addExperience(mentorId, experience)
+      mutate()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async function removeExperience(mentorId: string, experienceId: string) {
+    try {
+      await mentorApi.deleteExperience(mentorId, experienceId)
       mutate()
     } catch (err) {
       console.log(err)
@@ -55,6 +73,8 @@ export function useMentorInfor(mentorId: string) {
     editMentorProfile,
     removeASkill,
     addASkill,
-    updateCategory,
+    updateExperience,
+    addExperience,
+    removeExperience,
   }
 }
