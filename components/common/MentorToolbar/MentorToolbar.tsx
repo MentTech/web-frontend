@@ -10,6 +10,7 @@ import Toolbar from '@mui/material/Toolbar'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import { useState } from 'react'
+import UserCoinBox from '../UserCoinBox/UserCoinBox'
 
 const pages = ['Products', 'Pricing', 'Blog']
 const settings = ['Hồ sơ', 'Phiên mentoring']
@@ -119,7 +120,12 @@ const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
         ))} */}
       </Box>
 
-      <Box sx={{ flexGrow: 0 }}>
+      <Box sx={{ flexGrow: 0 }} className="df aic">
+        {profile && (
+          <Box mr={2}>
+            <UserCoinBox />
+          </Box>
+        )}
         <Tooltip title="Open settings">
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
             <Avatar src={profile?.avatar} sx={{ width: 32, height: 32 }}>
