@@ -38,7 +38,7 @@ const UserTransactionProvider = ({ children }: UserTransactionProviderProps) => 
         transactions,
       }}
     >
-      <LoadingIndicator loading={loading}>{children}</LoadingIndicator>
+      {children}
     </UserTransactionContext.Provider>
   )
 }
