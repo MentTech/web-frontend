@@ -43,7 +43,7 @@ const MentorSessionsProvider = ({ children }: MentorSessionsProviderProps) => {
 
   const { programId } = router.query
 
-  if (!mentorId ) {
+  if (!mentorId) {
     return <LinearIndeterminate />
   }
 
@@ -51,10 +51,12 @@ const MentorSessionsProvider = ({ children }: MentorSessionsProviderProps) => {
     const fetchData = async () => {
       setLoading(true)
       try {
-        const result = await mentorApi.getProgramMentorSessions(
-          String(mentorId),
-          String(router.query.programId)
-        )
+        const result = programId
+          ? await mentorApi.getAllMentorRegister(Number(mentorId))
+          : await mentorApi.getProgramMentorSessions(
+              String(mentorId),
+              String(router.query.programId)
+            )
         setprogramSessions(result.data)
       } catch (error: any) {
         setToastError(error)
@@ -63,7 +65,7 @@ const MentorSessionsProvider = ({ children }: MentorSessionsProviderProps) => {
       }
     }
     fetchData()
-  }, [])
+  }, [programId, mentorId, router])
 
   const onAccept = async (sessionId: string, contactInfo: string, expectedDate: Date) => {
     setcurrentLoadingSession(Number(sessionId))
