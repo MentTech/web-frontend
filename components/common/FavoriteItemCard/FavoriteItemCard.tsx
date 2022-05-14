@@ -36,10 +36,10 @@ export default function FavoriteItemCard({ mentorId }: FavoriteItemCardProps) {
         </a>
         <p className="text-gray-800 dark:text-white text-xl font-medium mt-2">{mentor?.name}</p>
         <p className="text-gray-400 text-xs flex items-center">
-          {mentor?.User_mentor ? mentor.User_mentor.experiences[0].title : ''}
+          {mentor?.User_mentor ? (mentor.User_mentor?.experiences || [])[0]?.title : ''}
         </p>
         <p className="text-gray-400 text-xs">
-          {mentor?.User_mentor ? mentor.User_mentor.experiences[0].company : ''}
+          {mentor?.User_mentor ? (mentor.User_mentor?.experiences || [])[0]?.company : ''}
         </p>
         <div className="flex items-center justify-between gap-4 w-full mt-8">
           <Link href={`/mentors/${mentorId}`}>
