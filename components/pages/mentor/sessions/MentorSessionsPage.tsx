@@ -4,18 +4,16 @@ import { MentorSession } from '@models/mentor_session'
 import { PersonAdd } from '@mui/icons-material'
 import { DateTimePicker } from '@mui/lab'
 import {
+  Avatar,
   Button,
-  Card,
   colors,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  InputLabel,
   List,
   ListItem,
   ListItemAvatar,
-  ListItemButton,
   ListItemIcon,
   ListItemText,
   Paper,
@@ -24,9 +22,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { Box, color } from '@mui/system'
+import { Box } from '@mui/system'
 import { useMentorSessions } from 'context/MentorSessionsProvider'
-import { useSession } from 'next-auth/react'
 import { SyntheticEvent, useState } from 'react'
 
 interface SessionListItemProps {
@@ -42,7 +39,7 @@ interface InputSessionInfoProps {
 }
 
 const SessionListItem = ({ session, canAcceptReject, canUpdate }: SessionListItemProps) => {
-  const { createdAt, userInfo, id } = session
+  const { createdAt, user, id } = session
   const { onAccept, onReject, onUpdate, currentLoadingSession } = useMentorSessions()
   const [openDialog, setOpenDialog] = useState(false)
   const [sessionInfo, setSessionInfo] = useState<InputSessionInfoProps>({
@@ -51,15 +48,16 @@ const SessionListItem = ({ session, canAcceptReject, canUpdate }: SessionListIte
     expectedDate: new Date(),
   })
 
+  const { name } = user
+
   return (
     <>
       <ListItem>
-        <ListItemIcon>
-          <PersonAdd />
-        </ListItemIcon>
-        <ListItemAvatar>{userInfo?.avatar}</ListItemAvatar>
+        <ListItemAvatar>
+          <Avatar src={user?.avatar}>{name?.charAt(0)}</Avatar>
+        </ListItemAvatar>
         <ListItemText
-          primary={userInfo?.name || 'Nguyễn Văn A'}
+          primary={user?.name || 'Nguyễn Văn A'}
           secondary={createdAt?.toLocaleString()}
         ></ListItemText>
         <LoadingIndicator
@@ -112,23 +110,22 @@ const SessionListItem = ({ session, canAcceptReject, canUpdate }: SessionListIte
         >
           <DialogTitle>{canUpdate ? 'Cập nhật' : 'Thêm'} thông tin session</DialogTitle>
           <DialogContent>
-            {!canUpdate && (
-              <DateTimePicker
-                renderInput={(props) => (
-                  <TextField
-                    fullWidth
-                    label="Thời gian dự kiến"
-                    style={{ marginTop: 16 }}
-                    variant="outlined"
-                    {...props}
-                  />
-                )}
-                value={sessionInfo.expectedDate}
-                onChange={(value) => {
-                  setSessionInfo({ ...sessionInfo, expectedDate: value || new Date() })
-                }}
-              />
-            )}
+            <DateTimePicker
+              label="Thời gian dự kiến"
+              renderInput={(props) => (
+                <TextField
+                  fullWidth
+                  label="Thời gian dự kiến"
+                  style={{ marginTop: 16 }}
+                  variant="outlined"
+                  {...props}
+                />
+              )}
+              value={sessionInfo.expectedDate}
+              onChange={(value) => {
+                setSessionInfo({ ...sessionInfo, expectedDate: value || new Date() })
+              }}
+            />
             <TextField
               fullWidth
               label="Ghi chú"
@@ -158,7 +155,10 @@ const SessionListItem = ({ session, canAcceptReject, canUpdate }: SessionListIte
               onClick={() =>
                 canAcceptReject && !canUpdate
                   ? onAccept(session.id, sessionInfo.contactInfo, sessionInfo.expectedDate)
-                  : onUpdate(session.id, sessionInfo.contactInfo)
+                  : onUpdate(session.id, {
+                      contactInfo: sessionInfo.contactInfo,
+                      expectedDate: sessionInfo.expectedDate,
+                    })
               }
             >
               Xác nhận
