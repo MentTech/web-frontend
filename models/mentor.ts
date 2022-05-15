@@ -52,15 +52,21 @@ export interface Program {
 export interface UserMentor {
   linkedin?: string
   degree?: Array<Degree>
-  experiences?: Array<Experience>
+  experiences: Array<Experience>
   achievements?: Array<string>
   skills?: Array<Skill>
   introduction?: string
-  category?: Category
+  category: Category
   rating?: Number
   programs?: Array<Program>
 }
 
+interface AverageRating {
+  count: number
+  average: number
+}
+
 export type Mentor = Mentee & {
   User_mentor: UserMentor
+  averageRating: AverageRating
 }

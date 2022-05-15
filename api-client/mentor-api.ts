@@ -2,6 +2,9 @@ import axiosClient from './axios-client'
 import { Experience, MentorProgram } from '@models/index'
 
 export const mentorApi = {
+  getTop3Mentor() {
+    return axiosClient.get('/mentor/suggest')
+  },
   getMentorById(id: string) {
     return axiosClient.get(`/v1/mentor/${id}`)
   },

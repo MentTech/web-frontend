@@ -12,6 +12,8 @@ export default function MentorMediaInfo({ mentor }: MentorMediaInfoProps) {
   User_mentor.experiences?.sort((a, b) => {
     return new Date(b.startAt).getTime() - new Date(a.startAt).getTime()
   })
+
+  console.log(mentor)
   return (
     <>
       <Grid container spacing={3}>
@@ -36,8 +38,8 @@ export default function MentorMediaInfo({ mentor }: MentorMediaInfoProps) {
               marginBottom: '12px',
             }}
           >
-            <Rating readOnly value={4.5} precision={0.5} />
-            <Typography>4.5 (3 đánh giá) 200 mentee</Typography>
+            <Rating readOnly value={mentor.averageRating.average} precision={0.5} />
+            <Typography>({mentor.averageRating.count} đánh giá) 200 mentee</Typography>
           </Stack>
           <Stack direction={'row'} spacing={4} sx={{ marginBottom: '20px' }}>
             <span>
