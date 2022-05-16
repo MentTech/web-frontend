@@ -13,6 +13,9 @@ interface MentorSessionsProps {
   onAccept: Function
   onReject: Function
   onUpdate: Function
+  onClickLoadMore: Function
+  loadingMore: boolean
+  canLoadMore: boolean
 }
 
 const MentorSessions = React.createContext<MentorSessionsProps>({
@@ -23,6 +26,9 @@ const MentorSessions = React.createContext<MentorSessionsProps>({
   onAccept: () => {},
   onReject: () => {},
   onUpdate: () => {},
+  onClickLoadMore: () => {},
+  loadingMore: false,
+  canLoadMore: false,
 })
 
 interface MentorSessionsProviderProps {
@@ -30,34 +36,54 @@ interface MentorSessionsProviderProps {
 }
 
 const MentorSessionsProvider = ({ children }: MentorSessionsProviderProps) => {
+  const { data: session } = useSession()
+
+  const mentorId = session?.user.id
+  if (!mentorId) {
+    return <LinearIndeterminate />
+  }
+
   const [loading, setLoading] = useState(true)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [canLoadMore, setCanLoadMore] = useState(true)
+  const [paginationInfo, setPaginationInfo] = useState({
+    page: 1,
+    limit: 10,
+  })
   const [currentLoadingSession, setcurrentLoadingSession] = useState(-1)
   // const [error, setError] = useState('')
 
   const router = useRouter()
 
   const [programSessions, setprogramSessions] = useState<MentorSession[]>([])
-  const { data: session } = useSession()
-
-  const mentorId = session?.user.id
 
   const { programId } = router.query
-
-  if (!mentorId) {
-    return <LinearIndeterminate />
-  }
 
   React.useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
       try {
-        const result = programId
-          ? await mentorApi.getAllMentorRegister(Number(mentorId))
+        const result = !programId
+          ? await await mentorApi.getAllMentorRegister(Number(mentorId))
           : await mentorApi.getProgramMentorSessions(
               String(mentorId),
               String(router.query.programId)
             )
-        setprogramSessions(result.data)
+
+        if (programId) {
+          setprogramSessions(result.data)
+          setCanLoadMore(false)
+        } else {
+          const sessionsArray = result.data.data || []
+          if (sessionsArray.length < result.data.limit) {
+            setCanLoadMore(false)
+          }
+          setprogramSessions(sessionsArray)
+          setPaginationInfo({
+            page: result.data.page,
+            limit: result.data.limit,
+          })
+        }
       } catch (error: any) {
         setToastError(error)
       } finally {
@@ -66,6 +92,30 @@ const MentorSessionsProvider = ({ children }: MentorSessionsProviderProps) => {
     }
     fetchData()
   }, [programId, mentorId, router])
+
+  const onClickLoadMore = async () => {
+    if (!programId && canLoadMore) {
+      setLoadingMore(true)
+      const result = await mentorApi.getAllMentorRegister(Number(mentorId), {
+        page: paginationInfo.page + 1,
+        limit: paginationInfo.limit,
+      })
+      const sessionsArray = result.data.data || []
+
+      setprogramSessions([...programSessions, ...sessionsArray])
+
+      setPaginationInfo({
+        ...paginationInfo,
+        page: paginationInfo.page + 1,
+      })
+
+      if (sessionsArray.length < paginationInfo.limit) {
+        setCanLoadMore(false)
+      }
+
+      setLoadingMore(false)
+    }
+  }
 
   const onAccept = async (sessionId: string, contactInfo: string, expectedDate: Date) => {
     setcurrentLoadingSession(Number(sessionId))
@@ -146,6 +196,9 @@ const MentorSessionsProvider = ({ children }: MentorSessionsProviderProps) => {
         onAccept,
         onReject,
         onUpdate,
+        loadingMore,
+        canLoadMore,
+        onClickLoadMore,
       }}
     >
       {children}
