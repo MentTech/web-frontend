@@ -113,14 +113,16 @@ const MentorSessionsProvider = ({ children }: MentorSessionsProviderProps) => {
     changeInfo: {
       contactInfo?: string
       additional?: string
+      expectedDate?: Date | string
     }
   ) => {
     setcurrentLoadingSession(Number(sessionId))
     try {
-      const { additional, contactInfo } = changeInfo
+      const { additional, contactInfo, expectedDate } = changeInfo
       await mentorApi.updateAcceptedMentorSession(String(mentorId), String(programId), sessionId, {
         contactInfo,
         additional,
+        expectedDate,
       })
       setprogramSessions(
         programSessions.map((item) =>

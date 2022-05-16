@@ -32,6 +32,7 @@ import { Experience } from '@models/mentor'
 import EditExperience from '../EditExperience/EditExperience'
 import AddExperienceForm from '../AddExperienceForm/AddExperienceForm'
 import AvatarModal from '../AvatarModal/AvatarModal'
+import AchievementModal from '../AchievementModal/AchievementModal'
 const Editor = dynamic<EditorProps>(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), {
   ssr: false,
 })
@@ -48,6 +49,7 @@ export default function MentorProfile(props: ProfileProps) {
   const [showAddExperience, setShowAddExperience] = useState(false)
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty())
   const [showAvatarModal, setShowAvatarModal] = useState(false)
+  const [showAchievementModal, setShowAchievementModa] = useState(false)
 
   function onEditorStateChange(editorState: EditorState) {
     setEditorState(editorState)
@@ -175,6 +177,16 @@ export default function MentorProfile(props: ProfileProps) {
     setShowAvatarModal(true)
   }
 
+  function handleOpenAchievementModal() {
+    setShowAchievementModa(true)
+  }
+
+  function handleCloseAchievementModal() {
+    setShowAchievementModa(false)
+  }
+
+  function handleEditAchievement() {}
+
   return (
     <>
       <Stack spacing={3}>
@@ -290,9 +302,34 @@ export default function MentorProfile(props: ProfileProps) {
               : 'Chưa có thông tin.'}
           </Stack>
         </ProfileCard>
-        <ProfileCard padding="20px 44px">
+        <ProfileCard padding="20px 44px" onEditClick={handleOpenAchievementModal}>
           <HeadingPrimary>Thành tích</HeadingPrimary>
-          {/* <Typography></Typography> */}
+          <Grid container spacing={2}>
+            <Grid item md={6}>
+              <Typography fontSize="20px" fontWeight="500">
+                Business Analyst Fundamental
+              </Typography>
+              <Typography variant="h5" component="h5" fontSize="16px">
+                Chứng chỉ do Trung tâm IPMAC được ủy quyền bởi IIBA
+              </Typography>
+            </Grid>
+            <Grid item md={6}>
+              <Typography fontSize="20px" fontWeight="500">
+                Business Analyst Fundamental
+              </Typography>
+              <Typography variant="h5" component="h5" fontSize="16px">
+                Chứng chỉ do Trung tâm IPMAC được ủy quyền bởi IIBA
+              </Typography>
+            </Grid>
+            <Grid item md={6}>
+              <Typography fontSize="20px" fontWeight="500">
+                Business Analyst Fundamental
+              </Typography>
+              <Typography variant="h5" component="h5" fontSize="16px">
+                Chứng chỉ do Trung tâm IPMAC được ủy quyền bởi IIBA
+              </Typography>
+            </Grid>
+          </Grid>
         </ProfileCard>
         <ProfileCard padding="20px 44px" onEditClick={handleShowSkillModal}>
           <HeadingPrimary>Kỹ năng</HeadingPrimary>
@@ -369,6 +406,11 @@ export default function MentorProfile(props: ProfileProps) {
           avatar={profile.avatar}
         />
       )}
+      <AchievementModal
+        show={showAchievementModal}
+        onClose={handleCloseAchievementModal}
+        onSubmit={handleEditAchievement}
+      />
     </>
   )
 }

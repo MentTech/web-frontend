@@ -10,5 +10,5 @@ export interface MentorSession {
   createdAt: Date | string
   expectedDate: Date | string
   isAccepted: boolean
-  userInfo: Mentee
+  user: Mentee
 }

@@ -1,11 +1,15 @@
 import { NextPageWithLayout } from '@models/common'
 import HomeHeader from '@components/common/HomeHeader/HomeHeader'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Rating from '@mui/material/Rating'
 import Carousel from 'react-elastic-carousel'
 import styles from '../styles/Home.module.scss'
 import Header from '@components/common/Header/Header'
+import { mentorApi } from '@api/mentor-api'
+import { GetStaticProps, GetStaticPropsContext } from 'next'
+import { Mentor } from '@models/index'
+import { config } from '@config/main'
 
 const breakPoints = [
   { width: 1, itemsToShow: 1 },
@@ -14,8 +18,13 @@ const breakPoints = [
   { width: 1200, itemsToShow: 4 },
 ]
 
-const Home: NextPageWithLayout = () => {
+export interface HomePageProps {
+  topMentors: Mentor[]
+}
+
+function Home({ topMentors }: HomePageProps) {
   const [items, setItems] = useState([1, 2, 3, 4, 5, 6, 7, 8])
+
   return (
     <>
       {/* Header section */}
@@ -63,24 +72,16 @@ const Home: NextPageWithLayout = () => {
           need from one dashboard.
         </p>
         <div className={styles.mentorsList}>
-          <div className={styles.mentorItem}>
-            <img className={styles.mentorAvatar} src="/static/mentorAvatar.png" alt="#" />
-            <h3 className={styles.mentorName}>Rick Ashtley</h3>
-            <p className={styles.mentorJob}>Biochemistry, Chemlabs</p>
-            <a className={`${styles.btnPrimary} ${styles.mentorCardBtn}`}>Get in Touch</a>
-          </div>
-          <div className={styles.mentorItem}>
-            <img className={styles.mentorAvatar} src="/static/mentorAvatar.png" alt="#" />
-            <h3 className={styles.mentorName}>Rick Ashtley</h3>
-            <p className={styles.mentorJob}>Biochemistry, Chemlabs</p>
-            <a className={`${styles.btnPrimary} ${styles.mentorCardBtn}`}>Get in Touch</a>
-          </div>
-          <div className={styles.mentorItem}>
-            <img className={styles.mentorAvatar} src="/static/mentorAvatar.png" alt="#" />
-            <h3 className={styles.mentorName}>Rick Ashtley</h3>
-            <p className={styles.mentorJob}>Biochemistry, Chemlabs</p>
-            <a className={`${styles.btnPrimary} ${styles.mentorCardBtn}`}>Get in Touch</a>
-          </div>
+          {topMentors.map((mentor: Mentor, index) => (
+            <div className={styles.mentorItem}>
+              <img className={styles.mentorAvatar} src={mentor.avatar} alt="#" />
+              <h3 className={styles.mentorName}>{mentor.name}</h3>
+              <p className={styles.mentorJob}>
+                {mentor.User_mentor.experiences[0] && mentor.User_mentor.experiences[0].title}
+              </p>
+              <a className={`${styles.btnPrimary} ${styles.mentorCardBtn}`}>Get in Touch</a>
+            </div>
+          ))}
         </div>
       </div>
       <div className={styles.contentDarkSection}>
@@ -259,6 +260,25 @@ const Home: NextPageWithLayout = () => {
       </footer>
     </>
   )
+}
+
+export const getStaticProps: GetStaticProps<HomePageProps> = async (
+  context: GetStaticPropsContext
+) => {
+  try {
+    const res = await fetch(`${config.backendURL}/v1/mentor/suggest`)
+    const data = await res.json()
+    console.log(data)
+    return {
+      props: {
+        topMentors: data,
+      },
+    }
+  } catch (err) {
+    return {
+      notFound: true,
+    }
+  }
 }
 
 export default Home

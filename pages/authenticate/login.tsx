@@ -1,15 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { loginPayload } from '@models/auth'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import * as yup from 'yup'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { useEffect, useState } from 'react'
-import LinearIndeterminate from '@components/common/LinearIndeterminate/LinearIndeterminate'
-import { Tab } from '@headlessui/react'
+import * as yup from 'yup'
 
 const schema = yup
   .object({
@@ -72,11 +69,10 @@ export default function Login() {
     <>
       <div className="flex justify-center min-h-screen items-center bg-gradient-to-tl from-green-400 to-indigo-900">
         <div className="flex flex-col w-full max-w-md px-4 py-8 bg-gray-100 rounded-lg shadow dark:bg-gray-800 sm:px-6 md:px-8 lg:px-10">
-          <div className="self-center mb-6 text-xl font-bold text-gray-600 sm:text-2xl dark:text-white">
-            Đăng nhập
+          <div className="self-center mb-8 text-xl font-bold text-gray-600 sm:text-3xl dark:text-white">
+            ĐĂNG NHẬP
           </div>
-          <div className="">
-            <h2 className="mb-2 font-semibold">LOẠI TÀI KHOẢN</h2>
+          <div className="df aic jcc w100">
             <input name="accountType" id="mentee" type="radio" hidden checked />
             <label
               onClick={() => setIsMentor(false)}
@@ -99,7 +95,7 @@ export default function Login() {
             </label>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-4">
             <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
               <input name="csrfToken" type="hidden" />
 
@@ -217,7 +213,7 @@ export default function Login() {
                 </button>
               </div>
               <div className="flex items-center justify-center mt-6">
-                <div className="inline-flex items-center text-xs font-thin text-center text-gray-500 hover:text-gray-700 dark:text-gray-100 dark:hover:text-white">
+                <div className="inline-flex  items-center text-xs text-center text-gray-900 hover:text-gray-700 dark:text-gray-100 dark:hover:text-white">
                   <span className="ml-2">Bạn chưa có tài khoản?</span>
                   <Link href="/authenticate/register">
                     <a className="px-1 text-blue-500 cursor-pointer">Đăng ký</a>
