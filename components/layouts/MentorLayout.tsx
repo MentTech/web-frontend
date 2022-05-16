@@ -3,9 +3,9 @@ import { LayoutProps } from '@models/common'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import MailIcon from '@mui/icons-material/Mail'
+import MenuBook from '@mui/icons-material/MenuBook'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
 import Person from '@mui/icons-material/Person'
-import MenuBook from '@mui/icons-material/MenuBook'
 import { Container, ListItemButton } from '@mui/material'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
@@ -14,15 +14,13 @@ import Divider from '@mui/material/Divider'
 import Drawer from '@mui/material/Drawer'
 import IconButton from '@mui/material/IconButton'
 import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import { styled, useTheme } from '@mui/material/styles'
-import { useState } from 'react'
 import Link from 'next/link'
-import Footer from '@components/common/Footer/Footer'
 import { useRouter } from 'next/router'
-
+import { useState } from 'react'
+import { AccessibilityNew } from '@mui/icons-material'
 const drawerWidth = 240
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
@@ -122,6 +120,7 @@ export function MentorLayout({ children }: LayoutProps) {
             { title: 'Home', href: '/mentor', icon: <InboxIcon /> },
             { title: 'Tin nhắn', href: '/mentor/message', icon: <MailIcon /> },
             { title: 'Chương trình', href: '/mentor/programs', icon: <MenuBook /> },
+            { title: 'Phiên mentoring', href: '/mentor/sessions', icon: <AccessibilityNew /> },
             { title: 'Hồ sơ của bạn', href: '/mentor/profile', icon: <Person /> },
           ].map((item, index) => {
             return (

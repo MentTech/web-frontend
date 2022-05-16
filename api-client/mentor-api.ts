@@ -56,4 +56,11 @@ export const mentorApi = {
   deleteExperience(mentorId: string, experienceId: string) {
     return axiosClient.delete(`/v1/mentor/${mentorId}/experience/${experienceId}`)
   },
+  getAllMentorRegister(mentorId: number, params?: any) {
+    return axiosClient.get(`/v1/mentor/${mentorId}/register`, {
+      params: {
+        ...params,
+      },
+    })
+  },
 }
