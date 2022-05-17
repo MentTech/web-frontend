@@ -10,6 +10,7 @@ import { mentorApi } from '@api/mentor-api'
 import { GetStaticProps, GetStaticPropsContext } from 'next'
 import { Mentor } from '@models/index'
 import { config } from '@config/main'
+import Link from 'next/link'
 
 const breakPoints = [
   { width: 1, itemsToShow: 1 },
@@ -79,7 +80,9 @@ function Home({ topMentors }: HomePageProps) {
               <p className={styles.mentorJob}>
                 {mentor.User_mentor.experiences[0] && mentor.User_mentor.experiences[0].title}
               </p>
-              <a className={`${styles.btnPrimary} ${styles.mentorCardBtn}`}>Get in Touch</a>
+              <Link href={`/mentors/${mentor.id}`}>
+                <a className={`${styles.btnPrimary} ${styles.mentorCardBtn}`}>Get in Touch</a>
+              </Link>
             </div>
           ))}
         </div>
@@ -268,7 +271,6 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async (
   try {
     const res = await fetch(`${config.backendURL}/v1/mentor/suggest`)
     const data = await res.json()
-    console.log(data)
     return {
       props: {
         topMentors: data,

@@ -16,8 +16,11 @@ import Toolbar from '@mui/material/Toolbar'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import UserCoinBox from '../UserCoinBox/UserCoinBox'
+import { io, Socket } from 'socket.io-client'
+import { useSession } from 'next-auth/react'
+import { config } from '@config/main'
 
 const pages = [
   {
@@ -29,6 +32,31 @@ const settings = ['Account', 'Dashboard']
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [socket, setSocket] = useState<Socket>()
+
+  useEffect(() => {
+    const s = io(config.backendURL)
+    s.on('connect', () => {
+      console.log('id', s.id)
+    })
+    setSocket(s)
+  }, [])
+
+  const { status, data: session } = useSession({
+    required: true,
+  })
+
+  useEffect(() => {
+    if (socket && status === 'authenticated') {
+      socket.emit('auth:connect', session.accessToken, (res: any) => {
+        console.log(res)
+      })
+      socket.on('notification', (data) => {
+        console.log('notification', data)
+      })
+    }
+  }, [socket, status])
+
   const open = Boolean(anchorEl)
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget)

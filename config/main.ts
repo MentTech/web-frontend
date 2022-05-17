@@ -7,6 +7,6 @@ export const config = {
     clientId: process.env.FACEBOOK_CLIENT_ID || '',
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET || '',
   },
-  backendURL: process.env.BACKEND_URL || '',
+  backendURL: process.env.NEXT_PUBLIC_BACKEND_URL || '',
   nextAuthURL: process.env.NEXTAUTH_URL || '',
 }

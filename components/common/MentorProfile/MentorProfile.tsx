@@ -77,6 +77,8 @@ export default function MentorProfile(props: ProfileProps) {
     </>
   )
 
+  console.log(profile)
+
   function handleOpenEditAboutModal() {
     if (mentorInfor?.User_mentor) {
       const blocksFromHTML = convertFromHTML(mentorInfor?.User_mentor?.introduction)
