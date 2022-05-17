@@ -11,7 +11,17 @@ interface MentorContext {
 }
 
 const CurrentMentorContext = React.createContext<MentorContext>({
-  currentMentor: { User_mentor: {} },
+  currentMentor: {
+    User_mentor: {
+      experiences: [],
+      category: {
+        id: 0,
+        name: '',
+        createdAt: new Date(),
+      },
+    },
+    averageRating: { count: 0, average: 0 },
+  },
   setCurrentMentor: () => {},
   loading: false,
 })
@@ -28,7 +38,17 @@ const CurrentMentorProvider = ({ children }: CurrentMentorProviderProps) => {
 
   const { mentorId } = router.query
 
-  const [currentMentor, setCurrentMentor] = useState({ User_mentor: {} })
+  const [currentMentor, setCurrentMentor] = useState({
+    User_mentor: {
+      experiences: [],
+      category: {
+        id: 0,
+        name: '',
+        createdAt: new Date(),
+      },
+    },
+    averageRating: { count: 0, average: 0 },
+  })
 
   React.useEffect(() => {
     const fetchData = async () => {

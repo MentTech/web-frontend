@@ -48,7 +48,7 @@ const SessionListItem = ({ session, canAcceptReject, canUpdate }: SessionListIte
     expectedDate: new Date(),
   })
 
-  const { name } = user
+  const { name } = user || {}
 
   return (
     <>
@@ -173,7 +173,8 @@ const SessionListItem = ({ session, canAcceptReject, canUpdate }: SessionListIte
 const TABS = ['Tất cả', 'Đã hoàn thành', 'Đang thực hiện', 'Chưa chấp nhận', 'Đã từ chối']
 
 export const MentorSessionsPage = () => {
-  const { loading, programSessions } = useMentorSessions()
+  const { loading, programSessions, loadingMore, canLoadMore, onClickLoadMore } =
+    useMentorSessions()
 
   const [currentTab, setCurrentTab] = useState(0)
 
@@ -228,6 +229,15 @@ export const MentorSessionsPage = () => {
               </Box>
             )}
           </List>
+          {canLoadMore && (
+            <Box className="w100 df aic jcc" m={2}>
+              <LoadingIndicator loading={loadingMore}>
+                <Button onClick={() => onClickLoadMore()} style={{ width: 250 }}>
+                  Tải thêm
+                </Button>
+              </LoadingIndicator>
+            </Box>
+          )}
         </Box>
       </Paper>
     </LoadingIndicator>
