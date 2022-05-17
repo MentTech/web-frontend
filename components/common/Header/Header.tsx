@@ -21,6 +21,8 @@ import UserCoinBox from '../UserCoinBox/UserCoinBox'
 import { io, Socket } from 'socket.io-client'
 import { useSession } from 'next-auth/react'
 import { config } from '@config/main'
+import NotificationComp from '../Notification/Notification'
+import { useNotification } from '@hooks/index'
 
 const pages = [
   {
@@ -42,20 +44,25 @@ const Header = () => {
     setSocket(s)
   }, [])
 
-  const { status, data: session } = useSession({
-    required: true,
-  })
+  const { status, data: session } = useSession()
+  const { notifications, addNewNotification } = useNotification()
 
   useEffect(() => {
     if (socket && status === 'authenticated') {
       socket.emit('auth:connect', session.accessToken, (res: any) => {
         console.log(res)
       })
-      socket.on('notification', (data) => {
-        console.log('notification', data)
-      })
     }
   }, [socket, status])
+
+  useEffect(() => {
+    if (socket && notifications) {
+      socket.on('notification', (data) => {
+        console.log('notification', data)
+        addNewNotification(data)
+      })
+    }
+  }, [notifications, socket])
 
   const open = Boolean(anchorEl)
   const handleClick = (event: any) => {
@@ -153,6 +160,9 @@ const Header = () => {
               <Box className="df aic">
                 <Box mr={2}>
                   <UserCoinBox />
+                </Box>
+                <Box mr={2}>
+                  <NotificationComp />
                 </Box>
                 <Tooltip title="Account settings">
                   <IconButton

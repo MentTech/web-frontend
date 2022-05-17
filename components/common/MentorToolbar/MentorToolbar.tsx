@@ -9,8 +9,14 @@ import MenuItem from '@mui/material/MenuItem'
 import Toolbar from '@mui/material/Toolbar'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import NotificationCom from '../Notification/Notification'
 import UserCoinBox from '../UserCoinBox/UserCoinBox'
+import { io, Socket } from 'socket.io-client'
+import { useSession } from 'next-auth/react'
+import { config } from '@config/main'
+import { useNotification } from '@hooks/index'
+import { Notification } from '@models/index'
 
 const pages = ['Products', 'Pricing', 'Blog']
 const settings = ['Hồ sơ', 'Phiên mentoring']
@@ -23,6 +29,37 @@ export interface MentorToolbar {
 const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
+  const [socket, setSocket] = useState<Socket | null>(null)
+
+  useEffect(() => {
+    const socket = io(config.backendURL)
+    setSocket(socket)
+  }, [])
+
+  const { data: session, status } = useSession({
+    required: true,
+  })
+
+  const { addNewNotification, notifications } = useNotification()
+
+  useEffect(() => {
+    if (socket && status === 'authenticated') {
+      console.log('emit')
+      socket.emit('auth:connect', session.accessToken, (res: any) => {
+        console.log(res)
+      })
+    }
+  }, [status, socket])
+
+  useEffect(() => {
+    if (socket && notifications) {
+      socket.on('notification', (data: Notification) => {
+        console.log('notification', data)
+        addNewNotification(data)
+      })
+    }
+  }, [notifications, socket])
+
   const { logout, profile } = useProfile()
 
   const handleOpenNavMenu = (event: any) => {
@@ -126,11 +163,16 @@ const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
             <UserCoinBox />
           </Box>
         )}
+
+        {profile && (
+          <Box mr={2}>
+            <NotificationCom />
+          </Box>
+        )}
+
         <Tooltip title="Open settings">
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-            <Avatar src={profile?.avatar} sx={{ width: 32, height: 32 }}>
-              M
-            </Avatar>
+            <Avatar src={profile?.avatar} sx={{ width: 32, height: 32 }}></Avatar>
           </IconButton>
         </Tooltip>
         <Menu

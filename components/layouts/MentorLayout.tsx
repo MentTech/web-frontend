@@ -18,13 +18,10 @@ import ListItem from '@mui/material/ListItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import { styled, useTheme } from '@mui/material/styles'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Footer from '@components/common/Footer/Footer'
 import { useRouter } from 'next/router'
-import { io, Socket } from 'socket.io-client'
-import { useSession } from 'next-auth/react'
-import { config } from '@config/main'
 
 const drawerWidth = 240
 
@@ -79,31 +76,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export function MentorLayout({ children }: LayoutProps) {
   //const [selected, setSelected] = useState()
-  const [socket, setSocket] = useState<Socket | null>(null)
   const theme = useTheme()
   const [open, setOpen] = useState(false)
-
-  useEffect(() => {
-    const socket = io(config.backendURL)
-    setSocket(socket)
-  }, [])
-
-  const { data: session, status } = useSession({
-    required: true,
-  })
-
-  useEffect(() => {
-    if (socket && status === 'authenticated') {
-      console.log('emit')
-      socket.emit('auth:connect', session.accessToken, (res: any) => {
-        console.log(res)
-      })
-
-      socket.on('notification', (data) => {
-        console.log('notification', data)
-      })
-    }
-  }, [status, socket])
 
   const handleDrawerOpen = () => {
     setOpen(true)

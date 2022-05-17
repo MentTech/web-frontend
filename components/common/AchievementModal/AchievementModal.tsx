@@ -23,7 +23,7 @@ export default function AchievementModal({ show, onClose, onSubmit }: Achievemen
   const achievements = []
   for (let i = 0; i < numberAchievement; i++) {
     achievements.push(
-      <Box>
+      <Box key={i}>
         <Grid container spacing={2}>
           <Grid item md={6}>
             <input type="text" placeholder="Thành tích" className="input input-bordered w-full" />

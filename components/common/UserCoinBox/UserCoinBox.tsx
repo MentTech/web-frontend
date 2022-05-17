@@ -9,9 +9,6 @@ import { BiCoin } from 'react-icons/bi'
 
 function UserCoinBoxComp() {
   const [anchorEl, setAnchorEl] = useState<any>(null)
-  const { balance } = useUserTransaction()
-
-  if (balance === undefined) return null
 
   const router = useRouter()
 
@@ -26,6 +23,10 @@ function UserCoinBoxComp() {
   const onClickViewTransaction = () => {
     router.push('/coin/transactions')
   }
+
+  const { balance } = useUserTransaction()
+
+  if (balance === undefined) return null
 
   return (
     <>
