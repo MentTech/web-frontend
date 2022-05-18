@@ -73,7 +73,7 @@ export default function Login() {
             ĐĂNG NHẬP
           </div>
           <div className="df aic jcc w100">
-            <input name="accountType" id="mentee" type="radio" hidden checked />
+            <input name="accountType" id="mentee" type="radio" hidden defaultChecked />
             <label
               onClick={() => setIsMentor(false)}
               htmlFor="mentee"
