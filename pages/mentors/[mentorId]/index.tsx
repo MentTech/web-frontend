@@ -1,28 +1,25 @@
 import Breadcrumb from '@components/common/Breadcrumb/Breadcrumb'
-import FeedbackCard from '@components/common/FeedbackCard/FeedbackCard'
 import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
+import Loading from '@components/common/Loading/Loading'
 import MentorMediaInfo from '@components/common/MentorMediaInfor/MentorMediaInfor'
 import MentorProgramCard from '@components/common/MentorProgramCard/MentorProgramCard'
 import SkillBadge from '@components/common/SkillBadge/SkillBadge'
+import SuggestMentorsCard from '@components/common/SuggestMentorsCard'
 import { MainLayout } from '@components/layouts'
-import { Experience, Mentor } from '@models/mentor'
+import { config } from '@config/main'
+import { useFavorite } from '@hooks/index'
+import { Achievement, Experience, Mentor } from '@models/mentor'
 import { Favorite } from '@mui/icons-material'
 import { Box, Card, CardContent, Divider, Grid, Stack, Typography } from '@mui/material'
+import axios from 'axios'
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Carousel from 'react-elastic-carousel'
-import { favoriteApi } from '@api/favorite-api'
-import Loading from '@components/common/Loading/Loading'
-import SuggestMentorsCard from '@components/common/SuggestMentorsCard'
-import { config } from '@config/main'
-import axios from 'axios'
-import { useFavorite } from '@hooks/index'
 //@ts-ignore
-import ReactReadMoreReadLess from 'react-read-more-read-less'
-import { toast } from 'react-toastify'
-import { useSession } from 'next-auth/react'
 import ExperienceCard from '@components/common/ExperienceCard/ExperienceCard'
+import { useSession } from 'next-auth/react'
+import { toast } from 'react-toastify'
 
 const breakPoints = [
   { width: 1, itemsToShow: 1 },
@@ -51,11 +48,15 @@ function Profile({ mentor }: MentorProfileProps) {
 
   const { data: session, status } = useSession()
 
+  console.log(mentor)
+
   const { mentorId } = router.query
   const skillDescs = mentor?.User_mentor.skills
 
   const { User_mentor } = mentor
   const { programs, experiences } = User_mentor
+
+  const achievements = mentor?.User_mentor.achievements
 
   const { favorites, addFavorite, removeFavorite } = useFavorite()
 
@@ -153,13 +154,23 @@ function Profile({ mentor }: MentorProfileProps) {
                 </Box>
                 {/* Chứng chỉ */}
                 <Box sx={{ marginTop: '20px' }}>
-                  <HeadingPrimary>Chứng chỉ</HeadingPrimary>
-                  <Stack spacing={2}>
-                    <Typography variant="h6">Chứng chỉ 1</Typography>
-                    <Typography variant="h6">Chứng chỉ 2</Typography>
-                    <Typography variant="h6">Chứng chỉ 3</Typography>
-                    <Typography variant="h6">Chứng chỉ 4</Typography>
-                  </Stack>
+                  <HeadingPrimary>Thành tích & Chứng chỉ</HeadingPrimary>
+                  {achievements ? (
+                    <Grid container spacing={2}>
+                      {achievements.map((achievement: Achievement) => (
+                        <Grid item md={6} key={achievement.id}>
+                          <Typography fontSize="20px" fontWeight="500">
+                            {achievement.title}
+                          </Typography>
+                          <Typography variant="h5" component="h5" fontSize="16px">
+                            {achievement.description}
+                          </Typography>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  ) : (
+                    'Chưa có thông tin.'
+                  )}
                 </Box>
                 {/* Đánh giá */}
                 <Box sx={{ marginTop: '20px' }}>

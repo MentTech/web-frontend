@@ -48,14 +48,17 @@ function Home({ topMentors }: HomePageProps) {
               />
             </svg>
 
-            <h2 className={styles.HeadingPrimaryMain}>Get unstuck on your homwork</h2>
+            <h2 className={styles.HeadingPrimaryMain}>Cố vấn lộ trình học tập phù hợp nhất</h2>
             <h4 className={styles.HeadingPrimarySub}>
-              Find world class tutors to help you with your homework in an instant and secure that
-              sweet 4.0 cGPA
+              Tìm người cố vấn phù hợp với bạn, để bạn có thể học tập tốt hơn.
             </h4>
             <div className={styles.HeaderButtons}>
-              <a className={styles.btnPrimary}>Find Tutors</a>
-              <a className={styles.btnSecondaryOutline}>Sign Up</a>
+              <Link href="/find">
+                <a className={styles.btnPrimary}>Tìm mentor</a>
+              </Link>
+              <Link href="/authenticate/signup">
+                <a className={styles.btnSecondaryOutline}>Đăng ký</a>
+              </Link>
             </div>
           </div>
           <div className={styles.HeaderContentRight}>
@@ -67,14 +70,14 @@ function Home({ topMentors }: HomePageProps) {
         </div>
       </div>
       <div className={styles.contentSection}>
-        <h2 className={styles.contentHeading}>Meet Our Finest Mentors</h2>
+        <h2 className={styles.contentHeading}>Gặp gỡ những mentor tốt nhất của chúng tôi</h2>
         <p className={styles.contentSubheading}>
-          Manage and view all your learning goals, paths, mentors, courses and everything else you
-          need from one dashboard.
+          Quản lý và xem tất cả các mục tiêu học tập, lộ trình, người cố vấn, khóa học và mọi thứ
+          khác mà bạn cần.
         </p>
         <div className={styles.mentorsList}>
           {topMentors.map((mentor: Mentor, index) => (
-            <div className={styles.mentorItem}>
+            <div className={styles.mentorItem} key={index}>
               <img className={styles.mentorAvatar} src={mentor.avatar} alt="#" />
               <h3 className={styles.mentorName}>{mentor.name}</h3>
               <p className={styles.mentorJob}>
@@ -89,7 +92,7 @@ function Home({ topMentors }: HomePageProps) {
       </div>
       <div className={styles.contentDarkSection}>
         <img className={styles.topLeftImg} src={'/static/Design.png'} alt="de" />
-        <h2 className={styles.contentHeading}>Ask Questions, Get Quick Answers</h2>
+        <h2 className={styles.contentHeading}>Đặt câu hỏi, thắc mắc về lĩnh vực công nghệ</h2>
         <div className={styles.questionsList}>
           <div className={styles.questionItem}>
             <div className={styles.questionInfo}>
@@ -156,12 +159,12 @@ function Home({ topMentors }: HomePageProps) {
       </div>
       <div className={styles.contentSection}>
         <h2 className={styles.contentHeading}>
-          Join as a Mentor, Get Rewards for <br /> Answering Questions
+          Khởi đầu sự nghiệp của bạn cùng Menttech <br />
         </h2>
         <div className={styles.signUpWrapper}>
           <div className={styles.signUpLeft}>
             <form className={styles.signUpForm}>
-              <h3 className={styles.formTitle}>Sign Up</h3>
+              <h3 className={styles.formTitle}>Đăng ký</h3>
               <div className={styles.formGroup}>
                 <label className={styles.formLable} htmlFor="name">
                   Name
@@ -189,7 +192,7 @@ function Home({ topMentors }: HomePageProps) {
       </div>
 
       <div className={styles.contentDarkSection}>
-        <h2 className={styles.contentHeading}>Don’t Take Our Word For It</h2>
+        <h2 className={styles.contentHeading}>Trải nghiệm của mentee</h2>
         <div className={styles.feedBacksList}>
           <Carousel enableAutoPlay isRTL={false} breakPoints={breakPoints}>
             {items.map((item) => (
@@ -215,11 +218,11 @@ function Home({ topMentors }: HomePageProps) {
       </div>
       <div className={styles.contentSection}>
         <h2 className={styles.contentHeading}>
-          What Are You Waiting For? <br /> It’s Completely Free!
+          Bạn còn chờ gì nữa? <br /> Trở thành mentor ngay hôm nay!
         </h2>
         <div className={styles.buttonGroup}>
-          <a className={`${styles.btnPrimary} ${styles.askBtn}`}>Become a mentor</a>
-          <a className={`${styles.btnPrimary} ${styles.askBtn}`}>Ask Question</a>
+          <a className={`${styles.btnPrimary} ${styles.askBtn}`}>Trở thành mentor</a>
+          <a className={`${styles.btnPrimary} ${styles.askBtn}`}>Đăng ký mentee</a>
         </div>
       </div>
       <footer className="footer p-10 bg-base-200 text-base-content">
@@ -236,7 +239,7 @@ function Home({ topMentors }: HomePageProps) {
             <path d="M22.672 15.226l-2.432.811.841 2.515c.33 1.019-.209 2.127-1.23 2.456-1.15.325-2.148-.321-2.463-1.226l-.84-2.518-5.013 1.677.84 2.517c.391 1.203-.434 2.542-1.831 2.542-.88 0-1.601-.564-1.86-1.314l-.842-2.516-2.431.809c-1.135.328-2.145-.317-2.463-1.229-.329-1.018.211-2.127 1.231-2.456l2.432-.809-1.621-4.823-2.432.808c-1.355.384-2.558-.59-2.558-1.839 0-.817.509-1.582 1.327-1.846l2.433-.809-.842-2.515c-.33-1.02.211-2.129 1.232-2.458 1.02-.329 2.13.209 2.461 1.229l.842 2.515 5.011-1.677-.839-2.517c-.403-1.238.484-2.553 1.843-2.553.819 0 1.585.509 1.85 1.326l.841 2.517 2.431-.81c1.02-.33 2.131.211 2.461 1.229.332 1.018-.21 2.126-1.23 2.456l-2.433.809 1.622 4.823 2.433-.809c1.242-.401 2.557.484 2.557 1.838 0 .819-.51 1.583-1.328 1.847m-8.992-6.428l-5.01 1.675 1.619 4.828 5.011-1.674-1.62-4.829z"></path>
           </svg>
           <p>
-            Mentoring
+            Menttech
             <br />
           </p>
         </div>

@@ -44,7 +44,6 @@ const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
 
   useEffect(() => {
     if (socket && status === 'authenticated') {
-      console.log('emit')
       socket.emit('auth:connect', session.accessToken, (res: any) => {
         console.log(res)
       })

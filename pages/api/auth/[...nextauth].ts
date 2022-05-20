@@ -35,8 +35,10 @@ export default NextAuth({
               return res.data
             }
           }
-        } catch (err) {
+        } catch (err: any) {
           console.log(err)
+          const errorMessage = err.response.data.message
+          throw new Error(errorMessage)
         }
         return null
       },
@@ -60,7 +62,7 @@ export default NextAuth({
               return { ...res.data, role: 'mentor' }
             }
           }
-        } catch (err) {
+        } catch (err: any) {
           console.log(err)
         }
         return null
