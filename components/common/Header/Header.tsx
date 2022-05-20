@@ -222,9 +222,9 @@ const Header = () => {
               transformOrigin={{ horizontal: 'right', vertical: 'top' }}
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-              <Link href="/tokens">
+              {/* <Link href="/tokens">
                 <MenuItem>Tokens: {profile?.coin}</MenuItem>
-              </Link>
+              </Link> */}
               <Divider />
               <Link href="/profile">
                 <MenuItem>

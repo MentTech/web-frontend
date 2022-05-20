@@ -6,3 +6,12 @@ export interface MentorProgram {
   createAt?: Date
   mentorId?: string
 }
+
+export interface ProgramRegisterCheckoutInfoProps {
+  name: string
+  email: string
+  description?: string
+  note?: string
+  expectation?: string
+  goal?: string
+}
