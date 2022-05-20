@@ -13,7 +13,6 @@ export default function MentorMediaInfo({ mentor }: MentorMediaInfoProps) {
     return new Date(b.startAt).getTime() - new Date(a.startAt).getTime()
   })
 
-  console.log(mentor)
   return (
     <>
       <Grid container spacing={3}>

@@ -1,8 +1,9 @@
 import * as React from 'react'
-import { Box, Typography, Menu, List, ListItem, ListItemText, Divider } from '@mui/material'
-import { Notifications } from '@mui/icons-material'
+import { Box, Typography, Menu, List, ListItem, ListItemText, Divider, Avatar } from '@mui/material'
+import { Notifications, Circle } from '@mui/icons-material'
 import { useNotification } from '@hooks/use-notification'
 import { Notification } from '@models/index'
+import moment from 'moment'
 
 export interface NotificationProps {}
 
@@ -10,6 +11,8 @@ export default function NotificationComp(props: NotificationProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const { notifications } = useNotification()
+
+  console.log(notifications)
 
   const onCloseMenu = () => {
     setAnchorEl(null)
@@ -54,7 +57,7 @@ export default function NotificationComp(props: NotificationProps) {
         PaperProps={{
           style: {
             padding: 16,
-            maxWidth: 320,
+            maxWidth: 350,
           },
         }}
         anchorOrigin={{
@@ -68,10 +71,35 @@ export default function NotificationComp(props: NotificationProps) {
         }}
       >
         <List>
+          <Typography variant="h6" noWrap>
+            Thông báo
+          </Typography>
           {notifications && notifications.length > 0 ? (
             notifications.map((n: Notification) => (
-              <ListItem key={n.id} disablePadding>
-                <ListItemText primary={n.message} />
+              <ListItem
+                key={n.id}
+                disablePadding
+                sx={{
+                  padding: '10px 4px',
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  '&:hover': { backgroundColor: '#F7F7F7' },
+                }}
+              >
+                <Avatar sx={{ mr: 2 }} />
+                <Box>
+                  <Typography sx={{ fontSize: '15px' }}>{n.message}</Typography>
+                  {n.isRead ? (
+                    <Typography sx={{ color: 'gray', fontSize: '12px' }}>
+                      {moment(n.createAt).fromNow()}
+                    </Typography>
+                  ) : (
+                    <Typography sx={{ color: 'blue', fontWeight: '500', fontSize: '12px' }}>
+                      {moment(n.createAt).fromNow()}
+                    </Typography>
+                  )}
+                </Box>
+                {!n.isRead && <Circle sx={{ fontSize: '12px', color: 'blue', ml: 1 }} />}
               </ListItem>
             ))
           ) : (

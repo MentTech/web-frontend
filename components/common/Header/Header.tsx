@@ -38,9 +38,7 @@ const Header = () => {
 
   useEffect(() => {
     const s = io(config.backendURL)
-    s.on('connect', () => {
-      console.log('id', s.id)
-    })
+    s.on('connect', () => {})
     setSocket(s)
   }, [])
 
