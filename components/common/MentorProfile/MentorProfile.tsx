@@ -28,11 +28,12 @@ import UpdateSkillForm from '../UpdateSkillForm/UpdateSkillForm'
 import UpdateMentorCategory from '../UpdateMentorCategory/UpdateMentorCategory'
 import { useCategory } from '@hooks/index'
 import ExperienceCard from '../ExperienceCard/ExperienceCard'
-import { Experience } from '@models/mentor'
+import { Achievement, Experience } from '@models/mentor'
 import EditExperience from '../EditExperience/EditExperience'
 import AddExperienceForm from '../AddExperienceForm/AddExperienceForm'
 import AvatarModal from '../AvatarModal/AvatarModal'
 import AchievementModal from '../AchievementModal/AchievementModal'
+import { useAchievement } from '@hooks/index'
 const Editor = dynamic<EditorProps>(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), {
   ssr: false,
 })
@@ -58,6 +59,8 @@ export default function MentorProfile(props: ProfileProps) {
   const { categories } = useCategory()
 
   const { profile, updateProfile } = useProfile()
+
+  const { achievements } = useAchievement(profile?.id)
 
   const { mentorInfor, editMentorProfile, updateExperience, addExperience, removeExperience } =
     useMentorInfor(profile?.id)
@@ -305,33 +308,24 @@ export default function MentorProfile(props: ProfileProps) {
           </Stack>
         </ProfileCard>
         <ProfileCard padding="20px 44px" onEditClick={handleOpenAchievementModal}>
-          <HeadingPrimary>Thành tích</HeadingPrimary>
-          <Grid container spacing={2}>
-            <Grid item md={6}>
-              <Typography fontSize="20px" fontWeight="500">
-                Business Analyst Fundamental
-              </Typography>
-              <Typography variant="h5" component="h5" fontSize="16px">
-                Chứng chỉ do Trung tâm IPMAC được ủy quyền bởi IIBA
-              </Typography>
+          <HeadingPrimary>Thành tích & Chứng chỉ</HeadingPrimary>
+
+          {achievements ? (
+            <Grid container spacing={2}>
+              {achievements.map((achievement: Achievement) => (
+                <Grid item md={6} key={achievement.id}>
+                  <Typography fontSize="20px" fontWeight="500">
+                    {achievement.title}
+                  </Typography>
+                  <Typography variant="h5" component="h5" fontSize="16px">
+                    {achievement.description}
+                  </Typography>
+                </Grid>
+              ))}
             </Grid>
-            <Grid item md={6}>
-              <Typography fontSize="20px" fontWeight="500">
-                Business Analyst Fundamental
-              </Typography>
-              <Typography variant="h5" component="h5" fontSize="16px">
-                Chứng chỉ do Trung tâm IPMAC được ủy quyền bởi IIBA
-              </Typography>
-            </Grid>
-            <Grid item md={6}>
-              <Typography fontSize="20px" fontWeight="500">
-                Business Analyst Fundamental
-              </Typography>
-              <Typography variant="h5" component="h5" fontSize="16px">
-                Chứng chỉ do Trung tâm IPMAC được ủy quyền bởi IIBA
-              </Typography>
-            </Grid>
-          </Grid>
+          ) : (
+            'Chưa có thông tin.'
+          )}
         </ProfileCard>
         <ProfileCard padding="20px 44px" onEditClick={handleShowSkillModal}>
           <HeadingPrimary>Kỹ năng</HeadingPrimary>

@@ -4,19 +4,52 @@ import { Notifications, Circle } from '@mui/icons-material'
 import { useNotification } from '@hooks/use-notification'
 import { Notification } from '@models/index'
 import moment from 'moment'
+import { useRouter } from 'next/router'
 
 export interface NotificationProps {}
 
 export default function NotificationComp(props: NotificationProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
-  const { notifications } = useNotification()
+  const { notifications, markAllAsRead } = useNotification()
 
-  console.log(notifications)
+  const router = useRouter()
+
+  // console.log(notifications)
 
   const onCloseMenu = () => {
     setAnchorEl(null)
   }
+
+  function handleReadNotification(n: Notification) {
+    switch (n.type.name) {
+      case 'MENTOR_RECEIVE_SESSION_REQUEST':
+        break
+      case 'MENTEE_SESSION_ACCEPTED':
+      case 'MENTEE_SESSION_REJECTED':
+        router.push('/sessions')
+        break
+      case 'MENTEE_TOPUP_SUCCESS':
+        router.push('/coin/transactions')
+        break
+      case 'MENTOR_WITHDRAW_SUCCESS':
+      case 'MENTOR_SESSION_DONE':
+      case 'MENTOR_NEW_RATING':
+        break
+      //case 'NEW_MESSAGE'
+      default:
+        break
+    }
+
+    if (!n.isRead) {
+      markAllAsRead(n.id)
+    }
+  }
+
+  const numberOfUnreadNotifications = notifications?.filter((n: Notification) => {
+    return n.isRead === false
+  }).length
+
   return (
     <>
       <Box
@@ -25,7 +58,7 @@ export default function NotificationComp(props: NotificationProps) {
         className="df aic jcc cp"
       >
         <Notifications />
-        {notifications && notifications.length > 0 && (
+        {notifications && numberOfUnreadNotifications > 0 && (
           <Typography
             sx={{
               position: 'absolute',
@@ -42,11 +75,7 @@ export default function NotificationComp(props: NotificationProps) {
               right: '-2px',
             }}
           >
-            {
-              notifications.filter((n: Notification) => {
-                return n.isRead === false
-              }).length
-            }
+            {numberOfUnreadNotifications}
           </Typography>
         )}
       </Box>
@@ -84,6 +113,9 @@ export default function NotificationComp(props: NotificationProps) {
                   borderRadius: '10px',
                   cursor: 'pointer',
                   '&:hover': { backgroundColor: '#F7F7F7' },
+                }}
+                onClick={() => {
+                  handleReadNotification(n)
                 }}
               >
                 <Avatar sx={{ mr: 2 }} />

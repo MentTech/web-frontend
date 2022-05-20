@@ -17,19 +17,27 @@ export function useNotification() {
   }
 
   async function markAllAsRead(id: string) {
-    const res = await axiosClient.patch(`/v1/notification/${id}`)
-    if (res.status !== 200) {
-      throw new Error('Failed to mark all as read')
+    try {
+      notifications.map((notification: Notification) => {
+        if (notification.id == id) {
+          notification.isRead = true
+        }
+        return notification
+      })
+      mutate(notifications, false)
+      await axiosClient.patch(`/v1/notification/${id}`)
+    } catch (err) {
+      console.log(err)
     }
   }
 
   notifications?.sort((a: Notification, b: Notification) => {
-    if (a.isRead && !b.isRead) {
-      return 1
-    }
-    if (!a.isRead && b.isRead) {
-      return -1
-    }
+    // if (a.isRead && !b.isRead) {
+    //   return 1
+    // }
+    // if (!a.isRead && b.isRead) {
+    //   return -1
+    // }
     return new Date(b.createAt).getTime() - new Date(a.createAt).getTime()
   })
 

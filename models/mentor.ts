@@ -53,12 +53,18 @@ export interface UserMentor {
   linkedin?: string
   degree?: Array<Degree>
   experiences: Array<Experience>
-  achievements?: Array<string>
+  achievements?: Array<Achievement>
   skills?: Array<Skill>
   introduction?: string
   category: Category
   rating?: Number
   programs?: Array<Program>
+}
+
+export interface Achievement {
+  id: number
+  title: string
+  description: string
 }
 
 interface AverageRating {
