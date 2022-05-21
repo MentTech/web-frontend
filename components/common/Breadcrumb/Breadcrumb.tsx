@@ -1,5 +1,5 @@
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
-import { Breadcrumbs } from '@mui/material'
+import { Breadcrumbs, Typography } from '@mui/material'
 import Link from 'next/link'
 
 export interface BreadcrumbProps {
@@ -12,11 +12,15 @@ export interface BreadcrumbItem {
 }
 
 export default function Breadcrumb({ items }: BreadcrumbProps) {
-  const breadcrumbs = items.map((item, index) => (
-    <Link key={index} href={item.href ?? '#'}>
-      <a>{item.label}</a>
-    </Link>
-  ))
+  const breadcrumbs = items.map((item, index) =>
+    item.href ? (
+      <Link key={index} href={item.href ?? '#'}>
+        <a>{item.label}</a>
+      </Link>
+    ) : (
+      <Typography>{item.label}</Typography>
+    )
+  )
 
   return (
     <Breadcrumbs

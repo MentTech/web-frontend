@@ -26,7 +26,7 @@ const breakPoints = [
 ]
 
 export const ProgramDetailPage = () => {
-  const [openDialog, setopenDialog] = useState(false)
+  // const [openDialog, setopenDialog] = useState(false)
   const [avgRating, setAvgRating] = useState<AverageRating | null>(null)
   const [ratings, setRatings] = useState([])
   const { currentMentor: mentor, loading } = useCurrentMentor()
@@ -105,7 +105,7 @@ export const ProgramDetailPage = () => {
 
   return (
     <>
-      <LoadingIndicator loading={loading}>
+      <LoadingIndicator loading={loading} style={{ marginTop: 40 }}>
         {!currentProgram && !loading ? (
           <Typography className="sb" variant="h5">
             Không tìm thấy chương trình này
@@ -138,7 +138,10 @@ export const ProgramDetailPage = () => {
                         <Button
                           style={{ background: '#3F3D56' }}
                           onClick={() => {
-                            setopenDialog(true)
+                            // setopenDialog(true)
+                            router.push(
+                              `/mentors/${mentorId}/programs/${currentProgram?.id}/checkout`
+                            )
                           }}
                           variant="contained"
                         >
@@ -207,13 +210,13 @@ export const ProgramDetailPage = () => {
                 </Grid> */}
               </Grid>
             </Container>
-            <RequestDialog
+            {/* <RequestDialog
               openDialog={openDialog}
               setopenDialog={(value: boolean | ((prevState: boolean) => boolean)) =>
                 setopenDialog(value)
               }
               program={currentProgram as Program}
-            />
+            /> */}
           </>
         )}
       </LoadingIndicator>

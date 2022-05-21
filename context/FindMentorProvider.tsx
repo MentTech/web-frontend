@@ -51,22 +51,28 @@ const FindMentorProvider = ({ children, notFetchMentor }: FindMentorProviderProp
         }
 
         if (notFetchMentor) return
-        setLoadingMentors(true)
-        const { keyword, sortBy, skills, order, category } = router.query
 
-        const resultMentor = await findApi.findMentor({
-          ...(keyword && { keyword }),
-          ...(sortBy && { sortBy }),
-          ...(skills && { skills }),
-          ...(category && { category }),
-          order: order ? 'asc' : 'desc',
-        })
-        setLoadingMentors(false)
+        if (!notFetchMentor) {
+          setLoadingMentors(true)
+          const { keyword, sortBy, skills, order, category } = router.query
 
-        setFetchedMentor(resultMentor.data.data)
+          const resultMentor = await findApi.findMentor({
+            ...(keyword && { keyword }),
+            ...(sortBy && { sortBy }),
+            ...(skills && { skills }),
+            ...(category && { category }),
+            order: order ? 'asc' : 'desc',
+          })
+
+          setFetchedMentor(resultMentor.data.data)
+          setLoadingMentors(false)
+        }
       } catch (error: any) {
         toast.error(error.message)
         // setError(error.message)
+      } finally {
+        setLoadingMentors(false)
+        setLoading(false)
       }
     }
     fetchData()

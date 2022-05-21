@@ -35,21 +35,21 @@ export const RequestDialog = ({ openDialog, setopenDialog, program }: RequestDia
   const [loading, setLoading] = useState(false)
 
   const onClickRegister = async () => {
-    try {
-      setLoading(true)
-      await ProgramApi.menteeRegister({
-        mentorId,
-        programId: id,
-      })
-      setToastSuccess('Đã đăng ký chương trình thành công!')
-      setopenDialog(false)
-    } catch (error: any) {
-      if (error.message.includes('Can not get balance'))
-        setToastError('Không đủ số dư trong tài khoản, vui lòng nạp thêm!')
-      setToastError(error)
-    } finally {
-      setLoading(false)
-    }
+    // try {
+    //   setLoading(true)
+    //   await ProgramApi.menteeRegister({
+    //     mentorId,
+    //     programId: id,
+    //   })
+    //   setToastSuccess('Đã đăng ký chương trình thành công!')
+    //   setopenDialog(false)
+    // } catch (error: any) {
+    //   if (error.message.includes('Can not get balance'))
+    //     setToastError('Không đủ số dư trong tài khoản, vui lòng nạp thêm!')
+    //   setToastError(error)
+    // } finally {
+    //   setLoading(false)
+    // }
   }
 
   return (
