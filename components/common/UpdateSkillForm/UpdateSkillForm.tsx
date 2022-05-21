@@ -102,8 +102,6 @@ export default function UpdateSkillForm({ show, onClose }: UpdateSkillFormProps)
     )
   }
 
-  console.log(mentorSkills)
-
   return (
     <Modal show={show} title="Cập nhật kỹ năng" actions={editSkillActions} onClose={onClose}>
       <Box
