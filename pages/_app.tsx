@@ -14,7 +14,6 @@ import 'react-toastify/dist/ReactToastify.css'
 import { LocalizationProvider } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
 const clientSideEmotionCache = createEmotionCache()
 
 function MyApp({

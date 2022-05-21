@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Box, Typography, Menu, List, ListItem, ListItemText, Divider } from '@mui/material'
+import { Box, Typography, Menu, List, ListItem, ListItemText, Divider, Badge } from '@mui/material'
 import { Notifications } from '@mui/icons-material'
 import { useNotification } from '@hooks/use-notification'
 import { Notification } from '@models/index'
@@ -9,11 +9,16 @@ export interface NotificationProps {}
 export default function NotificationComp(props: NotificationProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
-  const { notifications } = useNotification()
+  const { notifications = [] } = useNotification()
 
   const onCloseMenu = () => {
     setAnchorEl(null)
   }
+
+  const readNotifications = notifications.filter((n: Notification) => {
+    return n.isRead === false
+  }).length
+
   return (
     <>
       <Box
@@ -21,8 +26,10 @@ export default function NotificationComp(props: NotificationProps) {
         sx={{ position: 'relative' }}
         className="df aic jcc cp"
       >
-        <Notifications />
-        {notifications && notifications.length > 0 && (
+        <Badge badgeContent={readNotifications}>
+          <Notifications />
+        </Badge>
+        {/* {notifications && notifications.length > 0 && notifications.every((item: Notification) => item.isRead) && (
           <Typography
             sx={{
               position: 'absolute',
@@ -45,7 +52,7 @@ export default function NotificationComp(props: NotificationProps) {
               }).length
             }
           </Typography>
-        )}
+        )} */}
       </Box>
       <Menu
         open={!!anchorEl}

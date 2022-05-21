@@ -1,11 +1,16 @@
+import { ProgramApi } from '@api/program-api'
 import Breadcrump from '@components/common/Breadcrumb/Breadcrumb'
+import Loading from '@components/common/Loading/Loading'
 import { LoadingIndicator } from '@components/common/LoadingIndicator/LoadingIndicator'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useProfile } from '@hooks/use-profile'
 import { Program } from '@models/mentor'
-import { Grid, Paper } from '@mui/material'
+import { Button, Container, Grid, Paper, TextField, Typography } from '@mui/material'
+import { Box } from '@mui/system'
+import { setToastError, setToastSuccess } from '@utils/method'
 import { useCurrentMentor } from 'context/MentorProvider'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { ProgramRegisterCheckoutCard } from './ProgramRegisterCheckoutCard'
@@ -19,8 +24,19 @@ const schema = yup.object({
   goal: yup.string(),
 })
 
+interface CheckoutInfoProps {
+  name: string
+  email: string
+  description: string
+  note: string
+  expectation: string
+  goal: string
+}
+
 export function ProgramRegisterCheckoutPage() {
   const { currentMentor, loading } = useCurrentMentor()
+
+  const { profile = {} } = useProfile()
 
   const router = useRouter()
 
@@ -49,27 +65,106 @@ export function ProgramRegisterCheckoutPage() {
     control,
     handleSubmit,
     register,
-    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   })
 
-  const onSubmit = async () => {}
+  const [checkoutLoading, setCheckoutLoading] = useState(false)
+
+  const onSubmit = async (data: CheckoutInfoProps) => {
+    console.log('🚀 ~ file: ProgramRegisterCheckoutPage.tsx ~ line 76 ~ onSubmit ~ data', data)
+    try {
+      setCheckoutLoading(true)
+      const result = await ProgramApi.menteeRegister({
+        mentorId: Number(mentorId),
+        programId: Number(currentProgram?.id),
+        checkoutInfo: data,
+      })
+      if (result.data.message) throw new Error(result.data.message)
+      setToastSuccess('Đã đăng ký chương trình thành công!')
+      setCheckoutLoading(false)
+    } catch (error: any) {
+      if (error.message.includes('Can not get balance'))
+        setToastError('Không đủ số dư trong tài khoản, vui lòng nạp thêm!')
+      if (error.message.includes('You have already registered for this program'))
+        setToastError('Bạn đã đăng ký chương trình này rồi')
+      setToastError(error)
+    } finally {
+      setCheckoutLoading(false)
+    }
+  }
 
   return (
     <LoadingIndicator loading={loading} style={{ marginTop: 30 }}>
-      <Paper style={{ padding: 16 }}>
+      <Container style={{ padding: 16 }}>
         <Breadcrump items={breadcrumbs} />
         <Grid container spacing={2}>
-          <Grid component={'form'} onSubmit={handleSubmit(onSubmit)} item xs={6}></Grid>
+          <Grid item xs={6}>
+            <Paper
+              component={'form'}
+              onSubmit={handleSubmit(onSubmit as an)}
+              className="df fdc"
+              style={{ padding: 16, height: '100%' }}
+              elevation={0}
+            >
+              <Typography variant="h6" align="center">
+                Đăng ký phiên Mentoring
+              </Typography>
+              <Box className="df fdc" my={3}>
+                <TextField
+                  disabled={checkoutLoading}
+                  defaultValue={profile.name}
+                  label="Họ và tên"
+                  style={{ marginTop: 16 }}
+                  {...register('name')}
+                />
+                <TextField
+                  disabled={checkoutLoading}
+                  defaultValue={profile.email}
+                  label="Email"
+                  style={{ marginTop: 16 }}
+                  {...register('email')}
+                />
+                <TextField
+                  disabled={checkoutLoading}
+                  label="Mô tả bản thân"
+                  style={{ marginTop: 16 }}
+                  {...register('description')}
+                />
+                <TextField
+                  disabled={checkoutLoading}
+                  label="Mô tả bản thân"
+                  style={{ marginTop: 16 }}
+                  {...register('note')}
+                />
+                <TextField
+                  disabled={checkoutLoading}
+                  label="Kỳ vọng"
+                  style={{ marginTop: 16 }}
+                  {...register('expectation')}
+                />
+                <TextField
+                  disabled={checkoutLoading}
+                  label="Mục tiêu"
+                  style={{ marginTop: 16 }}
+                  {...register('goal')}
+                />
+              </Box>
+              <LoadingIndicator loading={checkoutLoading}>
+                <button className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                  Đăng ký ngay
+                </button>
+              </LoadingIndicator>
+            </Paper>
+          </Grid>
           <Grid item xs={6} className="df aic jcc">
             {currentProgram && (
               <ProgramRegisterCheckoutCard mentorInfo={currentMentor} program={currentProgram} />
             )}
           </Grid>
         </Grid>
-      </Paper>
+      </Container>
     </LoadingIndicator>
   )
 }

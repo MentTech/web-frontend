@@ -105,7 +105,7 @@ export const ProgramDetailPage = () => {
 
   return (
     <>
-      <LoadingIndicator loading={loading}>
+      <LoadingIndicator loading={loading} style={{ marginTop: 40 }}>
         {!currentProgram && !loading ? (
           <Typography className="sb" variant="h5">
             Không tìm thấy chương trình này

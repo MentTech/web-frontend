@@ -13,5 +13,6 @@ const ProgramRegisterCheckout: NextPageWithLayout = () => {
 
 // ProgramDetail.isPrivate = true
 ProgramRegisterCheckout.Layout = MainLayout
+ProgramRegisterCheckout.isPrivate = true
 
 export default ProgramRegisterCheckout
