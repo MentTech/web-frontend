@@ -71,25 +71,6 @@ const CurrentMentorProvider = ({ children }: CurrentMentorProviderProps) => {
     fetchData()
   }, [mentorId])
 
-  const checkoutCurrentMentor = async (registerInfo: ProgramRegisterCheckoutInfoProps) => {
-    try {
-      setLoading(true)
-      if (mentorId && programId) {
-        await ProgramApi.menteeRegister({
-          mentorId: Number(mentorId),
-          programId: Number(programId),
-        })
-        setToastSuccess('Đã đăng ký chương trình thành công!')
-      } else throw new Error("Can't find mentorId or programId")
-    } catch (error: any) {
-      if (error.message.includes('Can not get balance'))
-        setToastError('Không đủ số dư trong tài khoản, vui lòng nạp thêm!')
-      setToastError(error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
   return (
     <CurrentMentorContext.Provider
       value={{

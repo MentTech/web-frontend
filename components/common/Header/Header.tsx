@@ -47,7 +47,7 @@ const Header = () => {
 
   useEffect(() => {
     if (socket && status === 'authenticated') {
-      socket.emit('auth:connect', session.accessToken, (res: any) => {
+      socket.emit('auth:connect', session?.accessToken, (res: any) => {
         console.log(res)
       })
     }

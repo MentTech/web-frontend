@@ -103,7 +103,7 @@ export function ProgramRegisterCheckoutPage() {
           <Grid item xs={6}>
             <Paper
               component={'form'}
-              onSubmit={handleSubmit(onSubmit as an)}
+              onSubmit={handleSubmit(onSubmit as any)}
               className="df fdc"
               style={{ padding: 16, height: '100%' }}
               elevation={0}
