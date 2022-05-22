@@ -281,7 +281,9 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async (
     }
   } catch (err) {
     return {
-      notFound: true,
+      props: {
+        topMentors: [],
+      },
     }
   }
 }
