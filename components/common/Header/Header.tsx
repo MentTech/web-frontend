@@ -162,7 +162,7 @@ const Header = () => {
                 <Box mr={2}>
                   <NotificationComp />
                 </Box>
-                <Tooltip title="Account settings">
+                <Tooltip title="Tài khoản">
                   <IconButton
                     onClick={handleClick}
                     size="small"

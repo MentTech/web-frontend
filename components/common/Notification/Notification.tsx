@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Box, Typography, Menu, List, ListItem, ListItemText, Divider, Avatar } from '@mui/material'
+import { Box, Typography, Menu, List, ListItem, ListItemText, Avatar, Badge } from '@mui/material'
 import { Notifications, Circle } from '@mui/icons-material'
 import { useNotification } from '@hooks/use-notification'
 import { Notification } from '@models/index'
@@ -57,8 +57,10 @@ export default function NotificationComp(props: NotificationProps) {
         sx={{ position: 'relative' }}
         className="df aic jcc cp"
       >
-        <Notifications />
-        {notifications && numberOfUnreadNotifications > 0 && (
+        <Badge badgeContent={numberOfUnreadNotifications} color="error" showZero>
+          <Notifications />
+        </Badge>
+        {/* {notifications && numberOfUnreadNotifications > 0 && (
           <Typography
             sx={{
               position: 'absolute',
@@ -77,7 +79,7 @@ export default function NotificationComp(props: NotificationProps) {
           >
             {numberOfUnreadNotifications}
           </Typography>
-        )}
+        )} */}
       </Box>
       <Menu
         open={!!anchorEl}
