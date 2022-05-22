@@ -73,7 +73,6 @@ export function ProgramRegisterCheckoutPage() {
   const [checkoutLoading, setCheckoutLoading] = useState(false)
 
   const onSubmit = async (data: CheckoutInfoProps) => {
-    console.log('🚀 ~ file: ProgramRegisterCheckoutPage.tsx ~ line 76 ~ onSubmit ~ data', data)
     try {
       setCheckoutLoading(true)
       const result = await ProgramApi.menteeRegister({
