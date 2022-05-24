@@ -47,7 +47,7 @@ const Header = () => {
 
   useEffect(() => {
     if (socket && status === 'authenticated') {
-      socket.emit('auth:connect', session.accessToken, (res: any) => {
+      socket.emit('auth:connect', session?.accessToken, (res: any) => {
         console.log(res)
       })
     }
@@ -162,7 +162,7 @@ const Header = () => {
                 <Box mr={2}>
                   <NotificationComp />
                 </Box>
-                <Tooltip title="Account settings">
+                <Tooltip title="Tài khoản">
                   <IconButton
                     onClick={handleClick}
                     size="small"
@@ -219,9 +219,9 @@ const Header = () => {
               transformOrigin={{ horizontal: 'right', vertical: 'top' }}
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-              <Link href="/tokens">
+              {/* <Link href="/tokens">
                 <MenuItem>Tokens: {profile?.coin}</MenuItem>
-              </Link>
+              </Link> */}
               <Divider />
               <Link href="/profile">
                 <MenuItem>

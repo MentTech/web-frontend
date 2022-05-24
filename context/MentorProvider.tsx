@@ -1,5 +1,8 @@
 import { mentorApi } from '@api/mentor-api'
+import { ProgramApi } from '@api/program-api'
 import { Mentor } from '@models/mentor'
+import { ProgramRegisterCheckoutInfoProps } from '@models/program'
+import { setToastError, setToastSuccess } from '@utils/method'
 import { useRouter } from 'next/router'
 import React, { useContext, useState } from 'react'
 import { toast } from 'react-toastify'
@@ -36,7 +39,7 @@ const CurrentMentorProvider = ({ children }: CurrentMentorProviderProps) => {
 
   const router = useRouter()
 
-  const { mentorId } = router.query
+  const { mentorId, programId } = router.query
 
   const [currentMentor, setCurrentMentor] = useState({
     User_mentor: {

@@ -68,6 +68,15 @@ html {
   z-index: 2600;
 }
 
+.tlt {
+  overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* number of lines to show */
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
 ::-webkit-scrollbar {
   width: 8px;
 }

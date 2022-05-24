@@ -26,7 +26,7 @@ export const FindResult = () => {
         <Grid container spacing={2}>
           {(fetchedMentor || []).map((mentor) => (
             <Grid item xs={12} sm={6} md={4} key={mentor.id}>
-              <MentorCard mentor={mentor} />
+              <MentorCard mentor={mentor}  />
             </Grid>
           ))}
         </Grid>

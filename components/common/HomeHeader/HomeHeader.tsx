@@ -43,7 +43,7 @@ export default function HomeHeader(props: HomeHeaderProps) {
         <li>
           {session ? (
             <>
-              <Tooltip title="Account settings">
+              <Tooltip title="Tài khoản">
                 <IconButton
                   onClick={handleClick}
                   size="small"

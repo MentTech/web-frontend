@@ -42,7 +42,13 @@ export const MentorCard = ({ mentor, ...props }: MentorCardProps) => {
   }
 
   return (
-    <Card className="w100" {...props}>
+    <Card
+      className="w100 df fdc"
+      style={{
+        minHeight: 450,
+      }}
+      {...props}
+    >
       <CardMedia
         component="img"
         image={avatar ?? 'https://source.unsplash.com/random'}
@@ -53,14 +59,14 @@ export const MentorCard = ({ mentor, ...props }: MentorCardProps) => {
           width: '100%',
         }}
       />
-      <CardContent>
+      <CardContent className="flex-1">
         <Typography className="sb">{name}</Typography>
         {last_experience && (
           <Typography className="sb" variant="body2">
             {last_experience.title + ' tại ' + last_experience.company}
           </Typography>
         )}
-        <Typography variant="body2" color="text.secondary">
+        <Typography className="tlt" variant="body2" color="text.secondary">
           {introduction}
         </Typography>
       </CardContent>
