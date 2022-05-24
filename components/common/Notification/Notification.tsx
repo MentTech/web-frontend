@@ -5,6 +5,7 @@ import { useNotification } from '@hooks/use-notification'
 import { Notification } from '@models/index'
 import moment from 'moment'
 import { useRouter } from 'next/router'
+import NotificationItem from '../NotificationItem/NotificationItem'
 
 export interface NotificationProps {}
 
@@ -57,7 +58,7 @@ export default function NotificationComp(props: NotificationProps) {
         sx={{ position: 'relative' }}
         className="df aic jcc cp"
       >
-        <Badge badgeContent={numberOfUnreadNotifications} color="error" showZero>
+        <Badge badgeContent={numberOfUnreadNotifications} color="error">
           <Notifications />
         </Badge>
         {/* {notifications && numberOfUnreadNotifications > 0 && (
@@ -107,34 +108,7 @@ export default function NotificationComp(props: NotificationProps) {
           </Typography>
           {notifications && notifications.length > 0 ? (
             notifications.map((n: Notification) => (
-              <ListItem
-                key={n.id}
-                disablePadding
-                sx={{
-                  padding: '10px 4px',
-                  borderRadius: '10px',
-                  cursor: 'pointer',
-                  '&:hover': { backgroundColor: '#F7F7F7' },
-                }}
-                onClick={() => {
-                  handleReadNotification(n)
-                }}
-              >
-                <Avatar sx={{ mr: 2 }} />
-                <Box>
-                  <Typography sx={{ fontSize: '15px' }}>{n.message}</Typography>
-                  {n.isRead ? (
-                    <Typography sx={{ color: 'gray', fontSize: '12px' }}>
-                      {moment(n.createAt).fromNow()}
-                    </Typography>
-                  ) : (
-                    <Typography sx={{ color: 'blue', fontWeight: '500', fontSize: '12px' }}>
-                      {moment(n.createAt).fromNow()}
-                    </Typography>
-                  )}
-                </Box>
-                {!n.isRead && <Circle sx={{ fontSize: '12px', color: 'blue', ml: 1 }} />}
-              </ListItem>
+              <NotificationItem notification={n} handleReadNotification={handleReadNotification} />
             ))
           ) : (
             <ListItem>

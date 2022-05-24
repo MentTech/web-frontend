@@ -16,7 +16,7 @@ export function useNotification() {
     await mutate([...notifications, notification], false)
   }
 
-  async function markAllAsRead(id: string) {
+  async function markAllAsRead(id: number) {
     try {
       notifications.map((notification: Notification) => {
         if (notification.id == id) {
