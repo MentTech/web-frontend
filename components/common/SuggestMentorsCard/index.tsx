@@ -20,14 +20,14 @@ const SuggestMentorsCardComp = () => {
       </Box>
       <Stack sx={{ marginTop: '24px' }}>
         <div className="container flex flex-col mx-auto w-full items-center justify-center bg-white dark:bg-gray-800 rounded-lg shadow">
-          <ul className="flex flex-col divide divide-y">
+          <ul className="flex flex-col divide divide-y w-full">
             {suggestMentors.length ? (
               suggestMentors.map((suggestMentor) => {
                 const { experiences, rating } = suggestMentor?.User_mentor
                 const last = experiences?.[experiences.length - 1]
                 return (
                   <li className="flex flex-row">
-                    <div className="select-none cursor-pointer flex flex-1 items-center p-4">
+                    <div className="select-none cursor-pointer flex flex-1 items-center py-4 px-6">
                       <div className="flex flex-col w-10 h-10 justify-center items-center mr-4">
                         <a href="#" className="block relative">
                           <img
@@ -43,7 +43,12 @@ const SuggestMentorsCardComp = () => {
                           {last && !last.endAt && last.title}
                         </div>
                       </div>
-                      <div className="text-gray-600 dark:text-gray-200 text-xs">6:00 AM</div>
+                      {/* <button
+                        type="button"
+                        className="inline-block px-6 py-2 border-2 border-green-500 text-green-500 font-medium text-xs leading-tight uppercase rounded-full hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
+                      >
+                        Truy cập
+                      </button> */}
                     </div>
                   </li>
                 )

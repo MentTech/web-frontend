@@ -11,20 +11,20 @@ export function useFavorite() {
   })
 
   async function addFavorite(mentorId: number) {
+    mutate(favorites?.concat(mentorId), false)
     try {
       await favoriteApi.addAFavoriteMentor(mentorId)
     } catch (err) {}
-    mutate(favorites?.concat(mentorId), false)
   }
 
   async function removeFavorite(mentorId: number) {
-    try {
-      await favoriteApi.removeAFavoriteMentor(mentorId)
-    } catch (err) {}
     mutate(
       favorites?.filter((f: any) => f !== mentorId),
       false
     )
+    try {
+      await favoriteApi.removeAFavoriteMentor(mentorId)
+    } catch (err) {}
   }
 
   return {

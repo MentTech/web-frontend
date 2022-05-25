@@ -21,6 +21,30 @@
   padding: 32px;
   border-radius: 12px;
   width: 60%;
+  max-height: 90vh;
+  animation: modalFadeIn ease .3s;
+  position: relative;
+}
+
+.modal_content {
+  display: block;
+  margin-top: 32px;
+  margin-bottom: 60px;
+  overflow: auto;
+  max-height: 450px;
+}
+
+.modal_content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal_content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal_content::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
 }
 
 .medium {
@@ -36,4 +60,15 @@
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 20px;
+  position: absolute;
+  margin-bottom: 10px;
+}
+
+@keyframes modalFadeIn {
+  from {
+    transform: translateY(-100px);
+  }
+  to {
+    transform: translateY(0);
+  }
 }

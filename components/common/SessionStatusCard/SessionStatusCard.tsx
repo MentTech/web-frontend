@@ -19,7 +19,7 @@ import Link from 'next/link'
 import Modal from '@components/common/Modal/Modal'
 import StarIcon from '@mui/icons-material/Star'
 import { ProgramApi, mentorApi, sessionApi } from '@api/index'
-import { useMenteeSessions } from '@hooks/index'
+import { useMenteeSessions, usePublicUserInfor } from '@hooks/index'
 
 export interface SessionStatusCardProps {
   session: MentorSession
@@ -53,24 +53,14 @@ function SessionStatusCard({ session, ...props }: SessionStatusCardProps) {
   const [comment, setComment] = useState('')
   const [validateError, setValidateError] = useState('')
   const [hover, setHover] = useState(-1)
-  const [mentor, setMentor] = useState<Mentor | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [doneModalOpen, setDoneModalOpen] = useState(false)
   const [isCancelBookingModal, setCancelBookingModal] = useState(false)
   const [rating, setRating] = useState<number | null>(null)
 
   const { markSessionDone, cancelSession } = useMenteeSessions()
+  const { infor: mentor } = usePublicUserInfor(Number(session.program.mentorId))
   useEffect(() => {
-    async function fetchMentorInfo() {
-      try {
-        const res = await mentorApi.getMentorById(session.program?.mentorId as string)
-        setMentor(res.data)
-        // get own rating
-      } catch (err) {
-        toast.error("Can't get mentor's info")
-      }
-    }
-
     async function fetchOwnRating() {
       try {
         const response = await sessionApi.getOwnRating({
@@ -81,7 +71,6 @@ function SessionStatusCard({ session, ...props }: SessionStatusCardProps) {
         setRating(response.data.rating)
       } catch (err) {}
     }
-    fetchMentorInfo()
     fetchOwnRating()
   }, [])
 
@@ -208,9 +197,7 @@ function SessionStatusCard({ session, ...props }: SessionStatusCardProps) {
             <Stack direction="row" sx={{ alignItems: 'center' }}>
               {mentor?.avatar ? (
                 <>
-                  <Avatar src={mentor.avatar} sx={{ width: 32, height: 32 }}>
-                    M
-                  </Avatar>
+                  <Avatar src={mentor.avatar} sx={{ width: 32, height: 32 }} />
                   <Typography variant="body1" component="div" sx={{ marginLeft: '10px' }}>
                     {mentor?.name}
                   </Typography>
