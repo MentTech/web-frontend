@@ -184,10 +184,8 @@ function SessionStatusCard({ session, ...props }: SessionStatusCardProps) {
             />
           </Tooltip>
 
-          <Link href="/sessions/">
-            <Typography variant="h5" component="div" sx={{ marginTop: '28px' }}>
-              {session.program.title}
-            </Typography>
+          <Link href={`/sessions/${session.id}`}>
+            <a className="mt-7 text-2xl inline-block">{session.program.title}</a>
           </Link>
           <Divider sx={{ my: 2, width: '100%' }} />
           <Stack

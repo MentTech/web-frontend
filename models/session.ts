@@ -5,5 +5,7 @@ export interface MentorSession {
   program: MentorProgram
   done: boolean
   isAccepted: boolean
+  expectedDate?: Date
   rating: number
+  contactInfo?: string
 }

@@ -17,7 +17,7 @@ export const LoadingIndicator = ({
   ...props
 }: LoadingIndicatorProps) => {
   return loading ? (
-    <Box className="df aic fdc jcc w100" {...props}>
+    <Box className="df aic fdc jcc w100 mt-2" {...props}>
       <CircularProgress size={40} {...circularProps} />
       {!noText && <Typography {...typoProps}>Đang tải</Typography>}
     </Box>

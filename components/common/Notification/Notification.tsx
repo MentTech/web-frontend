@@ -28,7 +28,7 @@ export default function NotificationComp(props: NotificationProps) {
         break
       case 'MENTEE_SESSION_ACCEPTED':
       case 'MENTEE_SESSION_REJECTED':
-        router.push('/sessions')
+        router.push(`/sessions/${n.additional.sessionId}`)
         break
       case 'MENTEE_TOPUP_SUCCESS':
         router.push('/coin/transactions')
@@ -41,6 +41,7 @@ export default function NotificationComp(props: NotificationProps) {
       default:
         break
     }
+    onCloseMenu()
 
     if (!n.isRead) {
       markAllAsRead(n.id)
