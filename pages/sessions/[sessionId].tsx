@@ -1,32 +1,29 @@
-import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
-import MentorProgramCard from '@components/common/MentorProgramCard/MentorProgramCard'
-import RatingList from '@components/common/RatingList/RatingList'
+import { chatApi } from '@api/index'
+import { LoadingIndicator } from '@components/common/LoadingIndicator/LoadingIndicator'
+import { SessionStatusMessage } from '@components/common/SessionStatusCard/SessionStatusCard'
 import { MainLayout } from '@components/layouts'
 import { useMenteeSessions } from '@hooks/use-mentee-sessions'
+import { usePublicUserInfor } from '@hooks/use-public-user-infor'
 import { MentorSession } from '@models/session'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import EventNoteIcon from '@mui/icons-material/EventNote'
+import MessageIcon from '@mui/icons-material/Message'
 import {
   Avatar,
   Button,
+  Chip,
   Container,
   Divider,
   Grid,
-  Paper,
-  Typography,
-  Tooltip,
-  Chip,
   IconButton,
+  Paper,
+  Tooltip,
+  Typography,
 } from '@mui/material'
 import { Box } from '@mui/system'
-import { useRouter } from 'next/router'
-import Carousel from 'react-elastic-carousel'
-import { SessionStatusMessage } from '@components/common/SessionStatusCard/SessionStatusCard'
-import { usePublicUserInfor } from '@hooks/use-public-user-infor'
 import Link from 'next/link'
-import EventNoteIcon from '@mui/icons-material/EventNote'
-import ScheduleIcon from '@mui/icons-material/Schedule'
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import MessageIcon from '@mui/icons-material/Message'
-import { LoadingIndicator } from '@components/common/LoadingIndicator/LoadingIndicator'
+import { useRouter } from 'next/router'
+
 export interface SessionDetailProps {}
 
 export default function SessionDetail(props: SessionDetailProps) {
@@ -68,6 +65,13 @@ export default function SessionDetail(props: SessionDetailProps) {
       message: 'Chờ xác nhận',
       color: 'warning',
       tooltip: 'Phiên mentoring của bạn đang chờ mentor xác nhận',
+    }
+  }
+
+  async function getChatRoomInfo() {
+    if (matchedSession) {
+      const res = await chatApi.getChatRoomInfor(Number(matchedSession.id))
+      window.open(`/messenger?roomId=${res.data.id}`, '_blank')
     }
   }
 
@@ -134,13 +138,10 @@ export default function SessionDetail(props: SessionDetailProps) {
                 </Box>
                 {matchedSession?.expectedDate && (
                   <Box>
-                    <Link href="/messenger">
-                      <a target="_blank">
-                        <IconButton aria-label="chat">
-                          <MessageIcon />
-                        </IconButton>
-                      </a>
-                    </Link>
+                    <IconButton aria-label="chat" onClick={getChatRoomInfo}>
+                      <MessageIcon />
+                    </IconButton>
+
                     <Typography sx={{ color: 'red' }}>
                       Ngày hẹn: &nbsp;
                       {new Date(matchedSession?.expectedDate || new Date()).toLocaleString('vi')}
