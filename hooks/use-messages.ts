@@ -33,5 +33,5 @@ export function useMessages(roomId: number, limit: number, skip: number) {
     setLoading(false)
   }
 
-  return { messages, loading, hasMore, isFirstLoading }
+  return { messages, loading, hasMore, isFirstLoading, setMessages }
 }

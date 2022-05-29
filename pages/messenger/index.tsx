@@ -24,7 +24,7 @@ function Messenger(props: MessengerProps) {
   const [socket, setSocket] = useState<Socket>()
   const [message, setMessage] = useState<string>('')
   const [users, setUsers] = useState<Array<Paticipant>>([])
-  const [limit, setLimit] = useState<number>(10)
+  const [limit, setLimit] = useState<number>(15)
   const [skip, setSkip] = useState<number>(0)
   //const [messages, setMessages] = useState<Array<ChatMessage> | null>(null)
 
@@ -38,7 +38,11 @@ function Messenger(props: MessengerProps) {
   const theOtherUser = users.find((user: Paticipant) => user.self === false)
   const { infor } = usePublicUserInfor(theOtherUser?.id as number)
 
-  const { loading, hasMore, messages } = useMessages(Number(router.query.roomId), limit, skip)
+  const { loading, hasMore, messages, setMessages } = useMessages(
+    Number(router.query.roomId),
+    limit,
+    skip
+  )
   const observer = useRef<IntersectionObserver | null>(null)
   const firstMessageRef = useCallback(
     (node) => {
@@ -46,7 +50,7 @@ function Messenger(props: MessengerProps) {
       if (observer.current) observer.current.disconnect()
       observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && hasMore) {
-          setSkip((prev) => prev + 10)
+          setSkip((prev) => prev + limit)
         }
       })
       if (node) observer.current.observe(node)
@@ -63,16 +67,14 @@ function Messenger(props: MessengerProps) {
     setUsers(users)
   }
 
-  // useEffect(() => {
-  //   scrollToBottom()
-  // }, [])
-
   useEffect(() => {
     if (!messages) return
     if (messageAreaRef.current) {
       const scrollDiff = messageAreaRef.current?.scrollHeight - lastScrollHeight.current
-      if (scrollDiff > 0) {
+      if (scrollDiff > 1) {
         messageAreaRef.current.scrollTop += scrollDiff
+      } else {
+        messageAreaRef.current.scrollTop = messageAreaRef.current.scrollHeight
       }
       lastScrollHeight.current = messageAreaRef.current?.scrollHeight
     }
@@ -97,22 +99,34 @@ function Messenger(props: MessengerProps) {
     }
   }, [router.query, status])
 
+  function handleChangeMessage(e: any) {
+    if (e.target.value.length > 1000) return
+    setMessage(e.target.value)
+  }
+
+  function handleKeyUp(e: any) {
+    if (message.length > 0 && e.keyCode === 13) {
+      handleSendMessage()
+    }
+  }
+
   function handleSendMessage() {
     if (socket && message) {
       socket.emit('chat:send_message', {
         roomId: Number(router.query.roomId),
         message,
       })
-      // setMessages([
-      //   ...(messages || []),
-      //   {
-      //     content: message,
-      //     fromSelf: true,
-      //     createAt: new Date(),
-      //     roomId: Number(router.query.roomId),
-      //     userId: session?.user.id,
-      //   },
-      // ])
+      setMessages([
+        ...(messages || []),
+        {
+          content: message.trim(),
+          fromSelf: true,
+          createAt: new Date(),
+          roomId: Number(router.query.roomId),
+          userId: session?.user.id,
+        },
+      ])
+      scrollToBottom()
       setMessage('')
     }
   }
@@ -286,7 +300,8 @@ function Messenger(props: MessengerProps) {
             <input
               type="text"
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              onKeyUp={handleKeyUp}
+              onChange={handleChangeMessage}
               placeholder="Write your message!"
               className="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-md py-3"
             />
