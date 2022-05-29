@@ -1,7 +1,7 @@
 import { EmptyLayout } from '@components/layouts'
 import * as React from 'react'
 import { useRouter } from 'next/router'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { chatApi } from '@api/index'
 import { io, Socket } from 'socket.io-client'
 import { config } from '@config/main'
@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react'
 import { ChatMessage } from '@models/message'
 import Loading from '@components/common/Loading/Loading'
 import { usePublicUserInfor, useProfile } from '@hooks/index'
+import { useMessages } from '@hooks/use-messages'
 
 export interface MessengerProps {}
 
@@ -23,8 +24,12 @@ function Messenger(props: MessengerProps) {
   const [socket, setSocket] = useState<Socket>()
   const [message, setMessage] = useState<string>('')
   const [users, setUsers] = useState<Array<Paticipant>>([])
-  const [messages, setMessages] = useState<Array<ChatMessage> | null>(null)
+  const [limit, setLimit] = useState<number>(10)
+  const [skip, setSkip] = useState<number>(0)
+  //const [messages, setMessages] = useState<Array<ChatMessage> | null>(null)
+
   const messageAreaRef = useRef<HTMLDivElement>(null)
+  const lastScrollHeight = useRef<number>(0)
 
   const router = useRouter()
   const { data: session, status } = useSession()
@@ -32,16 +37,22 @@ function Messenger(props: MessengerProps) {
 
   const theOtherUser = users.find((user: Paticipant) => user.self === false)
   const { infor } = usePublicUserInfor(theOtherUser?.id as number)
-  console.log(infor)
 
-  async function getChatMessages(roomId: number) {
-    const res = await chatApi.getAllChatMessage(roomId)
-    const messagesList = res.data
-    messagesList.forEach((message: any) => {
-      message.fromSelf = message.userId === session?.user?.id
-    })
-    setMessages(messagesList)
-  }
+  const { loading, hasMore, messages } = useMessages(Number(router.query.roomId), limit, skip)
+  const observer = useRef<IntersectionObserver | null>(null)
+  const firstMessageRef = useCallback(
+    (node) => {
+      if (loading) return
+      if (observer.current) observer.current.disconnect()
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setSkip((prev) => prev + 10)
+        }
+      })
+      if (node) observer.current.observe(node)
+    },
+    [loading, hasMore]
+  )
 
   async function getRoomInfo(roomId: number) {
     const res = await chatApi.getRoomInfo(roomId)
@@ -52,16 +63,24 @@ function Messenger(props: MessengerProps) {
     setUsers(users)
   }
 
-  useEffect(() => {
-    scrollToBottom()
-  })
+  // useEffect(() => {
+  //   scrollToBottom()
+  // }, [])
 
   useEffect(() => {
-    console.log('chay')
+    if (!messages) return
+    if (messageAreaRef.current) {
+      const scrollDiff = messageAreaRef.current?.scrollHeight - lastScrollHeight.current
+      if (scrollDiff > 0) {
+        messageAreaRef.current.scrollTop += scrollDiff
+      }
+      lastScrollHeight.current = messageAreaRef.current?.scrollHeight
+    }
+  }, [messages])
+
+  useEffect(() => {
     if (router.query.roomId && status === 'authenticated') {
-      // get all chat message
       const roomId = Number(router.query.roomId)
-      getChatMessages(roomId)
       getRoomInfo(roomId)
       const s = io(config.backendURL)
       s.on('connect', () => {})
@@ -71,7 +90,8 @@ function Messenger(props: MessengerProps) {
       s.on(`chat:${router.query.roomId}`, (data: any) => {
         const newMessage = data
         newMessage.fromSelf = newMessage.userId === session?.user.id
-        setMessages((messages) => [...(messages || []), newMessage])
+        //setMessages((messages) => [...(messages || []), newMessage])
+        scrollToBottom()
       })
       setSocket(s)
     }
@@ -83,16 +103,16 @@ function Messenger(props: MessengerProps) {
         roomId: Number(router.query.roomId),
         message,
       })
-      setMessages([
-        ...(messages || []),
-        {
-          content: message,
-          fromSelf: true,
-          createAt: new Date(),
-          roomId: Number(router.query.roomId),
-          userId: session?.user.id,
-        },
-      ])
+      // setMessages([
+      //   ...(messages || []),
+      //   {
+      //     content: message,
+      //     fromSelf: true,
+      //     createAt: new Date(),
+      //     roomId: Number(router.query.roomId),
+      //     userId: session?.user.id,
+      //   },
+      // ])
       setMessage('')
     }
   }
@@ -115,7 +135,7 @@ function Messenger(props: MessengerProps) {
                 </svg>
               </span>
               <img
-                src={infor?.avatar}
+                src={infor?.avatar ? infor?.avatar : '/static/default_avatar.png'}
                 alt="useravatar"
                 className="w-10 sm:w-16 h-10 sm:h-16 rounded-full"
               />
@@ -192,11 +212,17 @@ function Messenger(props: MessengerProps) {
           ref={messageAreaRef}
           className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
         >
-          {messages ? (
+          {loading && <Loading />}
+          {messages &&
             messages.map((message: any, index: number) => {
+              const firstChild = index === 0
               if (!message.fromSelf) {
                 return (
-                  <div className="chat-message" key={index}>
+                  <div
+                    className="chat-message"
+                    key={index}
+                    ref={firstChild ? firstMessageRef : null}
+                  >
                     <div className="flex items-end">
                       <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
                         <div>
@@ -206,7 +232,7 @@ function Messenger(props: MessengerProps) {
                         </div>
                       </div>
                       <img
-                        src={infor?.avatar}
+                        src={infor?.avatar ? infor?.avatar : '/static/default_avatar.png'}
                         alt="avatar"
                         className="w-6 h-6 rounded-full order-1"
                       />
@@ -215,7 +241,7 @@ function Messenger(props: MessengerProps) {
                 )
               }
               return (
-                <div className="chat-message" key={index}>
+                <div className="chat-message" key={index} ref={firstChild ? firstMessageRef : null}>
                   <div className="flex items-end justify-end">
                     <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
                       <div>
@@ -232,10 +258,7 @@ function Messenger(props: MessengerProps) {
                   </div>
                 </div>
               )
-            })
-          ) : (
-            <Loading />
-          )}
+            })}
         </div>
         <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
           <div className="relative flex">
