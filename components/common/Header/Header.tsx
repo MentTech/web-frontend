@@ -26,7 +26,7 @@ import { useNotifications } from '@context/NotificationProvider'
 
 const pages = [
   {
-    title: 'Tìm kiếm mentor',
+    title: 'Tìm kiếm',
     path: '/find',
   },
 ]
@@ -143,11 +143,40 @@ const Header = () => {
               <a>MentTech</a>
             </Link>
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} component="ul">
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: 'none', md: 'flex' },
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            component="ul"
+          >
             {pages.map((page) => (
               <Link key={page.path} href={page.path}>
-                <Button onClick={handleClose} sx={{ my: 2, color: 'white', display: 'block' }}>
-                  {page.title}
+                <Button
+                  onClick={handleClose}
+                  sx={{ color: 'white', display: 'block', position: 'relative', height: 64 }}
+                >
+                  <Typography textAlign="center" variant="body2" textTransform={'none'}>
+                    {page.title}
+                  </Typography>
+                  {location.pathname.includes(page.path) && (
+                    <Box
+                      style={{
+                        top: '0px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        fontSize: '24px',
+                        borderBottomRightRadius: '8px',
+                        borderBottomLeftRadius: '8px',
+                        background: '#fff',
+                        width: '40px',
+                        height: '6px',
+                        position: 'absolute',
+                      }}
+                    ></Box>
+                  )}
                 </Button>
               </Link>
             ))}
