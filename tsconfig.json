@@ -36,6 +36,9 @@
       "@constants/*": [
         "./constants/*"
       ],
+      "@context/*": [
+        "./context/*"
+      ],
       "@features/*": [
         "./features/*"
       ],

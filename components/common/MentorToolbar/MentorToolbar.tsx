@@ -15,7 +15,7 @@ import UserCoinBox from '../UserCoinBox/UserCoinBox'
 import { io, Socket } from 'socket.io-client'
 import { useSession } from 'next-auth/react'
 import { config } from '@config/main'
-import { useNotification } from '@hooks/index'
+import { useNotifications } from '@context/NotificationProvider'
 import { Notification } from '@models/index'
 
 const pages = ['Products', 'Pricing', 'Blog']
@@ -40,7 +40,7 @@ const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
     required: true,
   })
 
-  const { addNewNotification, notifications } = useNotification()
+  const { addNewNotification, notifications } = useNotifications()
 
   useEffect(() => {
     if (socket && status === 'authenticated') {

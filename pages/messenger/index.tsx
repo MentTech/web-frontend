@@ -92,7 +92,8 @@ function Messenger(props: MessengerProps) {
       s.on(`chat:${router.query.roomId}`, (data: any) => {
         const newMessage = data
         newMessage.fromSelf = newMessage.userId === session?.user.id
-        //setMessages((messages) => [...(messages || []), newMessage])
+        setMessages((messages) => [...(messages || []), newMessage])
+        setSkip((prev) => prev + 1)
         scrollToBottom()
       })
       setSocket(s)
@@ -126,6 +127,7 @@ function Messenger(props: MessengerProps) {
           userId: session?.user.id,
         },
       ])
+      setSkip((prev) => prev + 1)
       scrollToBottom()
       setMessage('')
     }
