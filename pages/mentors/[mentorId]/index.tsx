@@ -10,23 +10,18 @@ import { config } from '@config/main'
 import { useFavorite } from '@hooks/index'
 import { Achievement, Experience, Mentor } from '@models/mentor'
 import { Favorite } from '@mui/icons-material'
-import { Box, Card, CardContent, Divider, Grid, Stack, Typography } from '@mui/material'
+import { Box, Card, CardContent, Divider, Grid, Stack, Tooltip, Typography } from '@mui/material'
 import axios from 'axios'
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import Carousel from 'react-elastic-carousel'
 //@ts-ignore
 import ExperienceCard from '@components/common/ExperienceCard/ExperienceCard'
 import { useSession } from 'next-auth/react'
 import { toast } from 'react-toastify'
+import { MentorRatingsCarousel } from '@components/pages/mentors/mentorId/MentorRatingsCarousel'
+import MentorRatingsProvider from 'context/MentorRatingsProvider'
 
-const breakPoints = [
-  { width: 1, itemsToShow: 1 },
-  { width: 550, itemsToShow: 2, itemsToScroll: 2 },
-  { width: 768, itemsToShow: 3 },
-  { width: 1200, itemsToShow: 4 },
-]
 export interface MentorProfileProps {
   mentor: Mentor
 }
@@ -46,7 +41,7 @@ function Profile({ mentor }: MentorProfileProps) {
     { label: mentor.name as string },
   ]
 
-  const { data: session, status } = useSession()
+  const { data, status } = useSession()
 
   console.log(mentor)
 
@@ -87,28 +82,29 @@ function Profile({ mentor }: MentorProfileProps) {
       <Box sx={{ flexGrow: 1, marginTop: 4 }}>
         <Grid container spacing={4}>
           <Grid item sm={12} md={8}>
-            <Card sx={{ borderRadius: '20px', boxShadow: 'none' }}>
+            <Card sx={{ borderRadius: '20px', boxShadow: 'none', height: '100%' }}>
               <CardContent sx={{ padding: '20px', position: 'relative' }}>
-                <button
-                  onClick={isFavorited ? removeFromWishList : addToWishList}
-                  style={{
-                    position: 'absolute',
-                    top: '24px',
-                    right: '32px',
-                    padding: '4px 4px',
-                    border: '1px solid rgba(0, 0, 0, 0.39)',
-                    borderRadius: '10px',
-                  }}
-                >
-                  <Favorite
-                    sx={{
-                      width: '28px',
-                      height: '28px',
-                      color: isFavorited ? '#F54E19' : 'rgba(0, 0, 0, 0.39)',
+                <Tooltip title="Thêm vào danh sách yêu thích">
+                  <button
+                    onClick={isFavorited ? removeFromWishList : addToWishList}
+                    style={{
+                      position: 'absolute',
+                      top: '24px',
+                      right: '32px',
+                      padding: '4px 4px',
+                      border: '1px solid rgba(0, 0, 0, 0.39)',
+                      borderRadius: '10px',
                     }}
-                  />
-                </button>
-
+                  >
+                    <Favorite
+                      sx={{
+                        width: '28px',
+                        height: '28px',
+                        color: isFavorited ? '#F54E19' : 'rgba(0, 0, 0, 0.39)',
+                      }}
+                    />
+                  </button>
+                </Tooltip>
                 <MentorMediaInfo mentor={mentor} />
                 {/* GiỚi thiệu */}
                 <Box sx={{ marginTop: '20px' }}>
@@ -153,7 +149,7 @@ function Profile({ mentor }: MentorProfileProps) {
                   </Stack>
                 </Box>
                 {/* Chứng chỉ */}
-                <Box sx={{ marginTop: '20px' }}>
+                <Box sx={{ marginTop: '20px', minHeight: 100 }}>
                   <HeadingPrimary>Thành tích & Chứng chỉ</HeadingPrimary>
                   {achievements ? (
                     <Grid container spacing={2}>
@@ -172,42 +168,13 @@ function Profile({ mentor }: MentorProfileProps) {
                     'Chưa có thông tin.'
                   )}
                 </Box>
+                <Divider />
                 {/* Đánh giá */}
                 <Box sx={{ marginTop: '20px' }}>
                   <HeadingPrimary>Đánh giá</HeadingPrimary>
-                  <Carousel isRTL={false} breakPoints={breakPoints}>
-                    <div className="flex items-center justify-center px-5 py-5 mt-5">
-                      <div className="w-full mx-auto max-w-xl rounded-lg bg-white dark:bg-gray-800 shadow-lg px-5 pt-5 pb-10 text-gray-800 dark:text-gray-50">
-                        <div className="w-full pt-1 text-center pb-5 -mt-16 mx-auto">
-                          <a href="#" className="block relative">
-                            <img
-                              alt="profil"
-                              src={mentor.avatar}
-                              className="mx-auto object-cover rounded-full h-20 w-20 "
-                            />
-                          </a>
-                        </div>
-                        <div className="w-full mb-10">
-                          <div className="text-3xl text-indigo-500 text-left leading-tight h-3">
-                            “
-                          </div>
-                          <p className="text-sm text-gray-600 dark:text-gray-100 text-center px-5">
-                            To get social media testimonials like these, keep your customers engaged
-                            with your social media accounts by posting regularly yourself
-                          </p>
-                          <div className="text-3xl text-indigo-500 text-right leading-tight h-3 -mt-3">
-                            ”
-                          </div>
-                        </div>
-                        <div className="w-full">
-                          <p className="text-md text-indigo-500 font-bold text-center">Tom Hardy</p>
-                          <p className="text-xs text-gray-500 dark:text-gray-300 text-center">
-                            @thom.hardy
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </Carousel>
+                  <MentorRatingsProvider>
+                    <MentorRatingsCarousel />
+                  </MentorRatingsProvider>
                 </Box>
               </CardContent>
             </Card>

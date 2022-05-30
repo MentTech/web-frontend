@@ -63,4 +63,11 @@ export const mentorApi = {
       },
     })
   },
+  getMentorRatings(mentorId: number, params?: any) {
+    return axiosClient.get(`/v1/mentor/${mentorId}/rating`, {
+      params: {
+        ...params,
+      },
+    })
+  },
 }

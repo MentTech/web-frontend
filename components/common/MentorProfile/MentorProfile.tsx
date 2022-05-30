@@ -327,6 +327,7 @@ export default function MentorProfile(props: ProfileProps) {
             'Chưa có thông tin.'
           )}
         </ProfileCard>
+        <Divider />
         <ProfileCard padding="20px 44px" onEditClick={handleShowSkillModal}>
           <HeadingPrimary>Kỹ năng</HeadingPrimary>
           <Box>

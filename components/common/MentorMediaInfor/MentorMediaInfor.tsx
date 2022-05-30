@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Box, Avatar, Typography, Rating, Stack, Grid, Chip } from '@mui/material'
+import { Avatar, Typography, Rating, Stack, Grid, Chip } from '@mui/material'
 import { LocationOn, AccessTime } from '@mui/icons-material'
 import { Mentor } from '@models/index'
 
