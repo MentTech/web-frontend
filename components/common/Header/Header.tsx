@@ -22,7 +22,7 @@ import { io, Socket } from 'socket.io-client'
 import { useSession } from 'next-auth/react'
 import { config } from '@config/main'
 import NotificationComp from '../Notification/Notification'
-import { useNotification } from '@hooks/index'
+import { useNotifications } from '@context/NotificationProvider'
 
 const pages = [
   {
@@ -43,7 +43,7 @@ const Header = () => {
   }, [])
 
   const { status, data: session } = useSession()
-  const { notifications, addNewNotification } = useNotification()
+  const { notifications, addNewNotification } = useNotifications()
 
   useEffect(() => {
     if (socket && status === 'authenticated') {

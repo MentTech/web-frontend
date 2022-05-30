@@ -15,12 +15,16 @@ export default function Favorites() {
     setValue(newValue)
   }
 
+  console.log(favorites)
+
   return (
     <Box sx={{ my: '24px' }}>
       <HeadingPrimary>Danh sách yêu thích</HeadingPrimary>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: '20px' }}></Box>
       {favorites &&
-        favorites.map((favorite: any, index: any) => <FavoriteItemCard mentorId={favorite} />)}
+        (favorites.length === 0
+          ? 'Chưa có mentor yêu thích nào.'
+          : favorites.map((favorite: any, index: any) => <FavoriteItemCard mentorId={favorite} />))}
     </Box>
   )
 }

@@ -1,17 +1,39 @@
-import * as React from 'react'
-import { Box, Typography, Menu, List, ListItem, ListItemText, Avatar, Badge } from '@mui/material'
-import { Notifications, Circle } from '@mui/icons-material'
-import { useNotification } from '@hooks/use-notification'
+import { useNotifications } from '@context/NotificationProvider'
 import { Notification } from '@models/index'
-import moment from 'moment'
+import { Notifications } from '@mui/icons-material'
+import { Badge, Box, List, ListItem, ListItemText, Menu, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
+import { useCallback, useRef, useState } from 'react'
+import NotificationItem from '../NotificationItem/NotificationItem'
 
 export interface NotificationProps {}
 
 export default function NotificationComp(props: NotificationProps) {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
-  const { notifications, markAllAsRead } = useNotification()
+  const { notifications, markAllAsRead, loading, setSkip, skip, limit, hasMore } =
+    useNotifications()
+
+  const observer = useRef<IntersectionObserver | null>(null)
+  const lastElRef = useCallback(
+    (node) => {
+      if (loading) return
+      if (observer.current) observer.current.disconnect()
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && hasMore) {
+            console.log('interseting')
+            setSkip((prev: number) => prev + limit)
+          }
+        },
+        {
+          threshold: 1,
+        }
+      )
+      if (node) observer.current.observe(node)
+    },
+    [loading, hasMore]
+  )
 
   const router = useRouter()
 
@@ -27,7 +49,7 @@ export default function NotificationComp(props: NotificationProps) {
         break
       case 'MENTEE_SESSION_ACCEPTED':
       case 'MENTEE_SESSION_REJECTED':
-        router.push('/sessions')
+        router.push(`/sessions/${n.additional.sessionId}`)
         break
       case 'MENTEE_TOPUP_SUCCESS':
         router.push('/coin/transactions')
@@ -40,6 +62,7 @@ export default function NotificationComp(props: NotificationProps) {
       default:
         break
     }
+    onCloseMenu()
 
     if (!n.isRead) {
       markAllAsRead(n.id)
@@ -57,29 +80,9 @@ export default function NotificationComp(props: NotificationProps) {
         sx={{ position: 'relative' }}
         className="df aic jcc cp"
       >
-        <Badge badgeContent={numberOfUnreadNotifications} color="error" showZero>
+        <Badge badgeContent={numberOfUnreadNotifications} color="error">
           <Notifications />
         </Badge>
-        {/* {notifications && numberOfUnreadNotifications > 0 && (
-          <Typography
-            sx={{
-              position: 'absolute',
-              color: '#fff',
-              width: '16px',
-              height: '16px',
-              backgroundColor: 'red',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '50%',
-              fontSize: '10px',
-              top: 0,
-              right: '-2px',
-            }}
-          >
-            {numberOfUnreadNotifications}
-          </Typography>
-        )} */}
       </Box>
       <Menu
         open={!!anchorEl}
@@ -106,40 +109,41 @@ export default function NotificationComp(props: NotificationProps) {
             Thông báo
           </Typography>
           {notifications && notifications.length > 0 ? (
-            notifications.map((n: Notification) => (
-              <ListItem
-                key={n.id}
-                disablePadding
-                sx={{
-                  padding: '10px 4px',
-                  borderRadius: '10px',
-                  cursor: 'pointer',
-                  '&:hover': { backgroundColor: '#F7F7F7' },
-                }}
-                onClick={() => {
-                  handleReadNotification(n)
-                }}
-              >
-                <Avatar sx={{ mr: 2 }} />
-                <Box>
-                  <Typography sx={{ fontSize: '15px' }}>{n.message}</Typography>
-                  {n.isRead ? (
-                    <Typography sx={{ color: 'gray', fontSize: '12px' }}>
-                      {moment(n.createAt).fromNow()}
-                    </Typography>
-                  ) : (
-                    <Typography sx={{ color: 'blue', fontWeight: '500', fontSize: '12px' }}>
-                      {moment(n.createAt).fromNow()}
-                    </Typography>
-                  )}
-                </Box>
-                {!n.isRead && <Circle sx={{ fontSize: '12px', color: 'blue', ml: 1 }} />}
-              </ListItem>
-            ))
+            notifications.map((n: Notification, index: number) => {
+              if (index === notifications.length - 1) {
+                return (
+                  <NotificationItem
+                    notification={n}
+                    key={n.id}
+                    lastchildRef={lastElRef}
+                    handleReadNotification={handleReadNotification}
+                  />
+                )
+              } else {
+                return (
+                  <NotificationItem
+                    notification={n}
+                    key={n.id}
+                    handleReadNotification={handleReadNotification}
+                  />
+                )
+              }
+            })
           ) : (
             <ListItem>
               <ListItemText primary="Chưa có thông báo nào." />
             </ListItem>
+          )}
+          {loading && (
+            <div className="h-24 rounded-md w-full px-1">
+              <div className="flex animate-pulse flex-row items-center h-full justify-start space-x-4">
+                <div className="w-12 bg-gray-300 h-12 rounded-full "></div>
+                <div className="flex flex-col space-y-3">
+                  <div className="w-36 bg-gray-300 h-6 rounded-md "></div>
+                  <div className="w-24 bg-gray-300 h-6 rounded-md "></div>
+                </div>
+              </div>
+            </div>
           )}
         </List>
       </Menu>

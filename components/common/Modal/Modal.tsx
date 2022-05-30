@@ -30,11 +30,13 @@ function Modal({ show, onClose, children, actions, title, size, additionalAction
       >
         <h2 className={styles.modal_header}>{title}</h2>
         {/* <Divider /> */}
-        {children}
+        <div className={styles.modal_content}>{children}</div>
         {/* <Divider /> */}
-        <div className={`${additionalAction ? 'flex items-center justify-between' : ''} mt-2`}>
-          {additionalAction && <div className="flex justify-start">{additionalAction}</div>}
-          <div className="modal-action m-0">{actions}</div>
+        <div className="absolute left-0 right-0 bottom-6 w-full px-8">
+          <div className={`${additionalAction ? 'flex items-center justify-between' : ''} mt-2`}>
+            {additionalAction && <div className="flex justify-start">{additionalAction}</div>}
+            <div className="modal-action m-0">{actions}</div>
+          </div>
         </div>
       </div>
     </div>

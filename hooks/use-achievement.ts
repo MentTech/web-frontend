@@ -3,7 +3,7 @@ import { Achievement } from '@models/mentor'
 import useSWR from 'swr'
 
 export const useAchievement = (mentorId: string) => {
-  const { data: achievements, error, mutate } = useSWR(`/v1/mentor/${mentorId}/achievement`)
+  const { data: achievements, error, mutate } = useSWR(() => `/v1/mentor/${mentorId}/achievement`)
 
   async function addAchievement(achievement: Achievement) {
     try {

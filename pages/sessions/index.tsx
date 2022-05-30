@@ -51,6 +51,21 @@ export default function Sessions(props: SessionsProps) {
     setValue(newValue)
   }
 
+  const pendingSession = sessions?.filter(
+    (session: MentorSession) => session.isAccepted === false && session.done === false
+  )
+  const acceptedSession = sessions?.filter(
+    (session: MentorSession) => session.isAccepted === true && session.done === false
+  )
+
+  const completedSession = sessions?.filter(
+    (session: MentorSession) => session.isAccepted === true && session.done === true
+  )
+
+  const cancelledSession = sessions?.filter(
+    (session: MentorSession) => session.isAccepted === false && session.done === true
+  )
+
   return (
     <Box sx={{ my: '24px' }}>
       <HeadingPrimary>Các phiên mentoring</HeadingPrimary>
@@ -81,13 +96,17 @@ export default function Sessions(props: SessionsProps) {
         {/* Pending sessions */}
         {sessions ? (
           <Grid container spacing={4}>
-            {sessions
-              .filter((session) => session.isAccepted === false && session.done === false)
-              .map((session: MentorSession) => (
+            {pendingSession && pendingSession?.length > 0 ? (
+              pendingSession.map((session: MentorSession) => (
                 <Grid key={session.id} item sm={6} md={4} xs={12}>
                   <SessionStatusCard session={session} />
                 </Grid>
-              ))}
+              ))
+            ) : (
+              <Grid item sx={{ textAlign: 'center' }} xs={12}>
+                <Typography sx={{ mt: 1 }}>Không có phiên mentoring nào.</Typography>
+              </Grid>
+            )}
           </Grid>
         ) : (
           <Loading />
@@ -97,13 +116,17 @@ export default function Sessions(props: SessionsProps) {
         {/* Accepted sessions */}
         {sessions ? (
           <Grid container spacing={4}>
-            {sessions
-              .filter((session) => session.isAccepted === true && session.done === false)
-              .map((session: MentorSession) => (
+            {acceptedSession && acceptedSession?.length > 0 ? (
+              acceptedSession.map((session: MentorSession) => (
                 <Grid key={session.id} item sm={6} md={4} xs={12}>
                   <SessionStatusCard session={session} />
                 </Grid>
-              ))}
+              ))
+            ) : (
+              <Grid item sx={{ textAlign: 'center' }} xs={12}>
+                <Typography sx={{ mt: 1 }}>Không có phiên mentoring nào.</Typography>
+              </Grid>
+            )}
           </Grid>
         ) : (
           <Loading />
@@ -113,13 +136,17 @@ export default function Sessions(props: SessionsProps) {
         {/* Completed sessions */}
         {sessions ? (
           <Grid container spacing={4}>
-            {sessions
-              .filter((session) => session.isAccepted === true && session.done === true)
-              .map((session: MentorSession) => (
+            {completedSession && completedSession?.length > 0 ? (
+              completedSession.map((session: MentorSession) => (
                 <Grid key={session.id} item sm={6} md={4} xs={12}>
                   <SessionStatusCard session={session} />
                 </Grid>
-              ))}
+              ))
+            ) : (
+              <Grid item sx={{ textAlign: 'center' }} xs={12}>
+                <Typography sx={{ mt: 1 }}>Không có phiên mentoring nào.</Typography>
+              </Grid>
+            )}
           </Grid>
         ) : (
           <Loading />
@@ -129,13 +156,17 @@ export default function Sessions(props: SessionsProps) {
         {/* Canceled sessions */}
         {sessions ? (
           <Grid container spacing={4}>
-            {sessions
-              .filter((session) => session.isAccepted === false && session.done === true)
-              .map((session: MentorSession) => (
+            {cancelledSession && cancelledSession?.length > 0 ? (
+              cancelledSession.map((session: MentorSession) => (
                 <Grid key={session.id} item sm={6} md={4} xs={12}>
                   <SessionStatusCard session={session} />
                 </Grid>
-              ))}
+              ))
+            ) : (
+              <Grid item sx={{ textAlign: 'center' }} xs={12}>
+                <Typography sx={{ mt: 1 }}>Không có phiên mentoring nào.</Typography>
+              </Grid>
+            )}
           </Grid>
         ) : (
           <Loading />

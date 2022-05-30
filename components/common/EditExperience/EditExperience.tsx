@@ -109,6 +109,7 @@ export default function EditExperience({
         onClose={onClose}
         actions={modalActions}
         additionalAction={additionalAction}
+        size="medium"
       >
         <form id="editExperience" onSubmit={handleSubmit(editSubmit)}>
           <Stack>

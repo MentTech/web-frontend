@@ -1,9 +1,11 @@
 import { MentorProgram } from './program'
 
 export interface MentorSession {
-  id?: string
+  id: string
   program: MentorProgram
   done: boolean
   isAccepted: boolean
-  rating?: number
+  expectedDate?: Date
+  rating: number
+  contactInfo?: string
 }

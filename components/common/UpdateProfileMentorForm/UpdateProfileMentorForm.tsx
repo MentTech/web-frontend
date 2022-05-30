@@ -10,7 +10,7 @@ import { useEffect } from 'react'
 
 const renderDatePickerInput = ({ inputRef, inputProps, InputProps }: any) => (
   <Box sx={{ position: 'relative', width: '100%' }}>
-    <input className="input input-primary input-bordered w-full" ref={inputRef} {...inputProps} />
+    <input className="input input-bordered w-full" ref={inputRef} {...inputProps} />
     <div className="absolute right-4 top-6">{InputProps?.endAdornment}</div>
   </Box>
 )
@@ -89,9 +89,7 @@ export default function UpdateProfileMentorForm({
                   {...register('name')}
                   type="text"
                   placeholder="Nhập họ tên của bạn"
-                  className={`input input-primary input-bordered w-full ${
-                    errors.name && 'input-error'
-                  }`}
+                  className={`input input-bordered w-full ${errors.name && 'input-error'}`}
                   defaultValue={data.name}
                 />
                 <label className="label">
@@ -109,8 +107,9 @@ export default function UpdateProfileMentorForm({
                   {...register('email')}
                   type="email"
                   placeholder="Nhập email của bạn"
-                  className="input input-primary input-bordered w-full"
+                  className="input input-bordered w-full"
                   defaultValue={data.email}
+                  disabled={true}
                 />
                 <label className="label">
                   <span className="label-text-alt text-red-500">{errors?.email?.message}</span>
@@ -156,7 +155,7 @@ export default function UpdateProfileMentorForm({
                   {...register('phone')}
                   type="number"
                   placeholder="Nhập số điện thoại của bạn"
-                  className="input input-primary input-bordered w-full"
+                  className="input input-bordered w-full"
                   defaultValue={data.phone}
                 />
                 <label className="label">

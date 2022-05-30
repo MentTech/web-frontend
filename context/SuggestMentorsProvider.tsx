@@ -22,12 +22,11 @@ interface SuggestMentorsProviderProps {
 
 const SuggestMentorsProvider = ({ children }: SuggestMentorsProviderProps) => {
   const [loading, setLoading] = useState(true)
+  const [suggestMentors, setSuggestMentors] = useState([])
 
   const router = useRouter()
 
   const { mentorId } = router.query
-
-  const [suggestMentors, setSuggestMentors] = useState([])
 
   React.useEffect(() => {
     const fetchData = async () => {
