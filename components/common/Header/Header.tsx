@@ -23,14 +23,18 @@ import { useSession } from 'next-auth/react'
 import { config } from '@config/main'
 import NotificationComp from '../Notification/Notification'
 import { useNotifications } from '@context/NotificationProvider'
+import { useRouter } from 'next/router'
 
 const pages = [
   {
     title: 'Tìm kiếm',
     path: '/find',
   },
+  {
+    title: 'Mentor',
+    path: '/mentors',
+  },
 ]
-const settings = ['Account', 'Dashboard']
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -79,6 +83,8 @@ const Header = () => {
       console.log(err)
     }
   }
+
+  const router = useRouter()
 
   return (
     <AppBar position="fixed">
@@ -161,7 +167,7 @@ const Header = () => {
                   <Typography textAlign="center" variant="body2" textTransform={'none'}>
                     {page.title}
                   </Typography>
-                  {location.pathname.includes(page.path) && (
+                  {router.pathname.includes(page.path) && (
                     <Box
                       style={{
                         top: '0px',

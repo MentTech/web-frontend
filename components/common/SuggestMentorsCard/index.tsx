@@ -9,7 +9,12 @@ const SuggestMentorsCardComp = () => {
   const { loading, suggestMentors } = useSuggestMentors()
 
   return (
-    <LoadingIndicator loading={loading}>
+    <LoadingIndicator
+      loading={loading}
+      style={{
+        marginTop: 16,
+      }}
+    >
       <Box className="df aic jcc" p={1}>
         <Typography sx={{ fontWeight: '600', fontSize: '24px', textAlign: 'center' }}>
           Mentor tương tự

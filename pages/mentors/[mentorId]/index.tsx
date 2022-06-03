@@ -142,7 +142,7 @@ function Profile({ mentor }: MentorProfileProps) {
                       ? experiences.map((experience: Experience) => (
                           <>
                             <ExperienceCard experience={experience} />
-                            <Divider sx={{ mt: 2, mb: 2 }} />
+                            <Divider sx={{ mt: 2 }} />
                           </>
                         ))
                       : 'Chưa có thông tin.'}
@@ -168,7 +168,7 @@ function Profile({ mentor }: MentorProfileProps) {
                     'Chưa có thông tin.'
                   )}
                 </Box>
-                <Divider />
+                <Divider sx={{ mt: 2 }} />
                 {/* Đánh giá */}
                 <Box sx={{ marginTop: '20px' }}>
                   <HeadingPrimary>Đánh giá</HeadingPrimary>
