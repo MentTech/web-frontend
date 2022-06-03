@@ -18,7 +18,9 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
         <a>{item.label}</a>
       </Link>
     ) : (
-      <Typography>{item.label}</Typography>
+      <Typography className="sb" key={index}>
+        {item.label}
+      </Typography>
     )
   )
 

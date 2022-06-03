@@ -76,3 +76,15 @@ export type Mentor = Mentee & {
   User_mentor: UserMentor
   averageRating: AverageRating
 }
+
+export interface Rating {
+  id: number
+  rating: number
+  comment: string
+  createAt: Date
+  registerId: number
+  user: {
+    name: string
+    avatar: string
+  }
+}

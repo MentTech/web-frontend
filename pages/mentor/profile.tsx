@@ -1,14 +1,15 @@
 import * as React from 'react'
 import { MentorLayout } from '@components/layouts/index'
 import MentorProfile from '@components/common/MentorProfile/MentorProfile'
+import { Container } from '@mui/material'
 
 export interface MentorProfileProps {}
 
 export default function MentorProfilePage(props: MentorProfileProps) {
   return (
-    <div>
+    <Container maxWidth="lg">
       <MentorProfile />
-    </div>
+    </Container>
   )
 }
 

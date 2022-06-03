@@ -63,4 +63,22 @@ export const mentorApi = {
       },
     })
   },
+  getMentorRatings(mentorId: number, params?: any) {
+    return axiosClient.get(`/v1/mentor/${mentorId}/rating`, {
+      params: {
+        ...params,
+      },
+    })
+  },
+  getMentorFeatureRating(mentorId: number, params?: any) {
+    return axiosClient(`/v1/mentor/${mentorId}/rating/feature`)
+  },
+  updateMentorFeatureRating(
+    mentorId: number,
+    payload: {
+      ids: number[]
+    }
+  ) {
+    return axiosClient.patch(`/v1/mentor/${mentorId}/rating/feature`, payload)
+  },
 }

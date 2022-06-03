@@ -20,17 +20,14 @@ export default function MentorProgramCard({ program }: MentorProgramCardProps) {
       }}
     >
       <CardContent sx={{ padding: '16px 24px' }}>
-        <Typography
-          color="#fff"
-          fontWeight="600"
-          fontSize="20px"
-          textAlign="left"
-          marginBottom="12px"
-        >
+        <Typography color="#fff" fontWeight="600" textAlign="left" marginBottom={0.5}>
           {title}
         </Typography>
-        <Typography sx={{ color: '#fff', textAlign: 'left', opacity: '0.8', marginBottom: '20px' }}>
-          {credit} credit / 1 giờ
+        <Typography
+          variant="body2"
+          sx={{ color: '#fff', textAlign: 'left', opacity: '0.8', marginBottom: '20px' }}
+        >
+          {credit} credit/60 phút
         </Typography>
         <Link href={`/mentors/${String(mentorId)}/programs/${id}`}>
           <Button
@@ -44,8 +41,11 @@ export default function MentorProgramCard({ program }: MentorProgramCardProps) {
             disableRipple
             disableElevation
           >
-            <Typography style={{ textDecoration: 'none', color: '#00BFA6' }} variant="body2">
-              Đặt lịch ngay
+            <Typography
+              style={{ textDecoration: 'none', color: '#fff', fontWeight: 600 }}
+              variant="body2"
+            >
+              Xem ngay
             </Typography>
           </Button>
         </Link>
