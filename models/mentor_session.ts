@@ -7,8 +7,20 @@ export interface MentorSession {
   done: boolean
   additional: string
   contactInfo: string
-  createdAt: Date | string
+  createAt: Date | string
   expectedDate: Date | string
   isAccepted: boolean
-  user: Mentee
+  menteeInfo: {
+    createAt: string | Date
+    description: string
+    email: string
+    expectation: string
+    goal: string
+    id: number
+    name: string
+    note: string
+    registerId: number
+    updatedAt: string | Date
+  }
+  isCanceled: boolean
 }

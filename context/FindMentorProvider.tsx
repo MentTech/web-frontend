@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react'
 import { useRouter } from 'next/router'
 import { findApi } from '@api/find-api'
 import { toast } from 'react-toastify'
-import { ErrorBoundary } from '@components/common/ErrorBoundary/ErrorBoundary'
 import { Category, Mentor, Skill } from '@models/mentor'
 
 interface FindMentorContextProps {

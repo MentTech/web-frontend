@@ -20,7 +20,7 @@ const CurrentMentorContext = React.createContext<MentorContext>({
       category: {
         id: 0,
         name: '',
-        createdAt: new Date(),
+        createAt: new Date(),
       },
     },
     averageRating: { count: 0, average: 0 },
@@ -47,7 +47,7 @@ const CurrentMentorProvider = ({ children }: CurrentMentorProviderProps) => {
       category: {
         id: 0,
         name: '',
-        createdAt: new Date(),
+        createAt: new Date(),
       },
     },
     averageRating: { count: 0, average: 0 },

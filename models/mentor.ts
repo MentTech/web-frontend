@@ -32,13 +32,13 @@ export interface Skill {
   description: string
   additional: Object | null
   isAccepted: Boolean
-  createdAt: Date
+  createAt: Date
 }
 
 export interface Category {
   id: number
   name: string
-  createdAt: Date
+  createAt: Date
 }
 
 export interface Program {

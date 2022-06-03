@@ -15,7 +15,7 @@ interface MentorSessionsProps {
   onUpdate: Function
   onClickLoadMore: Function
   loadingMore: boolean
-  canLoadMore: boolean
+  paginationInfo: any
 }
 
 const MentorSessions = React.createContext<MentorSessionsProps>({
@@ -28,7 +28,7 @@ const MentorSessions = React.createContext<MentorSessionsProps>({
   onUpdate: () => {},
   onClickLoadMore: () => {},
   loadingMore: false,
-  canLoadMore: false,
+  paginationInfo: {},
 })
 
 interface MentorSessionsProviderProps {
@@ -45,8 +45,8 @@ const MentorSessionsProvider = ({ children }: MentorSessionsProviderProps) => {
 
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
-  const [canLoadMore, setCanLoadMore] = useState(true)
   const [paginationInfo, setPaginationInfo] = useState({
+    totalPage: 1,
     page: 1,
     limit: 10,
   })
@@ -72,14 +72,13 @@ const MentorSessionsProvider = ({ children }: MentorSessionsProviderProps) => {
 
         if (programId) {
           setprogramSessions(result.data)
-          setCanLoadMore(false)
         } else {
           const sessionsArray = result.data.data || []
-          if (sessionsArray.length < result.data.limit) {
-            setCanLoadMore(false)
-          }
+
           setprogramSessions(sessionsArray)
+
           setPaginationInfo({
+            totalPage: result.data.totalPage,
             page: result.data.page,
             limit: result.data.limit,
           })
@@ -94,7 +93,7 @@ const MentorSessionsProvider = ({ children }: MentorSessionsProviderProps) => {
   }, [programId, mentorId, router])
 
   const onClickLoadMore = async () => {
-    if (!programId && canLoadMore) {
+    if (!programId) {
       setLoadingMore(true)
       const result = await mentorApi.getAllMentorRegister(Number(mentorId), {
         page: paginationInfo.page + 1,
@@ -108,10 +107,6 @@ const MentorSessionsProvider = ({ children }: MentorSessionsProviderProps) => {
         ...paginationInfo,
         page: paginationInfo.page + 1,
       })
-
-      if (sessionsArray.length < paginationInfo.limit) {
-        setCanLoadMore(false)
-      }
 
       setLoadingMore(false)
     }
@@ -197,8 +192,8 @@ const MentorSessionsProvider = ({ children }: MentorSessionsProviderProps) => {
         onReject,
         onUpdate,
         loadingMore,
-        canLoadMore,
         onClickLoadMore,
+        paginationInfo,
       }}
     >
       {children}

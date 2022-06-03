@@ -1,7 +1,6 @@
 import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
 import { LoadingIndicator } from '@components/common/LoadingIndicator/LoadingIndicator'
 import { MentorSession } from '@models/mentor_session'
-import { PersonAdd } from '@mui/icons-material'
 import { DateTimePicker } from '@mui/lab'
 import {
   Avatar,
@@ -11,25 +10,33 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Divider,
   List,
   ListItem,
   ListItemAvatar,
-  ListItemIcon,
   ListItemText,
   Paper,
   Tab,
   Tabs,
   TextField,
   Typography,
+  IconButton,
+  Tooltip,
+  Chip,
 } from '@mui/material'
+import { Check, Close, Message, Edit, Preview } from '@mui/icons-material'
 import { Box } from '@mui/system'
 import { useMentorSessions } from 'context/MentorSessionsProvider'
 import { SyntheticEvent, useState } from 'react'
+import { chatApi } from '@api/chat-api'
+import { setToastError } from '@utils/method'
 
 interface SessionListItemProps {
   session: MentorSession
   canAcceptReject: boolean
   canUpdate: boolean
+  isDone: boolean
+  isCancel: boolean
 }
 
 interface InputSessionInfoProps {
@@ -38,8 +45,15 @@ interface InputSessionInfoProps {
   expectedDate: Date | string
 }
 
-const SessionListItem = ({ session, canAcceptReject, canUpdate }: SessionListItemProps) => {
-  const { createdAt, user, id } = session
+const SessionListItem = ({
+  session,
+  canAcceptReject,
+  canUpdate,
+  isDone,
+  isCancel,
+}: SessionListItemProps) => {
+  const { menteeInfo, id } = session
+
   const { onAccept, onReject, onUpdate, currentLoadingSession } = useMentorSessions()
   const [openDialog, setOpenDialog] = useState(false)
   const [sessionInfo, setSessionInfo] = useState<InputSessionInfoProps>({
@@ -48,17 +62,49 @@ const SessionListItem = ({ session, canAcceptReject, canUpdate }: SessionListIte
     expectedDate: new Date(),
   })
 
-  const { name } = user || {}
+  const [openDialogViewInfo, setOpenDialogViewInfo] = useState(false)
+
+  const { name } = menteeInfo || {}
+
+  const expectedDate = session.expectedDate
+
+  const onClickMessage = async () => {
+    try {
+      const roomInfo = await chatApi.getChatRoomInfor(id)
+
+      window.open(`/messenger?roomid=${roomInfo.data.id}`, '_blank')
+    } catch (error) {
+      setToastError(error)
+    }
+  }
 
   return (
     <>
-      <ListItem>
+      <ListItem style={{ minHeight: 80 }}>
+        <Chip
+          size="small"
+          style={{ marginRight: 16, minWidth: 150 }}
+          color={
+            isDone ? 'success' : canAcceptReject ? 'warning' : canUpdate ? 'primary' : 'default'
+          }
+          label={
+            isDone
+              ? 'Đã hoàn thành'
+              : canAcceptReject
+              ? 'Chờ xác nhận'
+              : canUpdate
+              ? 'Chưa hoàn thành'
+              : 'Đã huỷ'
+          }
+        />
         <ListItemAvatar>
-          <Avatar src={user?.avatar}>{name?.charAt(0)}</Avatar>
+          <Avatar>{name?.charAt(0)}</Avatar>
         </ListItemAvatar>
         <ListItemText
-          primary={user?.name || 'Nguyễn Văn A'}
-          secondary={createdAt?.toLocaleString()}
+          primary={menteeInfo?.name || 'Nguyễn Văn A'}
+          secondary={
+            expectedDate ? 'Thời gian dự kiến: ' + new Date(expectedDate).toLocaleDateString() : ''
+          }
         ></ListItemText>
         <LoadingIndicator
           circularProps={{
@@ -70,31 +116,54 @@ const SessionListItem = ({ session, canAcceptReject, canUpdate }: SessionListIte
         >
           {canAcceptReject && (
             <>
-              <Button
-                variant="contained"
-                style={{ background: colors.green[500] }}
-                onClick={() => setOpenDialog(true)}
-              >
-                Chấp nhận
-              </Button>
-              <Button
-                variant="contained"
-                style={{ background: colors.red[500], marginLeft: 16 }}
-                onClick={() => onReject(session.id)}
-              >
-                Từ chối
-              </Button>
+              <Tooltip title={'Chấp nhận'}>
+                <IconButton
+                  style={{ background: colors.green[500] }}
+                  onClick={() => setOpenDialog(true)}
+                >
+                  <Check style={{ color: '#FFF' }} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={'Từ chối'}>
+                <IconButton
+                  style={{ background: colors.red[500], marginLeft: 8 }}
+                  onClick={() => onReject(session.id)}
+                >
+                  <Close style={{ color: '#FFF' }} />
+                </IconButton>
+              </Tooltip>
             </>
           )}
 
           {canUpdate && (
-            <Button
-              variant="contained"
-              style={{ background: colors.blue[500], marginLeft: 16 }}
-              onClick={() => setOpenDialog(true)}
-            >
-              Chỉnh sửa
-            </Button>
+            <Tooltip title={'Chỉnh sửa'}>
+              <IconButton
+                style={{ background: colors.orange[500], marginLeft: 8 }}
+                onClick={() => setOpenDialog(true)}
+              >
+                <Edit style={{ color: '#FFF' }} />
+              </IconButton>
+            </Tooltip>
+          )}
+          {menteeInfo && (
+            <Tooltip title={'Xem thông tin'}>
+              <IconButton
+                style={{ background: colors.blue[500], marginLeft: 8 }}
+                onClick={() => setOpenDialogViewInfo(true)}
+              >
+                <Preview style={{ color: '#FFF' }} />
+              </IconButton>
+            </Tooltip>
+          )}
+          {(canUpdate || isDone) && (
+            <Tooltip title={'Nhắn tin'}>
+              <IconButton
+                onClick={() => onClickMessage()}
+                style={{ background: colors.indigo['A200'], marginLeft: 8, color: '#fff' }}
+              >
+                <Message style={{ color: '#fff' }} />
+              </IconButton>
+            </Tooltip>
           )}
         </LoadingIndicator>
       </ListItem>
@@ -166,14 +235,57 @@ const SessionListItem = ({ session, canAcceptReject, canUpdate }: SessionListIte
           </DialogActions>
         </Dialog>
       )}
+      {openDialogViewInfo && (
+        <Dialog
+          maxWidth="lg"
+          PaperProps={{
+            style: {
+              minWidth: 500,
+            },
+          }}
+          open={openDialogViewInfo}
+        >
+          <DialogTitle>Thông tin session</DialogTitle>
+          <Divider />
+          <DialogContent>
+            <Box display="flex" flexDirection="row" alignItems="center">
+              <Typography>{'Họ tên: ' + menteeInfo?.name || 'Nguyễn Văn A'}</Typography>
+            </Box>
+            <Box>
+              <Typography>Email: {menteeInfo?.email}</Typography>
+              <Typography>Mong muốn: {menteeInfo?.expectation}</Typography>
+              <Typography>Mục tiêu: {menteeInfo?.goal}</Typography>
+              <Typography>Ghi chú: {menteeInfo?.note}</Typography>
+              <Typography>Mô tả: {menteeInfo?.description}</Typography>
+            </Box>
+            {expectedDate && (
+              <>
+                <Typography variant="h6" style={{ marginTop: 16 }}>
+                  Thông tin session
+                </Typography>
+                <Box display="flex" flexDirection="row" alignItems="center">
+                  <Typography>
+                    Thời gian dự kiến:
+                    {new Date(expectedDate).toLocaleDateString()}
+                  </Typography>
+                </Box>
+              </>
+            )}
+          </DialogContent>
+          <Divider />
+          <DialogActions>
+            <Button onClick={() => setOpenDialogViewInfo(false)}>Đóng</Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </>
   )
 }
 
-const TABS = ['Tất cả', 'Đã hoàn thành', 'Đang thực hiện', 'Chưa chấp nhận', 'Đã từ chối']
+const TABS = ['Tất cả', 'Chưa chấp nhận', 'Đang thực hiện', 'Đã hoàn thành', 'Đã từ chối']
 
 export const MentorSessionsPage = () => {
-  const { loading, programSessions, loadingMore, canLoadMore, onClickLoadMore } =
+  const { loading, programSessions, loadingMore, paginationInfo, onClickLoadMore } =
     useMentorSessions()
 
   const [currentTab, setCurrentTab] = useState(0)
@@ -182,18 +294,29 @@ export const MentorSessionsPage = () => {
     setCurrentTab(newValue)
   }
 
+  const sortedProgramSessions = programSessions.sort((a, b) => {
+    const aDate = new Date(a.createAt)
+    const bDate = new Date(b.createAt)
+    return -aDate.getTime() + bDate.getTime()
+  })
+  console.log(
+    '🚀 ~ file: MentorSessionsPage.tsx ~ line 311 ~ sortedProgramSessions ~ sortedProgramSessions',
+    sortedProgramSessions
+  )
+
   const programSessionsValue = [
-    programSessions,
-    programSessions.filter(
-      (programSession) => programSession.done === true && programSession.isAccepted === true
-    ),
-    programSessions.filter(
-      (programSession) => programSession.done === false && programSession.isAccepted === true
-    ),
-    programSessions.filter(
+    sortedProgramSessions,
+    sortedProgramSessions.filter(
       (programSession) => programSession.isAccepted === false && programSession.done === false
     ),
-    programSessions.filter(
+    sortedProgramSessions.filter(
+      (programSession) => programSession.done === false && programSession.isAccepted === true
+    ),
+    sortedProgramSessions.filter(
+      (programSession) => programSession.done === true && programSession.isAccepted === true
+    ),
+
+    sortedProgramSessions.filter(
       (programSession) => programSession.isAccepted === false && programSession.done === true
     ),
   ]
@@ -206,14 +329,15 @@ export const MentorSessionsPage = () => {
 
       <Paper elevation={2}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={currentTab} onChange={handleTabChange}>
+          {/* <Tabs value={currentTab} onChange={handleTabChange}>
             {TABS.map((tab) => (
               <Tab key={tab} label={tab} />
             ))}
-          </Tabs>
+          </Tabs> */}
           <List>
-            {programSessionsValue[currentTab].length ? (
-              programSessionsValue[currentTab].map((programSession) => (
+            {/* {programSessionsValue[currentTab].length ? ( */}
+            {sortedProgramSessions.length > 0 ? (
+              sortedProgramSessions.map((programSession) => (
                 <SessionListItem
                   key={programSession.id}
                   session={programSession}
@@ -221,6 +345,8 @@ export const MentorSessionsPage = () => {
                     programSession.isAccepted === false && programSession.done === false
                   }
                   canUpdate={programSession.done === false && programSession.isAccepted === true}
+                  isDone={programSession.done === true && programSession.isAccepted === true}
+                  isCancel={programSession.isCanceled}
                 />
               ))
             ) : (
@@ -229,7 +355,7 @@ export const MentorSessionsPage = () => {
               </Box>
             )}
           </List>
-          {canLoadMore && (
+          {paginationInfo.totalPage > paginationInfo.page && (
             <Box className="w100 df aic jcc" m={2}>
               <LoadingIndicator loading={loadingMore}>
                 <Button onClick={() => onClickLoadMore()} style={{ width: 250 }}>
