@@ -14,7 +14,7 @@ import {
   Chip,
   Divider,
 } from '@mui/material'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { useMentorInfor } from '@hooks/index'
 import { ContentState, convertFromHTML, convertToRaw, EditorState } from 'draft-js'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
@@ -79,8 +79,6 @@ export default function MentorProfile(props: ProfileProps) {
       </button>
     </>
   )
-
-  console.log(profile)
 
   function handleOpenEditAboutModal() {
     if (mentorInfor?.User_mentor) {
@@ -296,13 +294,13 @@ export default function MentorProfile(props: ProfileProps) {
           <Stack>
             {experiences
               ? experiences.map((experience: Experience) => (
-                  <>
+                  <Fragment key={experience.id}>
                     <ExperienceCard
                       experience={experience}
                       onEditClick={() => handleOpenEditExperienceModal(experience)}
                     />
                     <Divider sx={{ mt: 2, mb: 2 }} />
-                  </>
+                  </Fragment>
                 ))
               : 'Chưa có thông tin.'}
           </Stack>

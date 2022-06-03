@@ -45,7 +45,7 @@ export default function MentorProgramCard({ program }: MentorProgramCardProps) {
               style={{ textDecoration: 'none', color: '#fff', fontWeight: 600 }}
               variant="body2"
             >
-              Đặt lịch ngay
+              Xem ngay
             </Typography>
           </Button>
         </Link>

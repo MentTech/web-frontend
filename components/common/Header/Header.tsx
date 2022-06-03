@@ -30,10 +30,6 @@ const pages = [
     title: 'Tìm kiếm',
     path: '/find',
   },
-  {
-    title: 'Mentor',
-    path: '/mentors',
-  },
 ]
 
 const Header = () => {
