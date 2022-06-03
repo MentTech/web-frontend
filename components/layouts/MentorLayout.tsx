@@ -14,6 +14,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import NotificationProvider from '@context/NotificationProvider'
+import { Dashboard, Group, Comment } from '@mui/icons-material'
 
 const drawerWidth = 288
 
@@ -138,6 +139,17 @@ export function MentorLayout({ children }: LayoutProps) {
                 </span>
               </div> */}
                 <nav className="mt-10 px-6 ">
+                  <Link href="/mentor">
+                    <a
+                      className={`hover:text-gray-800 hover:bg-gray-100 flex items-center p-2 my-6 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200  text-gray-600 dark:text-gray-400 rounded-lg ${
+                        router.pathname == '/mentor' ? 'bg-gray-100 dark:bg-gray-600' : ''
+                      }`}
+                    >
+                      <Dashboard sx={{ width: '20px', height: '20px' }} />
+                      <span className="mx-4 text-lg font-normal">Tổng quan</span>
+                      <span className="flex-grow text-right"></span>
+                    </a>
+                  </Link>
                   <Link href="/mentor/programs">
                     <a
                       className={`hover:text-gray-800 hover:bg-gray-100 flex items-center p-2 my-6 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200  text-gray-600 dark:text-gray-400 rounded-lg ${
@@ -189,36 +201,29 @@ export function MentorLayout({ children }: LayoutProps) {
                     </a>
                   </Link>
 
-                  <Link href="/mentor/message">
+                  {/* <Link href="/mentor/mentees">
                     <a
                       className={`hover:text-gray-800 hover:bg-gray-100 flex items-center p-2 my-6 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200  text-gray-600 dark:text-gray-400 rounded-lg ${
-                        router.pathname == '/mentor/message'
+                        router.pathname == '/mentor/mentees'
                           ? 'bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-100'
                           : ''
                       }`}
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#000000"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                      </svg>
-                      <span className="mx-4 text-lg font-normal">Tin nhắn</span>
-                      <span className="flex-grow text-right">
-                        <button
-                          type="button"
-                          className="w-6 h-6 text-xs  rounded-full text-white bg-red-500"
-                        >
-                          <span className="p-1">7</span>
-                        </button>
-                      </span>
+                      <Group sx={{ width: '20px', height: '20px' }} />
+                      <span className="mx-4 text-lg font-normal">Mentees</span>
+                    </a>
+                  </Link> */}
+
+                  <Link href="/mentor/feedback">
+                    <a
+                      className={`hover:text-gray-800 hover:bg-gray-100 flex items-center p-2 my-6 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200  text-gray-600 dark:text-gray-400 rounded-lg ${
+                        router.pathname == '/mentor/mentees'
+                          ? 'bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-100'
+                          : ''
+                      }`}
+                    >
+                      <Comment sx={{ width: '20px', height: '20px' }} />
+                      <span className="mx-4 text-lg font-normal">Đánh giá</span>
                     </a>
                   </Link>
 
