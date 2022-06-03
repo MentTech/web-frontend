@@ -17,6 +17,7 @@ export default function FavoriteItemCard({ mentorId }: FavoriteItemCardProps) {
     }
     fetchMentor()
   }, [])
+
   return (
     <div className="shadow-lg rounded-2xl w-64 bg-white dark:bg-gray-800">
       <div
@@ -30,7 +31,7 @@ export default function FavoriteItemCard({ mentorId }: FavoriteItemCardProps) {
         <a href="#" className="block relative">
           <img
             alt="profil"
-            src={mentor?.avatar}
+            src={mentor?.avatar ? mentor.avatar : '/static/default_avatar.png'}
             className="mx-auto object-cover rounded-full h-16 w-16 "
           />
         </a>

@@ -134,11 +134,11 @@ const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-          {settings.map((setting) => (
+          {/* {settings.map((setting) => (
             <MenuItem key={setting} onClick={handleCloseUserMenu}>
               <Typography textAlign="center">{setting}</Typography>
             </MenuItem>
-          ))}
+          ))} */}
           <MenuItem onClick={handleLogout}>
             <Typography textAlign="center">Đăng xuất</Typography>
           </MenuItem>

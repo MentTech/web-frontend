@@ -185,7 +185,7 @@ function SessionStatusCard({ session, ...props }: SessionStatusCardProps) {
           </Tooltip>
 
           <Link href={`/sessions/${session.id}`}>
-            <a className="mt-7 text-2xl inline-block">{session.program.title}</a>
+            <a className="mt-7 text-2xl inline-block underline">{session.program.title}</a>
           </Link>
           <Divider sx={{ my: 2, width: '100%' }} />
           <Stack
@@ -226,12 +226,12 @@ function SessionStatusCard({ session, ...props }: SessionStatusCardProps) {
               <Box sx={{ textAlign: 'right' }}>
                 <Button onClick={() => setIsModalOpen(true)}>Đánh giá</Button>
               </Box>
-            ) : (
-              <Box sx={{ textAlign: 'right' }}>
-                <Button>Sửa đánh giá</Button>
-              </Box>
-            )
-          ) : null}
+            ) : null
+          ) : // <Box sx={{ textAlign: 'right' }}>
+          //   <Button>Sửa đánh giá</Button>
+          // </Box>
+
+          null}
           {!session.isAccepted && !session.done && (
             <Box sx={{ textAlign: 'right' }}>
               <Button onClick={() => setCancelBookingModal(true)}>Hủy đặt lịch</Button>
