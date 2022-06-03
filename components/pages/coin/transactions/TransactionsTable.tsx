@@ -15,6 +15,11 @@ export const TransactionsTable = ({ transactions }: TransactionsTableProps) => {
       </div>
     )
   }
+
+  const sortedTransactionTime = transactions.sort((a, b) => {
+    return new Date(b.createAt).getTime() - new Date(a.createAt).getTime()
+  })
+
   return (
     <div className="container mx-auto px-4 sm:px-8 max-w-6xl">
       <div className="py-8">
@@ -62,7 +67,7 @@ export const TransactionsTable = ({ transactions }: TransactionsTableProps) => {
                 </tr>
               </thead>
               <tbody>
-                {transactions.map((transaction) => {
+                {sortedTransactionTime.map((transaction) => {
                   const { amount, createAt, type, message, status, relatedId } = transaction
 
                   return (
