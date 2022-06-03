@@ -138,9 +138,14 @@ export default function SessionDetail(props: SessionDetailProps) {
                 </Box>
                 {matchedSession?.expectedDate && (
                   <Box>
-                    <IconButton aria-label="chat" onClick={getChatRoomInfo}>
-                      <MessageIcon />
-                    </IconButton>
+                    <Button
+                      variant="outlined"
+                      startIcon={<MessageIcon />}
+                      onClick={getChatRoomInfo}
+                      sx={{ mb: 2 }}
+                    >
+                      Gửi tin nhắn
+                    </Button>
 
                     <Typography sx={{ color: 'red' }}>
                       Ngày hẹn: &nbsp;

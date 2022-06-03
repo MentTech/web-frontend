@@ -71,10 +71,35 @@ export default function AvatarModal({ show, avatar, onClose }: AvatarModalProps)
           </Box>
         )}
         <form onSubmit={handleSubmit}>
-          <input type="file" name="avatar" id="avatar" ref={imageRef} onChange={imageChange} />
-          <button type="submit" className="btn btn-active btn-primary">
-            Upload
-          </button>
+          <div className="flex justify-center mt-5">
+            <div className="mb-3 w-96">
+              <input
+                className="form-control
+                  block
+                  w-full
+                  px-3
+                  py-1.5
+                  text-base
+                  font-normal
+                  text-gray-700
+                  bg-white bg-clip-padding
+                  border border-solid border-gray-300
+                  rounded
+                  transition
+                  ease-in-out
+                  m-0
+                  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                type="file"
+                ref={imageRef}
+                onChange={imageChange}
+                name="avatar"
+                id="avatar"
+              />
+            </div>
+            <button type="submit" className="btn btn-active btn-primary ml-3">
+              Upload
+            </button>
+          </div>
         </form>
       </Modal>
     </>

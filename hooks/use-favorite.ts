@@ -6,6 +6,7 @@ export function useFavorite() {
     data: favorites,
     error,
     mutate,
+    isValidating,
   } = useSWR<any>('v1/mentee/favorite', {
     revalidateOnMount: true,
   })
@@ -33,5 +34,6 @@ export function useFavorite() {
     mutate,
     addFavorite,
     removeFavorite,
+    isValidating,
   }
 }

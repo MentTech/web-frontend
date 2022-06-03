@@ -7,6 +7,7 @@ import { Box } from '@mui/material'
 import { useState } from 'react'
 import FavoriteCard from '@components/common/FavoriteCard/FavoriteCard'
 import FavoriteItemCard from '@components/common/FavoriteItemCard/FavoriteItemCard'
+import Loading from '@components/common/Loading/Loading'
 
 export default function Favorites() {
   const [value, setValue] = useState(0)
@@ -21,6 +22,7 @@ export default function Favorites() {
     <Box sx={{ my: '24px' }}>
       <HeadingPrimary>Danh sách yêu thích</HeadingPrimary>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: '20px' }}></Box>
+      {!favorites && <Loading />}
       {favorites &&
         (favorites.length === 0
           ? 'Chưa có mentor yêu thích nào.'

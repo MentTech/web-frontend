@@ -11,6 +11,8 @@ import { GetStaticProps, GetStaticPropsContext } from 'next'
 import { Mentor } from '@models/index'
 import { config } from '@config/main'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 const breakPoints = [
   { width: 1, itemsToShow: 1 },
@@ -25,6 +27,16 @@ export interface HomePageProps {
 
 function Home({ topMentors }: HomePageProps) {
   const [items, setItems] = useState([1, 2, 3, 4, 5, 6, 7, 8])
+  const { data: sessions, status } = useSession()
+  const router = useRouter()
+
+  if (status === 'authenticated') {
+    if (sessions?.user?.role === 'mentor') {
+      router.push('/mentor/profile')
+    } else {
+      router.push('/find')
+    }
+  }
 
   return (
     <>
