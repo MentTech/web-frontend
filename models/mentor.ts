@@ -44,7 +44,7 @@ export interface Category {
 export interface Program {
   id: number
   title: string
-  createdAt: Date
+  createAt: Date
   credit: number
   mentorId: number
   detail: string

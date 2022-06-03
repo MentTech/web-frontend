@@ -40,7 +40,7 @@ export function ProgramRegisterCheckoutPage() {
 
   const router = useRouter()
 
-  const { id: mentorId, User_mentor, name, avatar } = currentMentor
+  const { id: mentorId, User_mentor } = currentMentor
   const { programs = [] } = User_mentor
 
   let currentProgram: Program | null | undefined = null
@@ -62,7 +62,6 @@ export function ProgramRegisterCheckoutPage() {
   ]
 
   const {
-    control,
     handleSubmit,
     register,
     formState: { errors },
@@ -80,14 +79,15 @@ export function ProgramRegisterCheckoutPage() {
         programId: Number(currentProgram?.id),
         checkoutInfo: data,
       })
-      if (result.data.message) throw new Error(result.data.message)
+
       setToastSuccess('Đã đăng ký chương trình thành công!')
-      setCheckoutLoading(false)
     } catch (error: any) {
-      if (error.message.includes('Can not get balance'))
-        setToastError('Không đủ số dư trong tài khoản, vui lòng nạp thêm!')
-      if (error.message.includes('You have already registered for this program'))
-        setToastError('Bạn đã đăng ký chương trình này rồi')
+      if (error) {
+        if (error.includes('Can not get balance'))
+          return setToastError('Không đủ số dư trong tài khoản, vui lòng nạp thêm!')
+        if (error.includes('You have already registered for this program'))
+          return setToastError('Bạn đã đăng ký chương trình này rồi')
+      }
       setToastError(error)
     } finally {
       setCheckoutLoading(false)
@@ -115,42 +115,51 @@ export function ProgramRegisterCheckoutPage() {
                   disabled={checkoutLoading}
                   defaultValue={profile.name}
                   label="Họ và tên"
-                  style={{ marginTop: 16 }}
+                  style={{ marginTop: 8 }}
+                  error={errors.name}
                   {...register('name')}
                 />
                 <TextField
                   disabled={checkoutLoading}
                   defaultValue={profile.email}
                   label="Email"
-                  style={{ marginTop: 16 }}
+                  error={errors.email}
+                  style={{ marginTop: 8 }}
                   {...register('email')}
                 />
+
                 <TextField
                   disabled={checkoutLoading}
-                  label="Mô tả bản thân"
-                  style={{ marginTop: 16 }}
-                  {...register('description')}
-                />
-                <TextField
-                  disabled={checkoutLoading}
-                  label="Mô tả bản thân"
-                  style={{ marginTop: 16 }}
+                  label="Ghi chú cho mentor"
+                  style={{ marginTop: 8 }}
+                  error={errors.note}
                   {...register('note')}
                 />
                 <TextField
                   disabled={checkoutLoading}
                   label="Kỳ vọng"
-                  style={{ marginTop: 16 }}
+                  style={{ marginTop: 8 }}
+                  error={errors.expectation}
                   {...register('expectation')}
                 />
                 <TextField
                   disabled={checkoutLoading}
                   label="Mục tiêu"
-                  style={{ marginTop: 16 }}
+                  style={{ marginTop: 8 }}
+                  error={errors.goal}
                   {...register('goal')}
                 />
+                <TextField
+                  disabled={checkoutLoading}
+                  label="Mô tả bản thân"
+                  style={{ marginTop: 8 }}
+                  multiline={true}
+                  rows={3}
+                  error={errors.description}
+                  {...register('description')}
+                />
               </Box>
-              <LoadingIndicator loading={checkoutLoading}>
+              <LoadingIndicator noText loading={checkoutLoading}>
                 <button className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
                   Đăng ký ngay
                 </button>

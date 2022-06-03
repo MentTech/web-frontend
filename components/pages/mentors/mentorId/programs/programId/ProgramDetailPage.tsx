@@ -129,7 +129,7 @@ export const ProgramDetailPage = () => {
                             <Typography className="body2">{name}</Typography>
                             <Typography className="body2"> &nbsp;vào lúc &nbsp;</Typography>
                             <Typography className="body2">
-                              {new Date(currentProgram?.createdAt || new Date()).toLocaleString(
+                              {new Date(currentProgram?.createAt || new Date()).toLocaleString(
                                 'vi'
                               )}
                             </Typography>
@@ -145,7 +145,7 @@ export const ProgramDetailPage = () => {
                           }}
                           variant="contained"
                         >
-                          Đặt lịch ngay
+                          Đăng ký ngay
                         </Button>
                       </Box>
                       <Box

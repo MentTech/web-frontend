@@ -85,7 +85,7 @@ const Header = () => {
   return (
     <AppBar position="fixed">
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
+        <Toolbar disableGutters className="df aic jcsb">
           <Typography
             variant="h6"
             noWrap
@@ -151,8 +151,13 @@ const Header = () => {
               display: { xs: 'none', md: 'flex' },
               justifyContent: 'center',
               alignItems: 'center',
+              top: '0px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              position: 'fixed',
             }}
             component="ul"
+            className="center"
           >
             {pages.map((page) => (
               <Link key={page.path} href={page.path}>

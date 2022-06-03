@@ -19,7 +19,10 @@ axiosClient.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    return Promise.reject(error)
+    if (error.response.status === 401) {
+      window.location.href = `${config.nextAuthURL}/authenticate/login`
+    }
+    return Promise.reject(error.response.data.message)
   }
 )
 
