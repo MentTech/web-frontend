@@ -23,7 +23,9 @@ export function ProgramRegisterCheckoutCard({
         <p className="text-sm text-gray-900 leading-sm">
           Được tạo lúc: {new Date(createAt).toLocaleDateString()}
         </p>
-        <p className="text-sm text-gray-900 leading-sm">Giới thiệu: {detail}</p>
+        <p className="text-sm text-gray-900 leading-sm">Giới thiệu:</p>
+        <div dangerouslySetInnerHTML={{ __html: detail }}></div>
+        da
       </div>
       <span className="bg-teal-600 w-full flex justify-center py-2 text-white font-semibold transition duration-300">
         <Paid style={{ marginRight: 8 }} />

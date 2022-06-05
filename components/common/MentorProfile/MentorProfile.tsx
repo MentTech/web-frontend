@@ -364,7 +364,6 @@ export default function MentorProfile(props: ProfileProps) {
       <UpdateProfileMentorForm
         data={{
           name: profile?.name,
-          email: profile?.email,
           birthday: profile?.birthday,
           phone: profile?.phone,
         }}

@@ -125,6 +125,7 @@ function SessionStatusCard({ session, ...props }: SessionStatusCardProps) {
           rating: value,
           comment,
         })
+        setRating(value)
         toast.success('Gửi đánh giá thành công')
       } catch (err) {
         toast.error('Có lỗi xảy ra')
@@ -185,7 +186,9 @@ function SessionStatusCard({ session, ...props }: SessionStatusCardProps) {
           </Tooltip>
 
           <Link href={`/sessions/${session.id}`}>
-            <a className="mt-7 text-2xl inline-block underline">{session.program.title}</a>
+            <a className="mt-7 text-2xl inline-block underline text-blue-400">
+              {session.program.title}
+            </a>
           </Link>
           <Divider sx={{ my: 2, width: '100%' }} />
           <Stack

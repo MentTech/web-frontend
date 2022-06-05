@@ -2,12 +2,12 @@ import React from 'react'
 
 export function MentorRatingCard({ rating }: { rating: any }) {
   return (
-    <div className="flex items-center justify-center px-5 py-5 mt-5">
+    <div className="flex items-center justify-center px-5 py-5 mt-5 w-full">
       <div className="w-full mx-auto max-w-xl rounded-lg bg-white dark:bg-gray-800 shadow-lg px-5 pt-5 pb-10 text-gray-800 dark:text-gray-50">
         <div className="w-full pt-1 text-center pb-5 -mt-16 mx-auto">
           <a href="#" className="block relative">
             <img
-              alt="profil"
+              alt="profile"
               src={rating.user.avatar}
               className="mx-auto object-cover rounded-full h-20 w-20 "
             />

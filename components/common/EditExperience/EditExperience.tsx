@@ -161,7 +161,7 @@ export default function EditExperience({
                 </label>
                 <textarea
                   {...register('description')}
-                  className="textarea textarea-bordered h-24"
+                  className="textarea textarea-bordered h-40"
                   placeholder="Bio"
                 ></textarea>
                 <label className="label">

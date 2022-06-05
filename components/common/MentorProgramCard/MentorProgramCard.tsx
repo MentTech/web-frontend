@@ -13,7 +13,7 @@ export default function MentorProgramCard({ program }: MentorProgramCardProps) {
       sx={{
         textAlign: 'center',
         width: '100%',
-        maxWidth: '500px',
+        maxWidth: '750px',
         borderRadius: '20px',
         boxShadow: 'none',
         backgroundColor: '#575A88',

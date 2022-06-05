@@ -17,7 +17,6 @@ const renderDatePickerInput = ({ inputRef, inputProps, InputProps }: any) => (
 
 interface ProfileData {
   name: string
-  email: string
   phone: number
   birthday: Date
 }
@@ -49,7 +48,6 @@ export default function UpdateProfileMentorForm({
   const schema = yup
     .object({
       name: yup.string().max(40).required(),
-      email: yup.string().email().required(),
       birthday: yup.date().required(),
       phone: yup.number().min(10).required(),
     })
@@ -98,7 +96,7 @@ export default function UpdateProfileMentorForm({
               </FormControl>
             </Grid>
 
-            <Grid item sm={6}>
+            {/* <Grid item sm={6}>
               <FormControl fullWidth>
                 <label className="label">
                   <span className="label-text">Email</span>
@@ -115,7 +113,7 @@ export default function UpdateProfileMentorForm({
                   <span className="label-text-alt text-red-500">{errors?.email?.message}</span>
                 </label>
               </FormControl>
-            </Grid>
+            </Grid> */}
 
             <Grid item sm={6}>
               <FormControl fullWidth>

@@ -179,7 +179,7 @@ function Profile({ mentor }: MentorProfileProps) {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item sm={12} md={4}>
+          <Grid item xs={12} md={4}>
             <Stack spacing={2}>
               <Typography sx={{ fontWeight: '600', fontSize: '24px', textAlign: 'center' }}>
                 Chương trình
