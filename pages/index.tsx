@@ -96,7 +96,7 @@ function Home({ topMentors }: HomePageProps) {
                 {mentor.User_mentor.experiences[0] && mentor.User_mentor.experiences[0].title}
               </p>
               <Link href={`/mentors/${mentor.id}`}>
-                <a className={`${styles.btnPrimary} ${styles.mentorCardBtn}`}>Get in Touch</a>
+                <a className={`${styles.btnPrimary} ${styles.mentorCardBtn}`}>Xem chi tiết</a>
               </Link>
             </div>
           ))}
@@ -108,11 +108,11 @@ function Home({ topMentors }: HomePageProps) {
         <div className={styles.questionsList}>
           <div className={styles.questionItem}>
             <div className={styles.questionInfo}>
-              <img className={styles.menteeAvatar} src="/static/mentorAvatar.png" alt="#" />
+              <img className={styles.menteeAvatar} src="/static/avatar1.jpg" alt="#" />
               <div>
-                <h4 className={styles.menteeName}>Asif Khan</h4>
+                <h4 className={styles.menteeName}>Nguyễn Văn Kha</h4>
                 <p className={styles.question}>
-                  How can I get into a decent university in Canada for undergraduate study?
+                  Làm thế nào tôi có thể học tập tốt ở môi trường đại học?
                 </p>
               </div>
             </div>
@@ -122,11 +122,11 @@ function Home({ topMentors }: HomePageProps) {
           </div>
           <div className={styles.questionItem}>
             <div className={styles.questionInfo}>
-              <img className={styles.menteeAvatar} src="/static/mentorAvatar.png" alt="#" />
+              <img className={styles.menteeAvatar} src="/static/avatar2.avif" alt="#" />
               <div>
-                <h4 className={styles.menteeName}>Asif Khan</h4>
+                <h4 className={styles.menteeName}>Lê Văn Tuấn</h4>
                 <p className={styles.question}>
-                  How can I get into a decent university in Canada for undergraduate study?
+                  Tôi muốn tìm kiếm người cố vấn học tập phù hợp với mình.
                 </p>
               </div>
             </div>
@@ -136,11 +136,11 @@ function Home({ topMentors }: HomePageProps) {
           </div>
           <div className={styles.questionItem}>
             <div className={styles.questionInfo}>
-              <img className={styles.menteeAvatar} src="/static/mentorAvatar.png" alt="#" />
+              <img className={styles.menteeAvatar} src="/static/avatar3.avif" alt="#" />
               <div>
-                <h4 className={styles.menteeName}>Asif Khan</h4>
+                <h4 className={styles.menteeName}>Nguyễn Thị Hà</h4>
                 <p className={styles.question}>
-                  How can I get into a decent university in Canada for undergraduate study?
+                  Tôi cần ai đó định hướng về nghề nghiệp trong tương lai.
                 </p>
               </div>
             </div>
@@ -150,11 +150,11 @@ function Home({ topMentors }: HomePageProps) {
           </div>
           <div className={styles.questionItem}>
             <div className={styles.questionInfo}>
-              <img className={styles.menteeAvatar} src="/static/mentorAvatar.png" alt="#" />
+              <img className={styles.menteeAvatar} src="/static/avatar4.avif" alt="#" />
               <div>
-                <h4 className={styles.menteeName}>Asif Khan</h4>
+                <h4 className={styles.menteeName}>Lê Thọ Đạt</h4>
                 <p className={styles.question}>
-                  How can I get into a decent university in Canada for undergraduate study?
+                  Tôi muốn học lập trình nhưng không biết nên bắt đầu từ đâu.
                 </p>
               </div>
             </div>
@@ -233,8 +233,13 @@ function Home({ topMentors }: HomePageProps) {
           Bạn còn chờ gì nữa? <br /> Trở thành mentor ngay hôm nay!
         </h2>
         <div className={styles.buttonGroup}>
-          <a className={`${styles.btnPrimary} ${styles.askBtn}`}>Trở thành mentor</a>
-          <a className={`${styles.btnPrimary} ${styles.askBtn}`}>Đăng ký mentee</a>
+          <Link href="/register/mentor">
+            <a className={`${styles.btnPrimary} ${styles.askBtn}`}>Trở thành mentor</a>
+          </Link>
+
+          <Link href="/authenticate/register">
+            <a className={`${styles.btnPrimary} ${styles.askBtn}`}>Đăng ký mentee</a>
+          </Link>
         </div>
       </div>
       <footer className="footer p-10 bg-base-200 text-base-content">

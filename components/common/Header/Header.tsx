@@ -24,10 +24,11 @@ import { config } from '@config/main'
 import NotificationComp from '../Notification/Notification'
 import { useNotifications } from '@context/NotificationProvider'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 const pages = [
   {
-    title: 'Tìm kiếm',
+    title: 'TÌM KIẾM MENTOR',
     path: '/find',
   },
 ]
@@ -93,7 +94,7 @@ const Header = () => {
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
             <Link href="/">
-              <a>MentTech</a>
+              <img src="/static/logo.png" alt="logo" className="h-12 cursor-pointer" />
             </Link>
           </Typography>
 
