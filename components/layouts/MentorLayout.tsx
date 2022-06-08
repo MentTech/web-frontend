@@ -84,7 +84,7 @@ export function MentorLayout({ children }: LayoutProps) {
 
   return (
     <NotificationProvider>
-      <Box sx={{ display: 'flex', backgroundColor: '#F3F2EF', minHeight: '100vh' }}>
+      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
         <CssBaseline />
 
         <AppBar position="fixed" open={open}>
@@ -111,24 +111,7 @@ export function MentorLayout({ children }: LayoutProps) {
             </IconButton>
           </DrawerHeader>
           <Divider />
-          {/* <List>
-          {[
-            { title: 'Home', href: '/mentor', icon: <InboxIcon /> },
-            { title: 'Tin nhắn', href: '/mentor/message', icon: <MailIcon /> },
-            { title: 'Chương trình', href: '/mentor/programs', icon: <MenuBook /> },
-            { title: 'Phiên mentoring', href: '/mentor/sessions', icon: <AccessibilityNew /> },
-            { title: 'Hồ sơ của bạn', href: '/mentor/profile', icon: <Person /> },
-          ].map((item, index) => {
-            return (
-              <Link href={item.href} key={index}>
-                <ListItemButton key={item.title}>
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.title} />
-                </ListItemButton>
-              </Link>
-            )
-          })}
-        </List> */}
+
           <div className="relative bg-white dark:bg-gray-800 h-full">
             <div className="flex flex-col sm:flex-row sm:justify-around">
               <div className="w-full h-full">
@@ -272,7 +255,7 @@ export function MentorLayout({ children }: LayoutProps) {
             </div>
           </div>
         </Drawer>
-        <Main open={open}>
+        <Main open={open} sx={{ backgroundColor: '#F3F2EF' }}>
           <DrawerHeader />
           {children}
           {/* <Footer /> */}

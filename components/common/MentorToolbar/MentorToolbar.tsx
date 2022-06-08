@@ -17,6 +17,7 @@ import { useSession } from 'next-auth/react'
 import { config } from '@config/main'
 import { useNotifications } from '@context/NotificationProvider'
 import { Notification } from '@models/index'
+import Link from 'next/link'
 
 const pages = ['Products', 'Pricing', 'Blog']
 const settings = ['Hồ sơ', 'Phiên mentoring']
@@ -96,9 +97,12 @@ const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
       >
         <MenuIcon />
       </IconButton>
-      <Typography variant="h6" noWrap component="div">
+      {/* <Typography variant="h6" noWrap component="div">
         MentTech
-      </Typography>
+      </Typography> */}
+      <Link href="/mentor">
+        <img src="/static/logo.png" alt="logo" className="h-12 cursor:pointer" />
+      </Link>
 
       <Box sx={{ flexGrow: 0 }} className="df aic mr-0 ml-auto">
         {profile && (
