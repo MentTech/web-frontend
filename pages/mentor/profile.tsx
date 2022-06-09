@@ -7,7 +7,7 @@ export interface MentorProfileProps {}
 
 export default function MentorProfilePage(props: MentorProfileProps) {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" sx={{ padding: '0 !important' }}>
       <MentorProfile />
     </Container>
   )

@@ -57,7 +57,7 @@ export const mentorApi = {
     return axiosClient.delete(`/v1/mentor/${mentorId}/experience/${experienceId}`)
   },
   getAllMentorRegister(mentorId: number, params?: any) {
-    return axiosClient.get(`/v1/mentor/${mentorId}/register`, {
+    return axiosClient.get(`/v1/mentor/${mentorId}/register?isCanceled=false`, {
       params: {
         ...params,
       },
