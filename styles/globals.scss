@@ -89,3 +89,22 @@ html {
   width: 80%;
   border-radius: 10px;
 }
+
+.loginbackground {
+  position: relative;
+
+}
+
+.loginbackground::before {
+  content: '';
+  position: absolute;
+  
+  background: url('/static/loginbackground.jpg') no-repeat center / cover;
+  // change brightness of background image
+  filter: brightness(0.6);
+  // change opacity of background image
+  -webkit-filter:brightness(0.7);    
+  left:0;top:0;bottom:0;right:0; 
+  z-index:-1;
+  opacity: 0.8;
+}
