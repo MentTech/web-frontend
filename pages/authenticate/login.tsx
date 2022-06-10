@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
+import Image from 'next/image'
 
 export interface LoginProps {}
 
@@ -66,8 +67,15 @@ export default function Login(props: LoginProps) {
   return (
     <div className="2xl:container h-screen m-auto">
       <div hidden className="fixed inset-0 w-6/12 lg:block">
-        <div className="w-full h-full loginbackground text-white flex items-center justify-center">
-          <div className="text-center">
+        <div className="w-full h-full text-white flex items-center justify-center">
+          <Image
+            src="/static/loginbackground.jpg"
+            alt="background"
+            layout="fill"
+            objectFit="cover"
+            className="brightness-75 opacity-80"
+          />
+          <div className="text-center z-30">
             <h2 className="text-3xl font-bold mb-2 opacity-100">Xin chào!</h2>
             <div className="border-2 w-10 border-white inline-block mb-2"></div>
             <p className="mb-4">Điền đầy đủ thông tin và bắt đầu hành trình cùng chúng tôi.</p>
@@ -145,9 +153,19 @@ export default function Login(props: LoginProps) {
               <button className="m-0 w-full px-6 py-3 rounded-lg bg-sky-800 transition hover:bg-sky-900 focus:bg-sky-900 active:bg-sky-900">
                 <span className="font-semibold text-white text-lg">Đăng nhập</span>
               </button>
-              <button type="reset" className="w-max p-3 -ml-3">
-                <span className="text-sm tracking-wide text-sky-600">Đăng ký tài khoản</span>
-              </button>
+              {!isMentor ? (
+                <Link href="/authenticate/register">
+                  <a type="reset" className="w-max p-3 -ml-3">
+                    <span className="text-sm tracking-wide text-sky-600">Đăng ký tài khoản</span>
+                  </a>
+                </Link>
+              ) : (
+                <Link href="/register/mentor">
+                  <a type="reset" className="w-max p-3 -ml-3">
+                    <span className="text-sm tracking-wide text-sky-600">Trở thành mentor</span>
+                  </a>
+                </Link>
+              )}
             </div>
 
             {!isMentor && (

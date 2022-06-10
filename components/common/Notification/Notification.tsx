@@ -46,6 +46,7 @@ export default function NotificationComp(props: NotificationProps) {
   function handleReadNotification(n: Notification) {
     switch (n.type.name) {
       case 'MENTOR_RECEIVE_SESSION_REQUEST':
+        router.push('mentor/sessions')
         break
       case 'MENTEE_SESSION_ACCEPTED':
       case 'MENTEE_SESSION_REJECTED':
