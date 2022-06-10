@@ -13,12 +13,12 @@ export default function ActivateAccount(props: ActivateAccountProps) {
   async function activateAccount(token: string) {
     try {
       const res = await authApi.activation(token)
-      router.push('/success')
+      router.push('/validateAccountSuccess')
     } catch (err: any) {
       if (err.response.data.statusCode === 409) {
         router.push('/')
       } else {
-        router.push('/error')
+        router.push('/validateAccountError')
       }
     }
   }

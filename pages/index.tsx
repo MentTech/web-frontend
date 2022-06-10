@@ -108,7 +108,14 @@ function Home({ topMentors }: HomePageProps) {
         <div className={styles.questionsList}>
           <div className={styles.questionItem}>
             <div className={styles.questionInfo}>
-              <img className={styles.menteeAvatar} src="/static/avatar1.jpg" alt="#" />
+              <Image
+                className={styles.menteeAvatar}
+                src="/static/avatar1.jpg"
+                alt="#"
+                layout="fixed"
+                width={62}
+                height={62}
+              />
               <div>
                 <h4 className={styles.menteeName}>Nguyễn Văn Kha</h4>
                 <p className={styles.question}>
@@ -163,10 +170,12 @@ function Home({ topMentors }: HomePageProps) {
             />
           </div>
         </div>
-        <img
+        <Image
           className={styles.educationGirlImg}
           src="/static/educationGirl.png"
           alt="educationgirl"
+          layout="fixed"
+          width={600}
         />
       </div>
       <div className={styles.contentSection}>
