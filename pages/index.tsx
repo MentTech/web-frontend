@@ -103,19 +103,25 @@ function Home({ topMentors }: HomePageProps) {
         </div>
       </div>
       <div className={styles.contentDarkSection}>
-        <img className={styles.topLeftImg} src={'/static/Design.png'} alt="de" />
+        <div className="absolute top-0 left-0 opacity-90">
+          <Image src={'/static/Design.png'} layout="fixed" width={261} height={270} alt="de" />
+        </div>
+
         <h2 className={styles.contentHeading}>Đặt câu hỏi, thắc mắc về lĩnh vực công nghệ</h2>
         <div className={styles.questionsList}>
           <div className={styles.questionItem}>
             <div className={styles.questionInfo}>
-              <Image
-                className={styles.menteeAvatar}
-                src="/static/avatar1.jpg"
-                alt="#"
-                layout="fixed"
-                width={62}
-                height={62}
-              />
+              <div className="mt-2 mr-2">
+                <Image
+                  className={styles.menteeAvatar}
+                  src="/static/avatar1.jpg"
+                  alt="#"
+                  layout="fixed"
+                  width={62}
+                  height={62}
+                  objectFit="cover"
+                />
+              </div>
               <div>
                 <h4 className={styles.menteeName}>Nguyễn Văn Kha</h4>
                 <p className={styles.question}>
@@ -129,7 +135,17 @@ function Home({ topMentors }: HomePageProps) {
           </div>
           <div className={styles.questionItem}>
             <div className={styles.questionInfo}>
-              <img className={styles.menteeAvatar} src="/static/avatar2.avif" alt="#" />
+              <div className="mt-2 mr-2">
+                <Image
+                  className={styles.menteeAvatar}
+                  src="/static/avatar2.avif"
+                  alt="#"
+                  layout="fixed"
+                  width={62}
+                  height={62}
+                  objectFit="cover"
+                />
+              </div>
               <div>
                 <h4 className={styles.menteeName}>Lê Văn Tuấn</h4>
                 <p className={styles.question}>
@@ -143,7 +159,17 @@ function Home({ topMentors }: HomePageProps) {
           </div>
           <div className={styles.questionItem}>
             <div className={styles.questionInfo}>
-              <img className={styles.menteeAvatar} src="/static/avatar3.avif" alt="#" />
+              <div className="mt-2 mr-2">
+                <Image
+                  className={styles.menteeAvatar}
+                  src="/static/avatar3.avif"
+                  alt="#"
+                  layout="fixed"
+                  width={62}
+                  height={62}
+                  objectFit="cover"
+                />
+              </div>
               <div>
                 <h4 className={styles.menteeName}>Nguyễn Thị Hà</h4>
                 <p className={styles.question}>
@@ -157,7 +183,17 @@ function Home({ topMentors }: HomePageProps) {
           </div>
           <div className={styles.questionItem}>
             <div className={styles.questionInfo}>
-              <img className={styles.menteeAvatar} src="/static/avatar4.avif" alt="#" />
+              <div className="mt-2 mr-2">
+                <Image
+                  className={styles.menteeAvatar}
+                  src="/static/avatar4.avif"
+                  alt="#"
+                  layout="fixed"
+                  width={62}
+                  height={62}
+                  objectFit="cover"
+                />
+              </div>
               <div>
                 <h4 className={styles.menteeName}>Lê Thọ Đạt</h4>
                 <p className={styles.question}>
@@ -170,13 +206,16 @@ function Home({ topMentors }: HomePageProps) {
             />
           </div>
         </div>
-        <Image
-          className={styles.educationGirlImg}
-          src="/static/educationGirl.png"
-          alt="educationgirl"
-          layout="fixed"
-          width={600}
-        />
+        <div className="absolute right-0 bottom-0 opacity-90">
+          <Image
+            // className={styles.educationGirlImg}
+            src="/static/educationGirl.png"
+            alt="educationgirl"
+            layout="fixed"
+            width={600}
+            height={470}
+          />
+        </div>
       </div>
       <div className={styles.contentSection}>
         <h2 className={styles.contentHeading}>
@@ -207,7 +246,14 @@ function Home({ topMentors }: HomePageProps) {
             </form>
           </div>
           <div className={styles.signUpRight}>
-            <img id={styles.signUpImage} src="/static/signUpImg.png" alt="signUpImg" />
+            <Image
+              id={styles.signUpImage}
+              src="/static/signUpImg.png"
+              alt="signUpImg"
+              layout="fixed"
+              width={640}
+              height={465}
+            />
           </div>
         </div>
       </div>

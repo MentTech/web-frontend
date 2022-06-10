@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
   reactStrictMode: true,
   eslint: {
     // Warning: This allows production builds to successfully complete even if
@@ -7,5 +7,3 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
 }
-
-module.exports = nextConfig
