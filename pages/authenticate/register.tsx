@@ -1,16 +1,15 @@
-import { Email, EventNote, Lock, Person, Phone } from '@mui/icons-material'
+import { authApi } from '@api/auth-api'
+import { yupResolver } from '@hookform/resolvers/yup'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import DesktopDatePicker from '@mui/lab/DatePicker'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import { signIn } from 'next-auth/react'
+import Image from 'next/image'
 import Link from 'next/link'
-import { useRef, useEffect } from 'react'
-import { useForm, Controller } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
-import { authApi } from '@api/auth-api'
-import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
+import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
+import * as yup from 'yup'
 
 export interface RegisterForm {
   email: string
@@ -23,17 +22,27 @@ export interface RegisterForm {
 
 const schema = yup
   .object({
-    email: yup.string().email().required('Email is a required field'),
-    name: yup.string().required('Name is a required field'),
-    password: yup.string().max(32).min(6).required('Password is a required field'),
+    email: yup.string().email().required('Email không được để trống'),
+    name: yup
+      .string()
+      .min(2, 'Tên từ 2 đến 60 ký tự')
+      .max(60, 'Tên từ 2 đến 60 ký tự')
+      .required('Tên không được để trống'),
+    password: yup
+      .string()
+      .max(32, 'Mật khẩu từ 6 đến 32 ký tự')
+      .min(6, 'Mật khẩu từ 6 đến 32 ký tự')
+      .required('Mật khẩu không được để trống'),
     confirmPassword: yup
       .string()
-      .max(32)
-      .min(6)
-      .oneOf([yup.ref('password'), null], 'Passwords must match')
-      .required(),
-    phone: yup.string().max(15).min(10).notRequired(),
-    birthDay: yup.date().required('BirthDay is a required field'),
+      .oneOf([yup.ref('password'), null], 'Mật khẩu không khớp')
+      .required('Xác nhận mật khẩu không được để trống'),
+    phone: yup
+      .string()
+      .max(20, 'Số điện thoại nhiều nhất 20 ký tự')
+      .min(9, 'Số điện thoại ít nhất 9 ký tự')
+      .required('Số điện thoại không được để trống'),
+    birthDay: yup.date().default(undefined).required('Ngày sinh không được để trống'),
   })
   .required()
 
@@ -49,195 +58,230 @@ export default function Register(props: RegisterProps) {
   } = useForm<RegisterForm>({
     resolver: yupResolver(schema),
   })
-  const inputBirthDayRef = useRef<HTMLDivElement>(null)
 
   const onSubmit = async (data: RegisterForm) => {
     try {
       const res = await authApi.registerApiServer({ ...data, confirmPassword: undefined })
       if (res.status === 201) {
-        toast.success('Register success!')
+        toast.success('Đăng ký thành công!')
         router.push('/authenticate/login')
       }
     } catch (err: any) {
-      toast.error(err?.response.data.message)
+      if (err.response) {
+        if (err.response.data.statusCode === 409) {
+          toast.error('Email đã tồn tại!')
+        }
+      }
     }
   }
 
   return (
-    <div className="flex justify-center min-h-screen items-center bg-gradient-to-tl from-green-400 to-indigo-900">
-      <div className="flex flex-col w-full max-w-md px-4 py-8 bg-gray-100 rounded-lg shadow dark:bg-gray-800 sm:px-6 md:px-8 lg:px-10">
-        <div className="self-center mb-6 text-xl font-light text-gray-600 sm:text-2xl dark:text-white">
-          Đăng ký tài khoản mentee
-        </div>
-        <div className="flex gap-4 item-center">
-          <button
-            onClick={() => signIn('facebook')}
-            type="button"
-            className="py-2 px-4 flex justify-center items-center  bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
-          >
-            <svg
-              width="20"
-              height="20"
-              fill="currentColor"
-              className="mr-2"
-              viewBox="0 0 1792 1792"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M1343 12v264h-157q-86 0-116 36t-30 108v189h293l-39 296h-254v759h-306v-759h-255v-296h255v-218q0-186 104-288.5t277-102.5q147 0 228 12z"></path>
-            </svg>
-            Facebook
-          </button>
-          <button
-            onClick={() => signIn('google')}
-            type="button"
-            className="py-2 px-4 flex justify-center items-center  bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
-          >
-            <svg
-              width="20"
-              height="20"
-              fill="currentColor"
-              className="mr-2"
-              viewBox="0 0 1792 1792"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M896 786h725q12 67 12 128 0 217-91 387.5t-259.5 266.5-386.5 96q-157 0-299-60.5t-245-163.5-163.5-245-60.5-299 60.5-299 163.5-245 245-163.5 299-60.5q300 0 515 201l-209 201q-123-119-306-119-129 0-238.5 65t-173.5 176.5-64 243.5 64 243.5 173.5 176.5 238.5 65q87 0 160-24t120-60 82-82 51.5-87 22.5-78h-436v-264z"></path>
-            </svg>
-            Google
-          </button>
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mt-8">
-            <div>
-              <div className="flex flex-col mb-2">
-                <div className="flex relative ">
-                  <span className="rounded-l-md inline-flex  items-center px-3 border-t bg-white border-l border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
-                    <Email />
-                  </span>
-                  <input
-                    {...register('email')}
-                    type="email"
-                    className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                    placeholder="Email"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col mb-2">
-                <div className="flex relative ">
-                  <span className="rounded-l-md inline-flex  items-center px-3 border-t bg-white border-l border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
-                    <Person />
-                  </span>
-                  <input
-                    {...register('name')}
-                    type="text"
-                    className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                    placeholder="Họ và tên"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col mb-2">
-                <div className="flex relative ">
-                  <span className="rounded-l-md inline-flex  items-center px-3 border-t bg-white border-l border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
-                    <EventNote />
-                  </span>
-
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <Controller
-                      name="birthDay"
-                      control={control}
-                      render={({ field }) => (
-                        <DesktopDatePicker<any>
-                          {...field}
-                          label="Custom input"
-                          renderInput={({ inputRef, inputProps, InputProps }) => (
-                            <div
-                              ref={inputBirthDayRef}
-                              className="flex relative items-center rounded-r-lg appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                            >
-                              <input
-                                ref={inputRef}
-                                {...inputProps}
-                                type="text"
-                                className="w-full outline-none"
-                                placeholder="Ngày sinh"
-                                onFocus={() => {
-                                  inputBirthDayRef.current?.focus()
-                                }}
-                              />
-                              <div className="absolute right-4">{InputProps?.endAdornment}</div>
-                            </div>
-                          )}
-                        />
-                      )}
-                    />
-                  </LocalizationProvider>
-                </div>
-              </div>
-              <div className="flex flex-col mb-2">
-                <div className="flex relative ">
-                  <span className="rounded-l-md inline-flex  items-center px-3 border-t bg-white border-l border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
-                    <Phone />
-                  </span>
-                  <input
-                    {...register('phone')}
-                    type="number"
-                    className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                    placeholder="Số điện thoại"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col mb-2">
-                <div className="flex relative ">
-                  <span className="rounded-l-md inline-flex  items-center px-3 border-t bg-white border-l border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
-                    <Lock />
-                  </span>
-                  <input
-                    {...register('password')}
-                    type="password"
-                    className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                    placeholder="Mật khẩu"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col mb-3">
-                <div className="flex relative">
-                  <span className="rounded-l-md inline-flex  items-center px-3 border-t bg-white border-l border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
-                    <Lock />
-                  </span>
-                  <input
-                    {...register('confirmPassword')}
-                    type="password"
-                    className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                    placeholder="Xác nhận mật khẩu"
-                  />
-                </div>
-              </div>
-              <div className="text-center mb-3">
-                <p className="text-red-500">{errors.name?.message}</p>
-                <p className="text-red-500">{errors.email?.message}</p>
-                <p className="text-red-500">{errors.birthDay?.message}</p>
-                <p className="text-red-500">{errors.password?.message}</p>
-                <p className="text-red-500">{errors.confirmPassword?.message}</p>
-                <p className="text-red-500">{errors.phone?.message}</p>
-              </div>
-
-              <div className="flex w-full">
-                <button
-                  type="submit"
-                  className="py-2 px-4  bg-purple-600 hover:bg-purple-700 focus:ring-purple-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
-                >
-                  Đăng ký
-                </button>
-              </div>
-            </div>
-          </div>
-        </form>
-
-        <div className="flex items-center justify-center mt-6">
-          <div className="inline-flex items-center text-xs font-thin text-center text-gray-500 hover:text-gray-700 dark:text-gray-100 dark:hover:text-white">
-            <span className="ml-2">Bạn đã có tài khoản?</span>
+    <div className="2xl:container h-screen m-auto">
+      <div hidden className="fixed inset-0 w-6/12 lg:block">
+        <div className="w-full h-full text-white flex items-center justify-center">
+          <Image
+            src="/static/loginbackground.jpg"
+            alt="background"
+            layout="fill"
+            objectFit="cover"
+            className="brightness-75 opacity-80"
+          />
+          <div className="text-center z-30">
+            <h2 className="text-3xl font-bold mb-2 opacity-100">Xin chào!</h2>
+            <div className="border-2 w-10 border-white inline-block mb-2"></div>
+            <p className="mb-4">Điền đầy đủ thông tin và bắt đầu hành trình cùng chúng tôi.</p>
             <Link href="/authenticate/login">
-              <a className="px-1 text-blue-500">Đăng nhập</a>
+              <a className="inline-block cursor-pointer border-2 border-white rounded-full px-12 py-2 font-semibold hover:bg-white hover:text-black duration-150">
+                Đăng nhập
+              </a>
             </Link>
+          </div>
+        </div>
+      </div>
+      <div
+        hidden
+        role="hidden"
+        className="fixed w-6/12 ml-auto bg-white bg-opacity-70 lg:block"
+      ></div>
+      <div className="relative h-full ml-auto lg:w-6/12">
+        <div className="m-auto py-12 px-6 sm:p-6 xl:w-10/12">
+          <div className="space-y-2">
+            <Link href="/">
+              <a className="inline-block">
+                <img src="/static/logo2.png" className="w-36" alt="MentTech" />
+              </a>
+            </Link>
+            <h3 className="font-medium text-lg text-gray-600 mt-8">Đăng ký tài khoản Mentee</h3>
+          </div>
+
+          <form autoComplete="off" onSubmit={handleSubmit(onSubmit)} className="space-y-6 py-6">
+            <div>
+              <input
+                type="email"
+                {...register('email')}
+                placeholder="Email"
+                className={`w-full py-3 px-6 ring-1 ring-gray-300 rounded-lg placeholder-gray-600 bg-transparent transition disabled:ring-gray-200 disabled:bg-gray-100 disabled:placeholder-gray-400 ${
+                  errors.email?.message ? 'ring-red-400' : ''
+                } focus:invalid:outline-none`}
+              />
+              <p className="text-red-600">{errors.email?.message}</p>
+            </div>
+
+            <div>
+              <input
+                {...register('name')}
+                type="text"
+                placeholder="Họ và tên"
+                className={`w-full py-3 px-6 ring-1  rounded-lg placeholder-gray-600 bg-transparent transition disabled:ring-gray-200 disabled:bg-gray-100 disabled:placeholder-gray-400 ${
+                  errors.name?.message ? 'ring-red-400' : 'ring-gray-300'
+                } focus:invalid:outline-none`}
+              />
+              <p className="text-red-600">{errors.name?.message}</p>
+            </div>
+
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <Controller
+                name="birthDay"
+                control={control}
+                defaultValue={undefined}
+                render={({ field }) => (
+                  <DesktopDatePicker<any>
+                    {...field}
+                    label="Custom input"
+                    allowSameDateSelection={true}
+                    disableFuture={true}
+                    inputFormat="dd/MM/yyyy"
+                    renderInput={({ inputRef, inputProps, InputProps }) => (
+                      <div className="flex relative items-center">
+                        <input
+                          ref={inputRef}
+                          {...inputProps}
+                          type="text"
+                          className={`w-full py-3 px-6 ring-1 ring-gray-300 rounded-lg placeholder-gray-600 bg-transparent transition disabled:ring-gray-200 disabled:bg-gray-100 disabled:placeholder-gray-400 ${
+                            errors.birthDay?.message ? 'ring-red-400' : ''
+                          } focus:invalid:outline-none`}
+                          placeholder="Ngày sinh"
+                        />
+                        <div className="absolute right-4">{InputProps?.endAdornment}</div>
+                      </div>
+                    )}
+                  />
+                )}
+              />
+            </LocalizationProvider>
+            <p className="text-red-600">{errors.birthDay?.message}</p>
+
+            <div>
+              <input
+                {...register('phone')}
+                type="number"
+                placeholder="Số điện thoại"
+                className={`w-full py-3 px-6 ring-1 ring-gray-300 rounded-lg placeholder-gray-600 bg-transparent transition disabled:ring-gray-200 disabled:bg-gray-100 disabled:placeholder-gray-400 ${
+                  errors.phone?.message ? 'ring-red-400' : ''
+                } focus:invalid:outline-none`}
+              />
+              <p className="text-red-600">{errors.phone?.message}</p>
+            </div>
+
+            <div className="">
+              <input
+                type="password"
+                {...register('password')}
+                placeholder="Mật khẩu"
+                className={`w-full py-3 px-6 ring-1 ring-gray-300 rounded-lg placeholder-gray-600 bg-transparent transition disabled:ring-gray-200 disabled:bg-gray-100 disabled:placeholder-gray-400 ${
+                  errors.password?.message ? 'ring-red-400' : ''
+                } focus:invalid:outline-none`}
+              />
+              <p className="text-red-600">{errors.password?.message}</p>
+            </div>
+
+            <div>
+              <input
+                {...register('confirmPassword')}
+                type="password"
+                placeholder="Xác nhận mật khẩu"
+                className={`w-full py-3 px-6 ring-1 ring-gray-300 rounded-lg placeholder-gray-600 bg-transparent transition disabled:ring-gray-200 disabled:bg-gray-100 disabled:placeholder-gray-400 ${
+                  errors.confirmPassword?.message ? 'ring-red-400' : ''
+                } focus:invalid:outline-none`}
+              />
+              <p className="text-red-600">{errors.confirmPassword?.message}</p>
+            </div>
+
+            <div>
+              <button className="m-0 w-full px-6 py-3 rounded-lg bg-sky-800 transition hover:bg-sky-900 focus:bg-sky-900 active:bg-sky-900">
+                <span className="font-semibold text-white text-lg">Đăng ký</span>
+              </button>
+              <Link href="/authenticate/login">
+                <a type="reset" className="w-max p-3 -ml-3">
+                  <span className="text-sm tracking-wide text-sky-600">
+                    Đã có tài khoản ? Đăng nhập
+                  </span>
+                </a>
+              </Link>
+            </div>
+
+            <div role="hidden" className="mt-12 border-t">
+              <span className="block w-max mx-auto -mt-3 px-4 text-center text-gray-500 bg-white">
+                Hoặc
+              </span>
+            </div>
+
+            <div className="mt-12 grid gap-6 sm:grid-cols-2">
+              <button
+                className="h-12 px-6 border border-blue-100 rounded-lg bg-blue-50 hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
+                onClick={() => signIn('google', { callbackUrl: '/find' })}
+              >
+                <div className="flex items-center space-x-4 justify-center">
+                  <div className="google-icon-wrapper">
+                    <img
+                      className="google-icon"
+                      src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                    />
+                  </div>
+                  <span className="block w-max font-medium tracking-wide text-sm text-blue-700">
+                    Tiếp tục với Google
+                  </span>
+                </div>
+              </button>
+              <button
+                className="h-12 px-6 rounded-lg btn-outline border text-blue-700 hover:text-white border-blue-500 transition hover:bg-blue-600 active:bg-blue-600 focus:bg-blue-700"
+                onClick={() => signIn('facebook', { callbackUrl: '/find' })}
+              >
+                <div className="flex space-x-4 items-center justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    data-name="Ebene 1"
+                    viewBox="0 0 1024 1024"
+                    width={24}
+                    height={24}
+                  >
+                    <path
+                      fill="#1877f2"
+                      d="M1024,512C1024,229.23016,794.76978,0,512,0S0,229.23016,0,512c0,255.554,187.231,467.37012,432,505.77777V660H302V512H432V399.2C432,270.87982,508.43854,200,625.38922,200,681.40765,200,740,210,740,210V336H675.43713C611.83508,336,592,375.46667,592,415.95728V512H734L711.3,660H592v357.77777C836.769,979.37012,1024,767.554,1024,512Z"
+                    />
+                    <path
+                      fill="#fff"
+                      d="M711.3,660,734,512H592V415.95728C592,375.46667,611.83508,336,675.43713,336H740V210s-58.59235-10-114.61078-10C508.43854,200,432,270.87982,432,399.2V512H302V660H432v357.77777a517.39619,517.39619,0,0,0,160,0V660Z"
+                    />
+                  </svg>
+                  <span className="block w-max font-medium tracking-wide text-sm">
+                    Tiếp tục với Facebook
+                  </span>
+                </div>
+              </button>
+            </div>
+          </form>
+
+          <div className="border-t text-gray-500 pt-12">
+            <div className="text-center space-x-4">
+              <span>&copy; MentTech</span>
+              <a href="#" className="text-sm hover:text-sky-900">
+                Contact
+              </a>
+              <a href="#" className="text-sm hover:text-sky-900">
+                Privacy & Terms
+              </a>
+            </div>
           </div>
         </div>
       </div>

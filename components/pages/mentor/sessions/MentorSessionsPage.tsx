@@ -30,6 +30,7 @@ import { useMentorSessions } from 'context/MentorSessionsProvider'
 import { SyntheticEvent, useState } from 'react'
 import { chatApi } from '@api/chat-api'
 import { setToastError } from '@utils/method'
+import { usePublicUserInfor } from '@hooks/use-public-user-infor'
 
 interface SessionListItemProps {
   session: MentorSession
@@ -64,7 +65,9 @@ const SessionListItem = ({
 
   const [openDialogViewInfo, setOpenDialogViewInfo] = useState(false)
 
-  const { name } = menteeInfo || {}
+  const { name, id: menteeId } = menteeInfo || {}
+
+  const { infor } = usePublicUserInfor(menteeId)
 
   const expectedDate = session.expectedDate
 
@@ -93,12 +96,12 @@ const SessionListItem = ({
               : canAcceptReject
               ? 'Chờ xác nhận'
               : canUpdate
-              ? 'Chưa hoàn thành'
+              ? 'Đã xác nhận'
               : 'Đã huỷ'
           }
         />
         <ListItemAvatar>
-          <Avatar>{name?.charAt(0)}</Avatar>
+          <Avatar src={infor?.avatar}></Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={menteeInfo?.name || 'Nguyễn Văn A'}
