@@ -1,7 +1,9 @@
 import { TopUpPaymentMethod, useTopUp } from '@context/TopUpProvider'
+import { useProfile } from '@hooks/use-profile'
 import { Button, Card, Container, Grid, Paper, Stack, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { COLOR } from '@utils/color'
+import { useSession } from 'next-auth/react'
 import React, { useReducer, useState } from 'react'
 
 interface TopUpPageReducerProps {
@@ -15,7 +17,7 @@ interface TopUpPageReducerProps {
 const topUpInitialState = {
   name: '',
   email: '',
-  paymentMethod: TopUpPaymentMethod.WireTransfer,
+  paymentMethod: '' as TopUpPaymentMethod,
   token: 0,
   note: '',
 }
@@ -73,6 +75,30 @@ const topUpPaymentMethodArray = [
 
 const checkIsEmail = (email: string) => new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).test(email)
 
+const PaymentInfo = ({ onBack }: { onBack: () => void }) => {
+  return (
+    <Box className="w100 df fdc aic jcc">
+      <Paper className="df fdc w100" style={{ padding: 20, marginBottom: 20 }}>
+        <Typography className="sb">Thông tin thanh toán</Typography>
+        <Box mt={3}>
+          <Typography style={{ color: COLOR.PRIMARY_1 }} variant="subtitle1" className="sb">
+            Số điện thoại: 0123456789
+          </Typography>
+          <Typography style={{ color: COLOR.PRIMARY_1 }} variant="subtitle1" className="sb">
+            STK: 123456789
+          </Typography>
+          <Typography style={{ color: COLOR.PRIMARY_1 }} variant="subtitle1" className="sb">
+            Nội dung chuyển khoản: Họ và tên - Email tài khoản - Thanh toán nạp coin MentTech
+          </Typography>
+        </Box>
+      </Paper>
+      <Button variant="text" onClick={onBack} fullWidth={false}>
+        Chọn phương thức thanh toán khác
+      </Button>
+    </Box>
+  )
+}
+
 export const TopUpPage = () => {
   const [state, dispatch] = useReducer(reducer, topUpInitialState)
 
@@ -102,9 +128,14 @@ export const TopUpPage = () => {
       return
     }
     onTopUp(state)
-    console.log('🚀 ~ file: TopUpPage.tsx ~ line 105 ~ onSubmit ~ state', state)
     setErrorText('')
   }
+
+  const isDisplaySelectPaymentMethod = !(
+    !state.paymentMethod ||
+    (state.paymentMethod && state.paymentMethod === TopUpPaymentMethod.Paypal)
+  )
+
 
   return (
     <Container maxWidth="lg">
@@ -115,31 +146,43 @@ export const TopUpPage = () => {
         <Grid container spacing={3}>
           <Grid item xs={6}>
             <Box className="df fdc aic jcc" my={2}>
-              <Grid container spacing={2}>
-                {topUpPaymentMethodArray.map(({ method, label, imageSrc }) => (
-                  <Grid
-                    className="cp "
-                    onClick={() => dispatch({ type: 'payment_method', payload: method })}
-                    item
-                    xs={6}
-                    key={method}
-                  >
-                    <Card
-                      style={{
-                        background: state.paymentMethod === method ? COLOR.PRIMARY_10 : COLOR.WHITE,
-                      }}
+              {isDisplaySelectPaymentMethod ? (
+                <PaymentInfo
+                  onBack={() => {
+                    dispatch({
+                      type: 'payment_method',
+                      payload: '',
+                    })
+                  }}
+                />
+              ) : (
+                <Grid container spacing={2}>
+                  {topUpPaymentMethodArray.map(({ method, label, imageSrc }) => (
+                    <Grid
+                      className="cp "
+                      onClick={() => dispatch({ type: 'payment_method', payload: method })}
+                      item
+                      xs={6}
+                      key={method}
                     >
-                      <Box className="df fdc aic jcc" p={2}>
-                        <img src={imageSrc} style={{ height: 50 }} />
-                        <Typography variant="caption" style={{ marginTop: 8 }}>
-                          {label}
-                        </Typography>
-                      </Box>
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
-              <Typography style={{ marginTop: 16 }}>Chọn phương thức thanh toán</Typography>
+                      <Card
+                        elevation={4}
+                        style={{
+                          background:
+                            state.paymentMethod === method ? COLOR.PRIMARY_10 : COLOR.WHITE,
+                        }}
+                      >
+                        <Box className="df fdc aic jcc" p={2}>
+                          <img src={imageSrc} style={{ height: 50 }} />
+                          <Typography variant="caption" style={{ marginTop: 8 }}>
+                            {label}
+                          </Typography>
+                        </Box>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              )}
             </Box>
           </Grid>
           <Grid item xs={6}>
@@ -192,20 +235,21 @@ export const TopUpPage = () => {
                   </Typography>
                 </Box>
                 <Box style={{ flex: 1 }}>
-                  <Typography variant="body2" style={{ color: COLOR.SEMANTIC_DANGER_5_MAIN }}>
+                  <Typography variant="caption" style={{ color: COLOR.SEMANTIC_DANGER_5_MAIN }}>
                     {errorText}
                   </Typography>
                   <Button
                     disableRipple
                     fullWidth
                     style={{
-                      background: loading ? COLOR.NEUTRAL_8 : COLOR.PRIMARY_1,
+                      background:
+                        loading || !state.paymentMethod ? COLOR.NEUTRAL_8 : COLOR.PRIMARY_1,
                       color: COLOR.WHITE,
                       textTransform: 'none',
                       height: 56,
                     }}
                     onClick={onSubmit}
-                    disabled={loading}
+                    disabled={loading || !state.paymentMethod}
                   >
                     Thanh toán
                   </Button>
