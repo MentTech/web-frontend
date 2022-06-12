@@ -83,10 +83,13 @@ export function ProgramRegisterCheckoutPage() {
       setToastSuccess('Đã đăng ký chương trình thành công!')
     } catch (error: any) {
       if (error) {
-        if (error.includes('Can not get balance'))
-          return setToastError('Không đủ số dư trong tài khoản, vui lòng nạp thêm!')
-        if (error.includes('You have already registered for this program'))
-          return setToastError('Bạn đã đăng ký chương trình này rồi')
+        if (error.response.data.message) {
+          const errorMessage = error.response.data.message
+          if (errorMessage.includes('Can not get balance'))
+            return setToastError('Không đủ số dư trong tài khoản, vui lòng nạp thêm!')
+          if (errorMessage.includes('You have already registered for this program'))
+            return setToastError('Bạn đã đăng ký chương trình này rồi')
+        }
       }
       setToastError(error)
     } finally {

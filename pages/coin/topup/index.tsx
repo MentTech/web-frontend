@@ -1,7 +1,18 @@
+import { MainLayout } from '@components/layouts'
+import { TopUpPage } from '@components/pages/coin/topup/TopUpPage'
+import TopUpProvider from '@context/TopUpProvider'
+import { NextPageWithLayout } from '@models/common'
 import React from 'react'
 
-function TopUpPage() {
-  return <div>TopUpPage</div>
+const TopUp: NextPageWithLayout = () => {
+  return (
+    <TopUpProvider>
+      <TopUpPage />
+    </TopUpProvider>
+  )
 }
 
-export default TopUpPage
+TopUp.Layout = MainLayout
+TopUp.isPrivate = true
+
+export default TopUp
