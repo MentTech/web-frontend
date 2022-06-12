@@ -9,7 +9,11 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { BiCoin } from 'react-icons/bi'
 
-function UserCoinBoxComp() {
+interface SessionInfo {
+  user: any
+}
+
+function UserCoinBoxComp({ role }: { role: ROLE | undefined }) {
   const [anchorEl, setAnchorEl] = useState<any>(null)
 
   const router = useRouter()
@@ -22,6 +26,10 @@ function UserCoinBoxComp() {
     router.push('/coin/topup')
   }
 
+  const onClickWithdraw = () => {
+    router.push('/coin/withdraw')
+  }
+
   const onClickViewTransaction = () => {
     router.push('/coin/transactions')
   }
@@ -30,6 +38,7 @@ function UserCoinBoxComp() {
 
   if (balance === undefined) return null
 
+  const isMentee = role === ROLE.mentee
   return (
     <>
       <Box
@@ -62,16 +71,29 @@ function UserCoinBoxComp() {
             {balance}
           </Typography>
         </Box>
-        <Button
-          onClick={onClickTopUp}
-          variant="contained"
-          style={{ background: COLOR.PRIMARY_4_MAIN, borderRadius: 8 }}
-          fullWidth
-          disableRipple
-        >
-          <AddCard style={{ marginRight: 8 }} />
-          Nạp coin
-        </Button>
+        {isMentee ? (
+          <Button
+            onClick={onClickTopUp}
+            variant="contained"
+            style={{ background: COLOR.PRIMARY_4_MAIN, borderRadius: 8 }}
+            fullWidth
+            disableRipple
+          >
+            <AddCard style={{ marginRight: 8 }} />
+            Nạp coin
+          </Button>
+        ) : (
+          <Button
+            onClick={onClickWithdraw}
+            variant="contained"
+            style={{ background: COLOR.PRIMARY_4_MAIN, borderRadius: 8 }}
+            fullWidth
+            disableRipple
+          >
+            <AddCard style={{ marginRight: 8 }} />
+            Rút coin
+          </Button>
+        )}
         <Button
           onClick={onClickViewTransaction}
           style={{
@@ -93,9 +115,11 @@ function UserCoinBoxComp() {
 }
 
 function UserCoinBox() {
+  const { status, data: session } = useSession()
+
   return (
     <UserTransactionProvider>
-      <UserCoinBoxComp />
+      <UserCoinBoxComp role={session?.user.role} />
     </UserTransactionProvider>
   )
 }
