@@ -9,7 +9,10 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
+import { useState } from 'react'
 import * as yup from 'yup'
+import Backdrop from '@mui/material/Backdrop'
+import CircularProgress from '@mui/material/CircularProgress'
 
 export interface RegisterForm {
   email: string
@@ -49,6 +52,7 @@ const schema = yup
 export interface RegisterProps {}
 
 export default function Register(props: RegisterProps) {
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
   const {
     register,
@@ -60,13 +64,16 @@ export default function Register(props: RegisterProps) {
   })
 
   const onSubmit = async (data: RegisterForm) => {
+    setLoading(true)
     try {
       const res = await authApi.registerApiServer({ ...data, confirmPassword: undefined })
+      setLoading(false)
       if (res.status === 201) {
         toast.success('Đăng ký thành công!')
         router.push('/authenticate/login')
       }
     } catch (err: any) {
+      setLoading(false)
       if (err.response) {
         if (err.response.data.statusCode === 409) {
           toast.error('Email đã tồn tại!')
@@ -77,6 +84,13 @@ export default function Register(props: RegisterProps) {
 
   return (
     <div className="2xl:container h-screen m-auto">
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+        // onClick={handleClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div hidden className="fixed inset-0 w-6/12 lg:block">
         <div className="w-full h-full text-white flex items-center justify-center">
           <Image

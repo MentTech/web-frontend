@@ -1,10 +1,9 @@
-import * as React from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { loginPayload } from '@models/auth'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
@@ -23,7 +22,6 @@ const schema = yup
   .required()
 
 export default function Login(props: LoginProps) {
-  const { data: session, status } = useSession()
   const [loading, setLoading] = useState(false)
   const [isMentor, setIsMentor] = useState(false)
   const router = useRouter()
@@ -36,17 +34,23 @@ export default function Login(props: LoginProps) {
     resolver: yupResolver(schema),
   })
 
-  if (session?.user) {
-    return router.push('/find')
-  }
+  const { status } = useSession()
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/find')
+    }
+  }, [status])
 
   const onSubmit: SubmitHandler<loginPayload> = (data) => {
+    setLoading(true)
     if (isMentor) {
       signIn('mentor', {
         email: data.email,
         password: data.password,
         redirect: false,
       }).then((res: any) => {
+        setLoading(false)
         const errors = JSON.parse(res.error)
         if (errors) {
           toast.error('Email hoặc mật khẩu không chính xác', { type: 'error' })
@@ -60,6 +64,7 @@ export default function Login(props: LoginProps) {
         password: data.password,
         redirect: false,
       }).then((res: any) => {
+        setLoading(false)
         const errors = JSON.parse(res.error)
         if (errors) {
           if (errors.statusCode === 401) {
