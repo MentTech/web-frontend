@@ -33,9 +33,10 @@ function Home({ topMentors }: HomePageProps) {
   if (status === 'authenticated') {
     if (sessions?.user?.role === 'mentor') {
       router.push('/mentor/profile')
-    } else {
-      router.push('/find')
     }
+    // } else {
+    //   router.push('/find')
+    // }
   }
 
   return (
@@ -68,13 +69,18 @@ function Home({ topMentors }: HomePageProps) {
               <Link href="/find">
                 <a className={styles.btnPrimary}>Tìm mentor</a>
               </Link>
-              <Link href="/authenticate/signup">
+              <Link href="/authenticate/register">
                 <a className={styles.btnSecondaryOutline}>Đăng ký</a>
               </Link>
             </div>
           </div>
           <div className={styles.HeaderContentRight}>
-            <img src={'/static/onlineLearning.png'} alt="onlineLearning" width={692} />
+            <Image
+              src={'/static/onlineLearning.png'}
+              alt="onlineLearning"
+              layout="fill"
+              objectFit="contain"
+            />
             <div className={styles.EmcImg}>
               <img src={'/static/emc.png'} alt="emc" width={180} />
             </div>
@@ -206,7 +212,7 @@ function Home({ topMentors }: HomePageProps) {
             />
           </div>
         </div>
-        <div className="absolute right-0 bottom-0 opacity-90">
+        <div className="absolute educationGirlImg right-0 bottom-0 opacity-90">
           <Image
             // className={styles.educationGirlImg}
             src="/static/educationGirl.png"
@@ -250,9 +256,7 @@ function Home({ topMentors }: HomePageProps) {
               id={styles.signUpImage}
               src="/static/signUpImg.png"
               alt="signUpImg"
-              layout="fixed"
-              width={640}
-              height={465}
+              layout="fill"
             />
           </div>
         </div>

@@ -1,5 +1,5 @@
 .headerSession {
-  padding: 52px 188px;
+  padding: 64px 188px;
   background-color: #3F3D56;
   display: block;
   width: 100%;
@@ -9,18 +9,23 @@
 .HeaderContent {
   margin-top: 138px;
   display: flex;
+  gap: 64px;
+  flex-wrap: wrap;
 }
 
 .HeaderContentLeft {
+  width: 100%;
   flex: 1;
-  margin-right: 40px;
   position: relative;
 }
 
 .HeaderContentRight {
-  flex: 1;
   width: 100%;
+  min-width: 300px;
+  flex: 1;
+  height: 325px;
   overflow: visible;
+  position: relative;
 }
 
 .HeadingPrimaryMain {
@@ -48,10 +53,9 @@
 .HeaderButtons {
   margin-top: 60px;
   display: flex;
+  gap: 12px;
   align-items: center;
-  a {
-    margin-right: 20px;
-  }
+  justify-content: start;
 }
 
 .HeaderHatIcon {
@@ -63,7 +67,7 @@
 
 .EmcImg {
   position: absolute;
-  top: 230px;
+  top: 24px;
 }
 
 .btnPrimary {
@@ -116,7 +120,7 @@
 
   .contentSubheading {
     margin-top: 5px;
-    width: 560px;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 61px;
@@ -233,7 +237,7 @@
     z-index: 100;
     position: relative;
     margin-top: 90px;
-    width: 560px;
+    width: 590px;
     margin-right: auto;
     margin-left: auto;
     margin-bottom: 104px;
@@ -277,24 +281,30 @@
 
 
 .signUpWrapper{
-  margin-top: 174px;
   display: flex;  
+  flex-wrap: wrap;
+  margin-top: 174px;
+  gap: 64px;
   justify-content: space-around;
   
   .signUpLeft {
     flex: 1;
+    min-width: 300px;
   }
 
   .signUpRight {
     flex: 1;
+    min-width: 300px;
+    min-height: 400px;
+    position: relative;
   }
 
   .signUpForm {
-    width: 463px;
+    width: 100%;
     min-height: 506px;
     background: #575A88;
     border-radius: 35px;
-    padding: 12px 65px;
+    padding: 12px 40px;
     box-shadow: 10px 20px 50px rgb(0 0 0 / 30%);
     .formTitle {
       font-weight: 600;
@@ -399,4 +409,95 @@ label#fileLabel {
 .buttonGroup {
   margin-top: 45px;
   text-align: center;
+}
+
+// PC
+@media (min-width: 1024px) {
+
+}
+
+// Tablet
+@media (min-width: 740px) and (max-width: 1023px) {
+  
+}
+
+// Mobile
+@media (max-width: 739px) {
+  .questionItem {
+    width: calc(100% - 32px) !important;
+    display: block;
+    margin: 0 auto;
+    height: auto !important;
+  }
+  .questionsList {
+    margin-top: 24px !important;
+    width: 100% !important;
+  }
+
+  .headerSession {
+    padding: 24px 16px;
+  }
+
+  .HeadingPrimaryMain {
+    text-align: center;
+    font-size: 36px;
+    line-height: 48px;
+  }
+
+  .HeaderButtons {
+    justify-content: center !important;
+  }
+  
+  .contentSection {
+    padding: 24px 16px;
+    
+  }
+
+  .HeaderContent {
+    gap: 24px;
+  }
+
+  .contentDarkSection {
+    padding: 24px 16px;
+  }
+
+  .contentHeading {
+    font-size: 36px !important;
+    line-height: 1.4 !important;
+  }
+
+  .educationGirlImg {
+    display: none !important;
+  }
+
+  .signUpWrapper {
+    margin-top: 24px !important;
+  }
+
+  .HeadingPrimarySub {
+    text-align: center;
+  }
+
+  .HeaderHatIcon {
+    top: -70px;
+    transform: none !important;
+  }
+
+  .formTitle {
+    font-size: 36px !important;
+  }
+
+  .buttonGroup {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center !important;
+  }
+
+  .btnPrimary {
+    width: calc(100% - 48px) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 12px auto !important;
+  }
 }
