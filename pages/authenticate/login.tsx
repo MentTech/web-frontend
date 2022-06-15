@@ -9,6 +9,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import Image from 'next/image'
+import Backdrop from '@mui/material/Backdrop'
+import CircularProgress from '@mui/material/CircularProgress'
 
 export interface LoginProps {}
 
@@ -22,18 +24,21 @@ const schema = yup
 
 export default function Login(props: LoginProps) {
   const { data: session, status } = useSession()
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [isMentor, setIsMentor] = useState(false)
   const router = useRouter()
 
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors },
   } = useForm<loginPayload>({
     resolver: yupResolver(schema),
   })
+
+  if (session?.user) {
+    return router.push('/find')
+  }
 
   const onSubmit: SubmitHandler<loginPayload> = (data) => {
     if (isMentor) {
@@ -42,11 +47,11 @@ export default function Login(props: LoginProps) {
         password: data.password,
         redirect: false,
       }).then((res: any) => {
-        if (res?.ok) {
-          router.push('/mentor')
+        const errors = JSON.parse(res.error)
+        if (errors) {
+          toast.error('Email hoặc mật khẩu không chính xác', { type: 'error' })
         } else {
-          console.log(res?.err)
-          toast.error('Credentials do not match!', { type: 'error' })
+          return router.push('/mentor')
         }
       })
     } else {
@@ -55,17 +60,34 @@ export default function Login(props: LoginProps) {
         password: data.password,
         redirect: false,
       }).then((res: any) => {
-        if (res?.ok) {
-          router.push('/find')
+        const errors = JSON.parse(res.error)
+        if (errors) {
+          if (errors.statusCode === 401) {
+            if (errors.message === 'Please check your login credential') {
+              toast.error('Email hoặc mật khẩu không chính xác', { type: 'error' })
+            }
+            if (errors.message === 'Your account has been deactivated') {
+              toast.error('Tài khoản của bạn đã bị khóa.', { type: 'error' })
+            }
+          }
+          if (errors.statusCode === 403) {
+            return router.push('/check-email?email=' + data.email)
+          }
         } else {
-          console.log(res?.err)
-          toast.error('Credentials do not match!', { type: 'error' })
+          return router.push('/find')
         }
       })
     }
   }
   return (
     <div className="2xl:container h-screen m-auto">
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+        // onClick={handleClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div hidden className="fixed inset-0 w-6/12 lg:block">
         <div className="w-full h-full text-white flex items-center justify-center">
           <Image
@@ -178,6 +200,7 @@ export default function Login(props: LoginProps) {
 
                 <div className="mt-12 grid gap-6 sm:grid-cols-2">
                   <button
+                    type="button"
                     className="h-12 px-6 border border-blue-100 rounded-lg bg-blue-50 hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
                     onClick={() => signIn('google', { callbackUrl: '/find' })}
                   >
@@ -194,6 +217,7 @@ export default function Login(props: LoginProps) {
                     </div>
                   </button>
                   <button
+                    type="button"
                     className="h-12 px-6 rounded-lg btn-outline border text-blue-700 hover:text-white border-blue-500 transition hover:bg-blue-600 active:bg-blue-600 focus:bg-blue-700"
                     onClick={() => signIn('facebook', { callbackUrl: '/find' })}
                   >
@@ -239,37 +263,4 @@ export default function Login(props: LoginProps) {
       </div>
     </div>
   )
-}
-
-{
-  /* <h2 className="mb-8 text-2xl text-cyan-900 font-bold">Sign in to your account</h2>
-                <form action="" className="space-y-8 py-6">
-                  <div>
-                    <input
-                      type="email"
-                      placeholder="Your Email"
-                      className="w-full py-3 px-6 ring-1 ring-gray-300 rounded-lg placeholder-gray-600 bg-transparent transition disabled:ring-gray-200 disabled:bg-gray-100 disabled:placeholder-gray-400 invalid:ring-red-400 focus:invalid:outline-none"
-                    />
-                  </div>
-
-                  <div className="flex flex-col items-end">
-                    <input
-                      type="password"
-                      placeholder="What's the secret word ?"
-                      className="w-full py-3 px-6 ring-1 ring-gray-300 rounded-lg placeholder-gray-600 bg-transparent transition disabled:ring-gray-200 disabled:bg-gray-100 disabled:placeholder-gray-400 invalid:ring-red-400 focus:invalid:outline-none"
-                    />
-                    <button type="reset" className="w-max p-3 -mr-3">
-                      <span className="text-sm tracking-wide text-sky-600">Forgot password ?</span>
-                    </button>
-                  </div>
-
-                  <div>
-                    <button className="w-full px-6 py-3 rounded-lg bg-sky-500 transition hover:bg-sky-600 focus:bg-sky-600 active:bg-sky-800">
-                      <span className="font-semibold text-white text-lg">Login</span>
-                    </button>
-                    <button type="reset" className="w-max p-3 -ml-3">
-                      <span className="text-sm tracking-wide text-sky-600">Create new account</span>
-                    </button>
-                  </div>
-                </form> */
 }

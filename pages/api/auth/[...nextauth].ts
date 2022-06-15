@@ -36,11 +36,9 @@ export default NextAuth({
             }
           }
         } catch (err: any) {
-          console.log(err)
-          const errorMessage = err.response.data.message
-          throw new Error(errorMessage)
+          // Return an object that will pass error information through to the client-side.
+          throw new Error(JSON.stringify(err.response?.data))
         }
-        return null
       },
     }),
     CredentialsProvider({
@@ -63,9 +61,9 @@ export default NextAuth({
             }
           }
         } catch (err: any) {
-          console.log(err)
+          // Return an object that will pass error information through to the client-side.
+          throw new Error(JSON.stringify(err.response?.data))
         }
-        return null
       },
     }),
   ],

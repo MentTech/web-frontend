@@ -27,4 +27,7 @@ export const authApi = {
   activation(token: string) {
     return axiosClient.post(`/v1/activation/${token}`)
   },
+  resendActivation(email: string) {
+    return axiosClient.post('/v1/activation/resend', { email })
+  },
 }

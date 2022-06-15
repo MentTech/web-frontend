@@ -18,6 +18,7 @@ import { config } from '@config/main'
 import { useNotifications } from '@context/NotificationProvider'
 import { Notification } from '@models/index'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const pages = ['Products', 'Pricing', 'Blog']
 const settings = ['Hồ sơ', 'Phiên mentoring']
@@ -100,9 +101,11 @@ const MentorToolbar = ({ handleMenuOpen, menuOpen }: MentorToolbar) => {
       {/* <Typography variant="h6" noWrap component="div">
         MentTech
       </Typography> */}
-      <Link href="/mentor">
-        <img src="/static/logo.png" alt="logo" className="h-12 cursor:pointer" />
-      </Link>
+      <div className="cursor:pointer h-full items-center flex">
+        <Link href="/mentor">
+          <Image src="/static/logo.png" alt="logo" layout="fixed" width={80} height={50} />
+        </Link>
+      </div>
 
       <Box sx={{ flexGrow: 0 }} className="df aic mr-0 ml-auto">
         {profile && (

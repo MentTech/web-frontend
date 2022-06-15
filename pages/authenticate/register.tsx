@@ -228,6 +228,7 @@ export default function Register(props: RegisterProps) {
 
             <div className="mt-12 grid gap-6 sm:grid-cols-2">
               <button
+                type="button"
                 className="h-12 px-6 border border-blue-100 rounded-lg bg-blue-50 hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
                 onClick={() => signIn('google', { callbackUrl: '/find' })}
               >
@@ -244,6 +245,7 @@ export default function Register(props: RegisterProps) {
                 </div>
               </button>
               <button
+                type="button"
                 className="h-12 px-6 rounded-lg btn-outline border text-blue-700 hover:text-white border-blue-500 transition hover:bg-blue-600 active:bg-blue-600 focus:bg-blue-700"
                 onClick={() => signIn('facebook', { callbackUrl: '/find' })}
               >

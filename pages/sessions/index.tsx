@@ -82,11 +82,17 @@ export default function Sessions(props: SessionsProps) {
         {/* All sessions */}
         {sessions ? (
           <Grid container spacing={4}>
-            {sessions.map((session: MentorSession) => (
-              <Grid key={session.id} item sm={6} md={4} xs={12}>
-                <SessionStatusCard session={session} />
+            {sessions && sessions?.length > 0 ? (
+              sessions.map((session: MentorSession) => (
+                <Grid key={session.id} item sm={6} md={4} xs={12}>
+                  <SessionStatusCard session={session} />
+                </Grid>
+              ))
+            ) : (
+              <Grid item sx={{ textAlign: 'center' }} xs={12}>
+                <Typography sx={{ mt: 1 }}>Không có phiên mentoring nào.</Typography>
               </Grid>
-            ))}
+            )}
           </Grid>
         ) : (
           <Loading />
