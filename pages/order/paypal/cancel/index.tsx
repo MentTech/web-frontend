@@ -40,7 +40,7 @@ const OrderCancel: NextPageWithLayout = () => {
               disableRipple
               style={{ background: COLOR.PRIMARY_4_MAIN, color: COLOR.WHITE }}
               variant="contained"
-              onClick={() => router.push('/coin/topup')}
+              onClick={() => router.push('/token/topup')}
             >
               Nạp tiền
             </Button>

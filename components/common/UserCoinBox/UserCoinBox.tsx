@@ -23,15 +23,15 @@ function UserCoinBoxComp({ role }: { role: ROLE | undefined }) {
   }
 
   const onClickTopUp = () => {
-    router.push('/coin/topup')
+    router.push('/token/topup')
   }
 
   const onClickWithdraw = () => {
-    router.push('/coin/withdraw')
+    router.push('/token/withdraw')
   }
 
   const onClickViewTransaction = () => {
-    router.push('/coin/transactions')
+    router.push('/token/transactions')
   }
 
   const { balance } = useUserTransaction()
@@ -80,7 +80,7 @@ function UserCoinBoxComp({ role }: { role: ROLE | undefined }) {
             disableRipple
           >
             <AddCard style={{ marginRight: 8 }} />
-            Nạp coin
+            Nạp token
           </Button>
         ) : (
           <Button
@@ -91,7 +91,7 @@ function UserCoinBoxComp({ role }: { role: ROLE | undefined }) {
             disableRipple
           >
             <AddCard style={{ marginRight: 8 }} />
-            Rút coin
+            Rút token
           </Button>
         )}
         <Button

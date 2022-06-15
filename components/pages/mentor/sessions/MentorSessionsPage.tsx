@@ -27,7 +27,7 @@ import {
 import { Check, Close, Message, Edit, Preview } from '@mui/icons-material'
 import { Box } from '@mui/system'
 import { useMentorSessions } from 'context/MentorSessionsProvider'
-import { SyntheticEvent, useState } from 'react'
+import { useState } from 'react'
 import { chatApi } from '@api/chat-api'
 import { setToastError } from '@utils/method'
 import { usePublicUserInfor } from '@hooks/use-public-user-infor'
@@ -46,13 +46,7 @@ interface InputSessionInfoProps {
   expectedDate: Date | string
 }
 
-const SessionListItem = ({
-  session,
-  canAcceptReject,
-  canUpdate,
-  isDone,
-  isCancel,
-}: SessionListItemProps) => {
+const SessionListItem = ({ session, canAcceptReject, canUpdate, isDone }: SessionListItemProps) => {
   const { menteeInfo, id } = session
 
   const { onAccept, onReject, onUpdate, currentLoadingSession } = useMentorSessions()
@@ -65,7 +59,7 @@ const SessionListItem = ({
 
   const [openDialogViewInfo, setOpenDialogViewInfo] = useState(false)
 
-  const { name, id: menteeId } = menteeInfo || {}
+  const { id: menteeId } = menteeInfo || {}
 
   const { infor } = usePublicUserInfor(menteeId)
 
@@ -291,38 +285,11 @@ export const MentorSessionsPage = () => {
   const { loading, programSessions, loadingMore, paginationInfo, onClickLoadMore } =
     useMentorSessions()
 
-  const [currentTab, setCurrentTab] = useState(0)
-
-  const handleTabChange = (e: SyntheticEvent, newValue: number) => {
-    setCurrentTab(newValue)
-  }
-
   const sortedProgramSessions = programSessions.sort((a, b) => {
     const aDate = new Date(a.createAt)
     const bDate = new Date(b.createAt)
     return -aDate.getTime() + bDate.getTime()
   })
-  console.log(
-    '🚀 ~ file: MentorSessionsPage.tsx ~ line 311 ~ sortedProgramSessions ~ sortedProgramSessions',
-    sortedProgramSessions
-  )
-
-  const programSessionsValue = [
-    sortedProgramSessions,
-    sortedProgramSessions.filter(
-      (programSession) => programSession.isAccepted === false && programSession.done === false
-    ),
-    sortedProgramSessions.filter(
-      (programSession) => programSession.done === false && programSession.isAccepted === true
-    ),
-    sortedProgramSessions.filter(
-      (programSession) => programSession.done === true && programSession.isAccepted === true
-    ),
-
-    sortedProgramSessions.filter(
-      (programSession) => programSession.isAccepted === false && programSession.done === true
-    ),
-  ]
 
   return (
     <LoadingIndicator loading={loading} title="Đang tải dữ liệu" style={{ marginTop: 40 }}>
