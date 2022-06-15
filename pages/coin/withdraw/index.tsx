@@ -1,5 +1,5 @@
 import { MainLayout } from '@components/layouts'
-import { WithdrawPage } from '@components/pages/coin/withdraw/WithdrawPage'
+import { WithdrawPage } from '@components/pages/token/withdraw/WithdrawPage'
 import WithdrawProvider from '@context/WithdrawProvider'
 import { NextPageWithLayout } from '@models/common'
 import React from 'react'
