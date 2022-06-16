@@ -38,7 +38,7 @@ export default function MentorMediaInfo({ mentor }: MentorMediaInfoProps) {
             }}
           >
             <Rating readOnly value={mentor.averageRating.average} precision={0.5} />
-            <Typography>({mentor.averageRating.count} đánh giá) 200 mentee</Typography>
+            <Typography>({mentor.averageRating.count} đánh giá)</Typography>
           </Stack>
           <Stack direction={'row'} spacing={4} sx={{ marginBottom: '20px' }}>
             {/* <span>

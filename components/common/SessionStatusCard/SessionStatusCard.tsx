@@ -161,7 +161,7 @@ function SessionStatusCard({ session, ...props }: SessionStatusCardProps) {
       return {
         message: 'Đã xác nhận',
         color: 'info',
-        tooltip: 'Mentor đã được chấp nhận phiên mentoring này!',
+        tooltip: 'Mentor đã xác nhận phiên mentoring này!',
       }
     }
 
