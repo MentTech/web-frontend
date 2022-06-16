@@ -24,6 +24,7 @@ const schema = yup
 export default function Login(props: LoginProps) {
   const [loading, setLoading] = useState(false)
   const [isMentor, setIsMentor] = useState(false)
+  const [isGuest, setIsGuest] = useState(false)
   const router = useRouter()
 
   const {
@@ -34,11 +35,18 @@ export default function Login(props: LoginProps) {
     resolver: yupResolver(schema),
   })
 
-  const { status } = useSession()
+  const { data: session, status } = useSession()
 
   useEffect(() => {
-    if (status === 'authenticated') {
-      router.push('/find')
+    if (status === 'unauthenticated') {
+      setIsGuest(true)
+    }
+    if (isGuest === false && status === 'authenticated') {
+      if (session.user.role === 'mentor') {
+        router.push('/mentor')
+      } else {
+        router.push('/find')
+      }
     }
   }, [status])
 

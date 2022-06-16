@@ -16,8 +16,6 @@ export default function Favorites() {
     setValue(newValue)
   }
 
-  console.log(favorites)
-
   return (
     <Box sx={{ my: '24px' }}>
       <HeadingPrimary>Danh sách yêu thích</HeadingPrimary>

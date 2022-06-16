@@ -41,7 +41,7 @@ export default function DashBoard(props: DashBoardProps) {
 
   // let sessionPieLabel = sessionPie ? sessionPie.map((item: any) => item.name) : []
   let sessionPieData = sessionPie ? sessionPie.map((item: any) => item.value) : []
-
+  console.log('data', sessionPieData)
   return (
     <>
       <HeadingPrimary>Tổng quan</HeadingPrimary>
@@ -64,7 +64,11 @@ export default function DashBoard(props: DashBoardProps) {
           </div>
           <div className="flex flex-col justify-start">
             <p className="text-gray-700 dark:text-gray-100 text-4xl text-left font-bold my-4">
-              {numberOfMentees?.mentee}
+              {!isNaN(numberOfMentees?.mentee) ? (
+                numberOfMentees.mentee
+              ) : (
+                <div className="text-sm">Đang tải...</div>
+              )}
             </p>
           </div>
         </div>
@@ -86,7 +90,7 @@ export default function DashBoard(props: DashBoardProps) {
           </div>
           <div className="flex flex-col justify-start">
             <p className="text-gray-700 dark:text-gray-100 text-4xl text-left font-bold my-4">
-              {registerCount}
+              {!isNaN(registerCount) ? registerCount : <div className="text-sm">Đang tải...</div>}
             </p>
           </div>
         </div>
@@ -108,7 +112,7 @@ export default function DashBoard(props: DashBoardProps) {
           </div>
           <div className="flex flex-col justify-start">
             <p className="text-gray-700 dark:text-gray-100 text-4xl text-left font-bold my-4">
-              {doneCount}
+              {!isNaN(doneCount) ? doneCount : <div className="text-sm">Đang tải...</div>}
             </p>
           </div>
         </div>
@@ -130,7 +134,11 @@ export default function DashBoard(props: DashBoardProps) {
           </div>
           <div className="flex flex-col justify-start">
             <p className="text-gray-700 dark:text-gray-100 text-4xl text-left font-bold my-4">
-              {avgRating?.average}
+              {!isNaN(avgRating?.average) ? (
+                avgRating?.average
+              ) : (
+                <div className="text-sm">Đang tải...</div>
+              )}
             </p>
           </div>
         </div>
@@ -141,31 +149,35 @@ export default function DashBoard(props: DashBoardProps) {
             Trạng thái của các phiên cố vấn
           </div>
           <div className="flex items-center">
-            <Pie
-              data={{
-                labels: ['Chờ xác nhận', 'Đã xác nhận', 'Đã hoàn thành', 'Đã hủy'],
-                datasets: [
-                  {
-                    label: '# of Votes',
-                    data: sessionPieData,
-                    backgroundColor: [
-                      'rgba(255, 99, 132, 0.2)',
-                      'rgba(54, 162, 235, 0.2)',
-                      'rgba(255, 206, 86, 0.2)',
-                      'rgba(75, 192, 192, 0.2)',
-                    ],
-                    borderColor: [
-                      'rgba(255, 99, 132, 1)',
-                      'rgba(54, 162, 235, 1)',
-                      'rgba(255, 206, 86, 1)',
-                      'rgba(75, 192, 192, 1)',
-                    ],
-                    borderWidth: 1,
-                  },
-                ],
-              }}
-              options={{ responsive: true }}
-            />
+            {sessionPieData.every((item: any) => item === 0) ? (
+              <p className="text-sm text-center w-full">Chưa có dữ liệu.</p>
+            ) : (
+              <Pie
+                data={{
+                  labels: ['Chờ xác nhận', 'Đã xác nhận', 'Đã hoàn thành', 'Đã hủy'],
+                  datasets: [
+                    {
+                      label: '# of Votes',
+                      data: sessionPieData,
+                      backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                      ],
+                      borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                      ],
+                      borderWidth: 1,
+                    },
+                  ],
+                }}
+                options={{ responsive: true }}
+              />
+            )}
           </div>
         </div>
         <div className="shadow-lg rounded-2xl p-4 w-full bg-white dark:bg-gray-800">
@@ -173,29 +185,33 @@ export default function DashBoard(props: DashBoardProps) {
             Các phiên cố vấn hoàn thành theo tháng
           </div>
           <div className="flex items-center">
-            <Bar
-              options={{
-                responsive: true,
-                plugins: {
-                  legend: {
-                    position: 'top' as const,
+            {sessionData.every((item: any) => item === 0) ? (
+              <div className="text-sm text-center w-full">Chưa có dữ liệu</div>
+            ) : (
+              <Bar
+                options={{
+                  responsive: true,
+                  plugins: {
+                    legend: {
+                      position: 'top' as const,
+                    },
+                    title: {
+                      display: false,
+                    },
                   },
-                  title: {
-                    display: false,
-                  },
-                },
-              }}
-              data={{
-                labels: sessionMonth,
-                datasets: [
-                  {
-                    label: 'Phiên hoàn thành',
-                    data: sessionData,
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                  },
-                ],
-              }}
-            />
+                }}
+                data={{
+                  labels: sessionMonth,
+                  datasets: [
+                    {
+                      label: 'Phiên hoàn thành',
+                      data: sessionData,
+                      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    },
+                  ],
+                }}
+              />
+            )}
           </div>
         </div>
       </div>

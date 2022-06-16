@@ -23,7 +23,7 @@ const SuggestMentorsCardComp = () => {
       <Stack>
         <div className="container flex flex-col mx-auto w-full items-center justify-center bg-white dark:bg-gray-800 rounded-lg">
           <ul className="flex flex-col divide divide-y w-full">
-            {suggestMentors.length ? (
+            {suggestMentors.length > 0 &&
               suggestMentors.map((suggestMentor) => {
                 const { experiences } = suggestMentor?.User_mentor
                 const last = experiences?.[experiences.length - 1]
@@ -47,21 +47,13 @@ const SuggestMentorsCardComp = () => {
                         <Star fontSize="small" style={{ marginRight: 4 }} />
                         {suggestMentor.User_mentor.rating}
                       </div>
-                      {/* <button
-                        type="button"
-                        className="inline-block px-6 py-2 border-2 border-green-500 text-green-500 font-medium text-xs leading-tight uppercase rounded-full hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
-                      >
-                        Truy cập
-                      </button> */}
                     </div>
                   </li>
                 )
-              })
-            ) : (
-              <Typography style={{ color: COLOR.NEUTRAL_5_MAIN }}>Chưa có mentor nào</Typography>
-            )}
+              })}
           </ul>
         </div>
+        <Typography sx={{ textAlign: 'center' }}>Chưa có mentor nào.</Typography>
       </Stack>
     </LoadingIndicator>
   )

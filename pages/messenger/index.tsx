@@ -35,7 +35,9 @@ function Messenger(props: MessengerProps) {
   const { data: session, status } = useSession()
   const { profile } = useProfile()
 
+  console.log('users', users)
   const theOtherUser = users.find((user: Paticipant) => user.self === false)
+  console.log('other', theOtherUser)
   const { infor } = usePublicUserInfor(theOtherUser?.id as number)
 
   const { loading, hasMore, messages, setMessages } = useMessages(
@@ -160,68 +162,10 @@ function Messenger(props: MessengerProps) {
               <div className="text-2xl mt-1 flex items-center">
                 <span className="text-gray-700 mr-3">{infor?.name}</span>
               </div>
-              <span className="text-lg text-gray-600">Junior Developer</span>
+              {/* <span className="text-lg text-gray-600">Junior Developer</span> */}
             </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <button
-              type="button"
-              className="inline-flex items-center justify-center rounded-lg border h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                ></path>
-              </svg>
-            </button>
-            <button
-              type="button"
-              className="inline-flex items-center justify-center rounded-lg border h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                ></path>
-              </svg>
-            </button>
-            <button
-              type="button"
-              className="inline-flex items-center justify-center rounded-lg border h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                ></path>
-              </svg>
-            </button>
-          </div>
+          <div className="flex items-center space-x-2"></div>
         </div>
         <div
           id="messages"
@@ -279,7 +223,7 @@ function Messenger(props: MessengerProps) {
         <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
           <div className="relative flex">
             <span className="absolute inset-y-0 flex items-center">
-              <button
+              {/* <button
                 type="button"
                 className="inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none"
               >
@@ -297,7 +241,7 @@ function Messenger(props: MessengerProps) {
                     d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
                   ></path>
                 </svg>
-              </button>
+              </button> */}
             </span>
             <input
               type="text"
@@ -308,7 +252,7 @@ function Messenger(props: MessengerProps) {
               className="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-md py-3"
             />
             <div className="absolute right-0 items-center inset-y-0 hidden sm:flex">
-              <button
+              {/* <button
                 type="button"
                 className="inline-flex items-center justify-center rounded-full h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none"
               >
@@ -370,7 +314,7 @@ function Messenger(props: MessengerProps) {
                     d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                   ></path>
                 </svg>
-              </button>
+              </button> */}
               <button
                 onClick={handleSendMessage}
                 type="button"

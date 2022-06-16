@@ -67,7 +67,8 @@ const SessionListItem = ({
 
   const { name, id: menteeId } = menteeInfo || {}
 
-  const { infor } = usePublicUserInfor(menteeId)
+  const { infor } = usePublicUserInfor(session.userId)
+  console.log('session', session)
 
   const expectedDate = session.expectedDate
 
@@ -75,7 +76,7 @@ const SessionListItem = ({
     try {
       const roomInfo = await chatApi.getChatRoomInfor(id)
 
-      window.open(`/messenger?roomid=${roomInfo.data.id}`, '_blank')
+      window.open(`/messenger?roomId=${roomInfo.data.id}`, '_blank')
     } catch (error) {
       setToastError(error)
     }

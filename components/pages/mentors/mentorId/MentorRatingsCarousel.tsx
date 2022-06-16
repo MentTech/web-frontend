@@ -27,7 +27,7 @@ export function MentorRatingsCarousel() {
             ))}
           </Carousel>
         ) : (
-          <div className="df aic jcc">Chưa có đánh giá</div>
+          'Chưa có đánh giá'
         )}
       </Box>
     </LoadingIndicator>
