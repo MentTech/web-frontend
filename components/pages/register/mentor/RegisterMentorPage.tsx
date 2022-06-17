@@ -90,7 +90,7 @@ export const RegisterMentorPage = () => {
       if (!data.categoryId) {
         throw new Error('Hãy chọn một chuyên mục')
       }
-      if (data.introduction) {
+      if (!data.introduction) {
         throw new Error('Hãy cập nhật giới thiệu của bạn')
       }
 
@@ -121,7 +121,6 @@ export const RegisterMentorPage = () => {
         )
       }
     } catch (error) {
-      console.log('🚀 ~ file: RegisterMentorPage.tsx ~ line 115 ~ onSubmit ~ error', error)
       if (String(error).includes('409')) {
         setToastError('Email đã được sử dụng')
       } else setSubmitError(new String(error).slice(7).toString())
