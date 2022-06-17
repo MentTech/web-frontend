@@ -151,7 +151,7 @@ function Profile({ mentor }: MentorProfileProps) {
                 {/* Chứng chỉ */}
                 <Box sx={{ marginTop: '20px', minHeight: 100 }}>
                   <HeadingPrimary>Thành tích & Chứng chỉ</HeadingPrimary>
-                  {achievements ? (
+                  {achievements && achievements.length > 0 ? (
                     <Grid container spacing={2}>
                       {achievements.map((achievement: Achievement) => (
                         <Grid item md={6} key={achievement.id}>

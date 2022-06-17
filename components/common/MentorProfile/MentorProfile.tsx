@@ -308,7 +308,7 @@ export default function MentorProfile(props: ProfileProps) {
         <ProfileCard padding="20px 44px" onEditClick={handleOpenAchievementModal}>
           <HeadingPrimary>Thành tích & Chứng chỉ</HeadingPrimary>
 
-          {achievements ? (
+          {achievements && achievements.length > 0 ? (
             <Grid container spacing={2}>
               {achievements.map((achievement: Achievement) => (
                 <Grid item md={6} key={achievement.id}>

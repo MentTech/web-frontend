@@ -38,17 +38,13 @@ export default function MentorMediaInfo({ mentor }: MentorMediaInfoProps) {
             }}
           >
             <Rating readOnly value={mentor.averageRating.average} precision={0.5} />
-            <Typography>({mentor.averageRating.count} đánh giá) 200 mentee</Typography>
+            <Typography>({mentor.averageRating.count} đánh giá)</Typography>
           </Stack>
           <Stack direction={'row'} spacing={4} sx={{ marginBottom: '20px' }}>
-            <span>
+            {/* <span>
               <LocationOn sx={{ marginRight: '4px' }} />
               TP.HCM
-            </span>
-            <span>
-              <AccessTime sx={{ marginRight: '4px' }} />
-              Thường trả lời sau vài giờ
-            </span>
+            </span> */}
           </Stack>
           <Chip label={mentor?.User_mentor?.category?.name} />
         </Grid>

@@ -76,6 +76,7 @@ export default function MentorHome() {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
   })
@@ -85,6 +86,7 @@ export default function MentorHome() {
     handleSubmit: handleEditSubmit,
     formState: { errors: errorsEdit },
     setValue: setEditValue,
+    reset: resetEdit,
   } = useForm({
     resolver: yupResolver(editFormSchema),
   })
@@ -183,6 +185,7 @@ export default function MentorHome() {
   function handleFormSubmit(data: any) {
     handleModalClose()
     addProgram({ ...data, detail: draftToHtml(convertToRaw(data.detail.getCurrentContent())) })
+    reset()
   }
 
   function handleEditFormSubmit(data: any) {

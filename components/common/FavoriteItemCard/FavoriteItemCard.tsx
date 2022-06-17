@@ -1,15 +1,20 @@
 import * as React from 'react'
-import { mentorApi } from '@api/index'
+import { favoriteApi, mentorApi } from '@api/index'
 import { useEffect, useState } from 'react'
 import { Mentor } from '@models/mentor'
 import Link from 'next/link'
 import Image from 'next/image'
+import { toast } from 'react-toastify'
+import { useFavorite } from '@hooks/use-favorite'
 export interface FavoriteItemCardProps {
   mentorId: string
 }
 
 export default function FavoriteItemCard({ mentorId }: FavoriteItemCardProps) {
   const [mentor, setMentor] = useState<Mentor | null>(null)
+
+  const { removeFavorite } = useFavorite()
+
   useEffect(() => {
     async function fetchMentor() {
       const res = await mentorApi.getMentorById(mentorId)
@@ -17,6 +22,10 @@ export default function FavoriteItemCard({ mentorId }: FavoriteItemCardProps) {
     }
     fetchMentor()
   }, [])
+
+  function handleRemoveFavorite() {
+    removeFavorite(Number(mentorId))
+  }
 
   return (
     <div className="shadow-lg rounded-2xl w-64 bg-white dark:bg-gray-800">
@@ -45,9 +54,16 @@ export default function FavoriteItemCard({ mentorId }: FavoriteItemCardProps) {
         <div className="flex items-center justify-between gap-4 w-full mt-8">
           <Link href={`/mentors/${mentorId}`}>
             <a className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-              Xem chi tiết
+              Xem
             </a>
           </Link>
+
+          <button
+            onClick={handleRemoveFavorite}
+            className="py-2 px-4 bg-red-500 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
+          >
+            Xóa
+          </button>
         </div>
       </div>
     </div>
