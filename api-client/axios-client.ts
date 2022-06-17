@@ -14,6 +14,7 @@ axiosClient.interceptors.response.use(
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     //console.info(`[axios-client] request, API endpoint: ${response.config.url}`, response.data)
+
     return response
   },
   function (error) {
