@@ -24,8 +24,7 @@ export function ProgramRegisterCheckoutCard({
           Được tạo lúc: {new Date(createAt).toLocaleDateString()}
         </p>
         <p className="text-sm text-gray-900 leading-sm">Giới thiệu:</p>
-        <div dangerouslySetInnerHTML={{ __html: detail }}></div>
-        da
+        <div dangerouslySetInnerHTML={{ __html: detail }} className="truncate-text"></div>
       </div>
       <span className="bg-teal-600 w-full flex justify-center py-2 text-white font-semibold transition duration-300">
         <Paid style={{ marginRight: 8 }} />

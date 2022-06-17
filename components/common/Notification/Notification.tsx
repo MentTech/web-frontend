@@ -53,7 +53,7 @@ export default function NotificationComp(props: NotificationProps) {
         router.push(`/sessions/${n.additional.sessionId}`)
         break
       case 'MENTEE_TOPUP_SUCCESS':
-        router.push('/coin/transactions')
+        router.push('/token/transactions')
         break
       case 'MENTOR_WITHDRAW_SUCCESS':
       case 'MENTOR_SESSION_DONE':

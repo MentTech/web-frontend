@@ -12,9 +12,9 @@ export interface RatingListProps {
 export default function RatingList({ onPageChange, ratings, page, totalPage }: RatingListProps) {
   return (
     <Stack direction="column">
-      <Box sx={{ pt: '24px' }}>
+      <Box>
         {ratings.length ? (
-          <Box>
+          <Box sx={{ pt: '24px' }}>
             {ratings.map((rating, index) => (
               <Box key={index}>
                 <RatingItem

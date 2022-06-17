@@ -28,3 +28,8 @@ export interface OrderWithdrawResult {
   updatedAt: Date | string
   userId: number
 }
+
+export interface SuccessOrderTopup {
+  paymentId: string
+  PayerID: string
+}

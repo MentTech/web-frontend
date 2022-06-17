@@ -68,7 +68,7 @@ export const RequestDialog = ({ openDialog, setopenDialog, program }: RequestDia
         <DialogContentText>{`Tên chương trình: ${title}`}</DialogContentText>
         <DialogContentText>{`Thời lượng dự kiến: 90 phút`}</DialogContentText>
         <DialogContentText>{`Nội dung: ${detail}`}</DialogContentText>
-        <DialogContentText>{`Chi phí: ${credit} coin`}</DialogContentText>
+        <DialogContentText>{`Chi phí: ${credit} token`}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button

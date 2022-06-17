@@ -1,3 +1,4 @@
+import { SuccessOrderTopup } from './../models/order'
 import { OrderTopup, OrderWithdraw } from '@models/order'
 import axiosClient from './axios-client'
 
@@ -13,5 +14,8 @@ export const orderApi = {
   },
   requestOrderWithdraw(payload: OrderWithdraw) {
     return axiosClient.post(`/v1/order/withdraw`, payload)
+  },
+  successPaypalOrderTopup(payload: SuccessOrderTopup) {
+    return axiosClient.get(`/v1/order/paypal/success`, { params: payload })
   },
 }
