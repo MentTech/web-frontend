@@ -42,7 +42,7 @@ export default function Login(props: LoginProps) {
       setIsGuest(true)
     }
     if (isGuest === false && status === 'authenticated') {
-      if (session.user.role === 'mentor') {
+      if (session?.user.role === 'mentor') {
         router.push('/mentor')
       } else {
         router.push('/find')
