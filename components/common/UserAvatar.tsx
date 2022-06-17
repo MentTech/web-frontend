@@ -17,7 +17,7 @@ export default function UserAvatar({ avatarURL, user, setAvatarURL }: UserAvatar
     const file = e.target?.files?.[0]
 
     if (file) {
-      if (file.name.match(/\.(jpg|jpeg|png|gif)$/)) {
+      if (file.name.match(/\.(jpg|jpeg|png|gif|jfif|avif|tiff|tif|svg)$/)) {
         try {
           setLoading(true)
           var formdata = new FormData()
@@ -69,10 +69,10 @@ export default function UserAvatar({ avatarURL, user, setAvatarURL }: UserAvatar
             width: 150,
             height: 150,
           }}
-          src={`${avatarURL}` || '123'}
+          src={`${!loading ? avatarURL : ''}`}
         >
-          <LoadingIndicator loading={loading} style={{ margin: 'auto' }}>
-            123
+          <LoadingIndicator loading={loading} style={{ marginTop: 30 }}>
+            Avatar
           </LoadingIndicator>
         </Avatar>
         <input
