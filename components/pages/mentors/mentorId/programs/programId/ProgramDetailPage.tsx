@@ -11,7 +11,6 @@ import { useCurrentMentor } from 'context/MentorProvider'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Carousel from 'react-elastic-carousel'
-import { RequestDialog } from './RequestDialog'
 
 interface AverageRating {
   average: number
@@ -117,7 +116,7 @@ export const ProgramDetailPage = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Box className="df fdc">
-                    <Paper className="df fdc" style={{ padding: 24 }}>
+                    <Paper className="df fdc" style={{ padding: 24, minHeight: 400 }}>
                       <Box className="df aic jcsb">
                         <Box className="df fdc">
                           <Typography variant="h4" className="sb" sx={{ fontSize: '2.3rem' }}>
@@ -190,7 +189,7 @@ export const ProgramDetailPage = () => {
                       />
                     </Box>
                   </Box>
-                  <Box sx={{ marginTop: '20px' }}>
+                  <Box sx={{ marginTop: '32px' }}>
                     <HeadingPrimary>Các chương trình khác</HeadingPrimary>
                     {/* Todo: Carousel */}
                     <Carousel isRTL={false} itemPadding={[10, 30]} breakPoints={breakPoints}>
