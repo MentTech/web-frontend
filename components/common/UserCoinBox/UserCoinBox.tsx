@@ -9,10 +9,6 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { BiCoin } from 'react-icons/bi'
 
-interface SessionInfo {
-  user: any
-}
-
 function UserCoinBoxComp({ role }: { role: ROLE | undefined }) {
   const [anchorEl, setAnchorEl] = useState<any>(null)
 
@@ -27,11 +23,11 @@ function UserCoinBoxComp({ role }: { role: ROLE | undefined }) {
   }
 
   const onClickWithdraw = () => {
-    router.push('/token/withdraw')
+    router.push('/mentor/token/withdraw')
   }
 
   const onClickViewTransaction = () => {
-    router.push('/token/transactions')
+    router.push(role === ROLE.mentor ? '/mentor/token/transactions' : '/token/transactions')
   }
 
   const { balance } = useUserTransaction()
@@ -42,7 +38,7 @@ function UserCoinBoxComp({ role }: { role: ROLE | undefined }) {
   return (
     <>
       <Box
-        style={{ borderRadius: 20, border: '1px solid #F7F622' }}
+        style={{ borderRadius: 20, border: '1px solid #F7F622', minWidth: 100 }}
         px={2}
         py={1}
         onClick={(e) => setAnchorEl(e.currentTarget)}

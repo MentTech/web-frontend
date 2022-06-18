@@ -109,7 +109,7 @@ const PaymentInfo = ({ onBack }: { onBack: () => void }) => {
         </Grid>
         <Grid item xs={6}>
           <Typography variant="h6" className="sb">
-            TẠO YÊU CẦU NẠP COIN THÀNH CÔNG
+            TẠO YÊU CẦU NẠP TOKEN THÀNH CÔNG
           </Typography>
           <Typography variant="body2" className="sb" style={{ color: COLOR.NEUTRAL_3 }}>
             Bạn hãy sử dụng các thông tin thanh toán dưới đây để chuyển tiền cho MentTech nhé!
@@ -125,7 +125,7 @@ const PaymentInfo = ({ onBack }: { onBack: () => void }) => {
               Tên tài khoản: Nguyen Van A
             </Typography>
             <Typography style={{ color: COLOR.PRIMARY_1 }} variant="subtitle1" className="sb">
-              Nội dung chuyển khoản: Họ và tên - Email tài khoản - Thanh toán nạp coin MentTech
+              Nội dung chuyển khoản: Họ và tên - Email tài khoản - Thanh toán nạp token MentTech
             </Typography>
           </Box>
           <Button variant="outlined" onClick={() => onBack()} fullWidth={false}>
@@ -175,7 +175,7 @@ export const TopUpPage = () => {
       return
     }
     if (state.token < 100) {
-      setErrorText('Số coin nạp phải lớn hơn 1000')
+      setErrorText('Số token nạp phải lớn hơn 100')
       return
     }
     await onTopUp(state)
@@ -256,9 +256,9 @@ export const TopUpPage = () => {
                     />
                     <TextField
                       fullWidth
-                      label="Số coin"
+                      label="Số token"
                       required
-                      placeholder="Nhập vào lượng coin bạn muốn nạp..."
+                      placeholder="Nhập vào lượng token bạn muốn nạp..."
                       {...formProps('token')}
                     />
                     <TextField
@@ -271,6 +271,15 @@ export const TopUpPage = () => {
                     />
                   </Stack>
 
+                  <Typography
+                    className="w100"
+                    align="center"
+                    variant="caption"
+                    style={{ color: COLOR.SEMANTIC_DANGER_5_MAIN, marginTop: 8 }}
+                  >
+                    {errorText}
+                  </Typography>
+
                   <Box mt={2} className="df w100 jcc aic">
                     <Box style={{ flex: 1 }}>
                       <Typography
@@ -279,16 +288,13 @@ export const TopUpPage = () => {
                         color={'GrayText'}
                         variant="caption"
                       >
-                        {topupRate} coin = 10.000 VNĐ.
+                        {topupRate} token = 10.000 VNĐ.
                       </Typography>
                       <Typography color={'GrayText'} style={{ display: 'block' }} variant="caption">
-                        Số coin cần nạp là bội số của {topupRate}
+                        Số token cần nạp là bội số của {topupRate}
                       </Typography>
                     </Box>
                     <Box style={{ flex: 1 }}>
-                      <Typography variant="caption" style={{ color: COLOR.SEMANTIC_DANGER_5_MAIN }}>
-                        {errorText}
-                      </Typography>
                       <Button
                         disableRipple
                         fullWidth

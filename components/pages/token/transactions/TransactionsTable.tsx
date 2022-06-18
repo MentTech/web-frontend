@@ -1,5 +1,5 @@
 import { Transaction } from '@models/transaction'
-import { Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { TransactionsStatusLable, TransactionStatus, TransactionsTypeLable } from '@utils/constant'
 import React from 'react'
 
@@ -10,9 +10,9 @@ interface TransactionsTableProps {
 export const TransactionsTable = ({ transactions }: TransactionsTableProps) => {
   if (transactions.length === 0) {
     return (
-      <div className="w100 h100 df aic jcc">
+      <Box mt={3} className="w100 h100 df aic jcc">
         <Typography>Chưa có giao dịch nào</Typography>
-      </div>
+      </Box>
     )
   }
 
@@ -56,7 +56,7 @@ export const TransactionsTable = ({ transactions }: TransactionsTableProps) => {
                     scope="col"
                     className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                   >
-                    Số lượng coin
+                    Số lượng token
                   </th>
                   <th
                     scope="col"

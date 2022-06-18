@@ -1,17 +1,21 @@
+import { useFavorite } from '@hooks/use-favorite'
 import { Mentor } from '@models/mentor'
 import { FavoriteOutlined, Share } from '@mui/icons-material'
 import {
+  Avatar,
   Button,
   Card,
   CardActions,
   CardContent,
   CardMedia,
   CardProps,
+  Chip,
   IconButton,
   Typography,
 } from '@mui/material'
 import { Box } from '@mui/system'
 import { copyTextToClipboard } from '@utils/method'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 
@@ -21,11 +25,36 @@ interface MentorCardProps extends CardProps {
 
 export const MentorCard = ({ mentor, ...props }: MentorCardProps) => {
   const { name, id, avatar, User_mentor } = mentor
-  const { introduction, rating, category, experiences } = User_mentor
+  const { introduction, experiences } = User_mentor
 
   const last_experience = experiences?.[experiences.length - 1]
+
+  const { favorites, addFavorite, removeFavorite } = useFavorite()
+
+  const isFavorited = favorites?.findIndex((item: any) => item == mentor.id) !== -1
+
+  function addToWishList() {
+    if (status === 'unauthenticated') {
+      return router.push('/authenticate/login')
+    }
+    addFavorite(Number(mentor.id))
+    toast.success('Đã thêm vào danh sách yêu thích')
+  }
+
+  function removeFromWishList() {
+    if (status === 'unauthenticated') {
+      return router.push('/authenticate/login')
+    }
+    removeFavorite(Number(mentor.id))
+    toast.success('Đã xóa khỏi danh sách yêu thích')
+  }
+
   const onClickAddToFavorite = () => {
-    console.log('add to favorite')
+    if (isFavorited) {
+      removeFromWishList()
+    } else {
+      addToWishList()
+    }
   }
 
   const onClickShare = () => {
@@ -45,43 +74,61 @@ export const MentorCard = ({ mentor, ...props }: MentorCardProps) => {
     <Card
       className="w100 df fdc"
       style={{
-        minHeight: 450,
+        height: 480,
+        borderRadius: 20,
       }}
       {...props}
     >
-      <CardMedia
-        component="img"
-        image={avatar ?? 'https://source.unsplash.com/random'}
-        alt={name ?? 'avatar'}
-        style={{
-          objectFit: 'cover',
-          height: '200px',
-          width: '100%',
-        }}
-      />
-      <CardContent className="flex-1">
-        <Typography className="sb">{name}</Typography>
+      <Box className="df aic jcc" style={{ height: 200 }}>
+        <Avatar
+          style={{ height: 180, width: 180, margin: 16, border: '2px solid #19857b' }}
+          src={avatar}
+        />
+      </Box>
+
+      <CardContent className="flex-1 truncate-text" style={{ height: 280 }}>
+        <Typography align="center" className="sb">
+          {name}
+        </Typography>
         {last_experience && (
-          <Typography className="sb" variant="body2">
+          <Typography
+            align="center"
+            className="sb tlt"
+            style={{ wordBreak: 'break-word' }}
+            variant="body2"
+          >
             {last_experience.title + ' tại ' + last_experience.company}
           </Typography>
         )}
-        <Typography className="tlt" variant="body2" color="text.secondary">
+        <Typography
+          style={{ marginTop: 8, wordBreak: 'break-word' }}
+          variant="body2"
+          className="thlt"
+          color="text.secondary"
+        >
           {introduction}
         </Typography>
       </CardContent>
-      <CardActions disableSpacing className="df aic jcsb">
-        <Box className="df aic">
-          <IconButton onClick={() => onClickAddToFavorite()} aria-label="add to favorites">
-            <FavoriteOutlined />
-          </IconButton>
-          <IconButton onClick={() => onClickShare()} aria-label="share">
-            <Share />
-          </IconButton>
+      <CardActions disableSpacing className="df fdc">
+        <Box my={1} className="df">
+          <Chip style={{ marginTop: 8 }} label={User_mentor.category?.name} />
         </Box>
-        <Button color="primary" onClick={() => onClickGoToDetail()}>
-          Xem thêm
-        </Button>
+        <Box className="df aic jcsb w100">
+          <Box className="df aic">
+            <IconButton
+              style={{ color: isFavorited ? '#19857b' : '#757575' }}
+              onClick={() => onClickAddToFavorite()}
+            >
+              <FavoriteOutlined />
+            </IconButton>
+            <IconButton onClick={() => onClickShare()} aria-label="share">
+              <Share />
+            </IconButton>
+          </Box>
+          <Button color="primary" onClick={() => onClickGoToDetail()}>
+            Xem thêm
+          </Button>
+        </Box>
       </CardActions>
     </Card>
   )

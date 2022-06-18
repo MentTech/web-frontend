@@ -34,8 +34,15 @@ const FindMentorProvider = ({ children, notFetchMentor }: FindMentorProviderProp
   const { keyword, sortBy, skills, order, category } = router.query
 
   const [fetchedMentor, setFetchedMentor] = useState<Mentor[]>([])
+
   const [fetchedCategories, setfetchedCategories] = useState<Category[]>([])
   const [fetchedSkills, setfetchedSkills] = useState<Skill[]>([])
+
+  const [paginationData, setPaginationData] = useState({
+    page: 1,
+    limit: 10,
+    totalPage: 1,
+  })
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -51,21 +58,17 @@ const FindMentorProvider = ({ children, notFetchMentor }: FindMentorProviderProp
 
         if (notFetchMentor) return
 
-        if (!notFetchMentor) {
-          setLoadingMentors(true)
-          const { keyword, sortBy, skills, order, category } = router.query
+        setLoadingMentors(true)
+        const { keyword, sortBy, skills, order, category } = router.query
 
-          const resultMentor = await findApi.findMentor({
-            ...(keyword && { keyword }),
-            ...(sortBy && { sortBy }),
-            ...(skills && { skills }),
-            ...(category && { category }),
-            order: order ? 'asc' : 'desc',
-          })
-
-          setFetchedMentor(resultMentor.data.data)
-          setLoadingMentors(false)
-        }
+        const resultMentor = await findApi.findMentor({
+          ...(keyword && { keyword }),
+          ...(sortBy && { sortBy }),
+          ...(skills && { skills }),
+          ...(category && { category }),
+          order: order ? 'asc' : 'desc',
+        })
+        setFetchedMentor(resultMentor.data.data)
       } catch (error: any) {
         toast.error(error.message)
         // setError(error.message)

@@ -197,7 +197,9 @@ export default function Login(props: LoginProps) {
               ) : (
                 <Link href="/register/mentor">
                   <a type="reset" className="w-max p-3 -ml-3">
-                    <span className="text-sm tracking-wide text-sky-600">Trở thành mentor</span>
+                    <span className="text-sm tracking-wide text-sky-600">
+                      Đăng ký trở thành mentor?
+                    </span>
                   </a>
                 </Link>
               )}
