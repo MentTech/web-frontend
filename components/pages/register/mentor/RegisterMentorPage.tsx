@@ -1,11 +1,11 @@
 import { mentorApi } from '@api/mentor-api'
 import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
 import { LoadingIndicator } from '@components/common/LoadingIndicator/LoadingIndicator'
+import UserAvatar from '@components/common/UserAvatar'
 import { SkillsArrayInput } from '@components/pages/find/SkillsArrayInput'
+import { MultipleInput } from '@components/pages/register/mentor/MultipleInput'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Degree, Experience, Skill } from '@models/mentor'
-import { DesktopDatePicker, LocalizationProvider } from '@mui/lab'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import {
   Button,
   CircularProgress,
@@ -22,11 +22,10 @@ import { useFindMentor } from 'context/FindMentorProvider'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
-import { MultipleInput } from '@components/pages/register/mentor/MultipleInput'
 import { ArrayInput } from './ArrayInput'
-import UserAvatar from '@components/common/UserAvatar'
 
 interface RegisterMentorPayload {
+  cv: string
   email: string
   name: string
   birthday?: string
@@ -54,6 +53,7 @@ const schema = yup.object({
   categoryId: yup.string(),
   introduction: yup.string(),
   jobs: yup.array(),
+  cv: yup.string(),
 })
 
 export const RegisterMentorPage = () => {
@@ -74,11 +74,7 @@ export const RegisterMentorPage = () => {
     setAvatarURL(value)
   }
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<RegisterMentorPayload>({
+  const { register, handleSubmit } = useForm<RegisterMentorPayload>({
     resolver: yupResolver(schema),
   })
 
@@ -111,6 +107,7 @@ export const RegisterMentorPage = () => {
         experiences: experiences,
         categoryId: Number(data.categoryId),
         avatar: avatarURL,
+        cv: data.cv,
       }
       setSubmitError('')
       setLoadingSubmit(true)
@@ -180,23 +177,6 @@ export const RegisterMentorPage = () => {
                 defaultValue={new Date().toISOString().split('T')[0]}
                 style={{ marginTop: 16, width: '50%' }}
               />
-              {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DesktopDatePicker
-                  inputFormat="MM/dd/yyyy"
-                  value={birthday}
-                  onChange={(date) => {
-                    setBirthday(date)
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      label="Ngày sinh"
-                      fullWidth
-                      style={{ marginTop: 16, width: '50%' }}
-                      {...params}
-                    />
-                  )}
-                />
-              </LocalizationProvider> */}
             </Box>
             <TextField
               fullWidth
@@ -204,6 +184,9 @@ export const RegisterMentorPage = () => {
               {...register('linkedin')}
               label={'LinkedIn'}
             />
+            <Box mt={2}>
+              <TextField fullWidth label="Link CV" {...register('cv')} />
+            </Box>
           </Box>
           <Box mt={4}>
             <HeadingPrimary>Thông tin cá nhân</HeadingPrimary>
