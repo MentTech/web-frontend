@@ -1,5 +1,6 @@
 import axiosClient from '@api/axios-client'
 import { Notification } from '@models/notification'
+import { useSession } from 'next-auth/react'
 import { useEffect, useState, createContext, useContext } from 'react'
 
 interface NotificationContext {
@@ -37,6 +38,8 @@ const NotificationProvider = ({ children }: NotificationProviderProps) => {
   const [hasMore, setHasMore] = useState(true)
   const [notifications, setNotifications] = useState<Notification[]>([])
 
+  const { data } = useSession()
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
@@ -50,7 +53,9 @@ const NotificationProvider = ({ children }: NotificationProviderProps) => {
         setLoading(false)
       }
     }
-    fetchData()
+    if (data) {
+      fetchData()
+    }
   }, [skip, limit])
 
   function addNewNotification(notification: Notification) {

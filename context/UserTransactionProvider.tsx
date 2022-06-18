@@ -1,6 +1,7 @@
 import { LoadingIndicator } from '@components/common/LoadingIndicator/LoadingIndicator'
 import { useTransaction } from '@hooks/use-transaction'
 import { Transaction } from '@models/transaction'
+import { useSession } from 'next-auth/react'
 import React, { useContext, useEffect, useState } from 'react'
 
 interface UserTransactionContextProps {
@@ -22,7 +23,9 @@ interface UserTransactionProviderProps {
 const UserTransactionProvider = ({ children }: UserTransactionProviderProps) => {
   const [loading, setLoading] = useState(true)
 
-  const { balance, transactions } = useTransaction()
+  const { data } = useSession()
+
+  const { balance, transactions } = data ? useTransaction() : { balance: 0, transactions: [] }
 
   useEffect(() => {
     if (balance != null && transactions != null) {
