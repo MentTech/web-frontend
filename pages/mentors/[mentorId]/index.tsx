@@ -89,7 +89,7 @@ function Profile({ mentor }: MentorProfileProps) {
                     {experiences
                       ? experiences.map((experience: Experience) => (
                           <>
-                            <ExperienceCard experience={experience} />
+                            <ExperienceCard experience={experience} key={experience.id} />
                             <Divider sx={{ mt: 2 }} />
                           </>
                         ))

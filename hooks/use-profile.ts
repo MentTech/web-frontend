@@ -1,14 +1,16 @@
 import useSWR from 'swr'
 import { signOut, SignOutParams } from 'next-auth/react'
 import { profileApi } from '@api/index'
+import { useSession } from 'next-auth/react'
 
 export function useProfile() {
+  const { status } = useSession()
   const {
     data: profile,
     error,
     mutate,
     isValidating,
-  } = useSWR<any>('/v1/users/profile', {
+  } = useSWR<any>(status === 'authenticated' ? '/v1/users/profile' : null, {
     dedupingInterval: 60 * 60 * 1000, // 1 hour,
     revalidateOnFocus: false,
   })

@@ -1,3 +1,5 @@
+import { config } from '@config/main'
+import { useNotifications } from '@context/NotificationProvider'
 import { useProfile } from '@hooks/index'
 import { Favorite, Person, School } from '@mui/icons-material'
 import Logout from '@mui/icons-material/Logout'
@@ -15,16 +17,13 @@ import MenuItem from '@mui/material/MenuItem'
 import Toolbar from '@mui/material/Toolbar'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import Link from 'next/link'
-import { useState, useEffect } from 'react'
-import UserCoinBox from '../UserCoinBox/UserCoinBox'
-import { io, Socket } from 'socket.io-client'
 import { useSession } from 'next-auth/react'
-import { config } from '@config/main'
-import NotificationComp from '../Notification/Notification'
-import { useNotifications } from '@context/NotificationProvider'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
-import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import { io, Socket } from 'socket.io-client'
+import NotificationComp from '../Notification/Notification'
+import UserCoinBox from '../UserCoinBox/UserCoinBox'
 
 const pages = [
   {
@@ -38,22 +37,25 @@ const Header = () => {
   const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null)
   const [socket, setSocket] = useState<Socket>()
 
-  useEffect(() => {
-    const s = io(config.backendURL)
-    s.on('connect', () => {})
-    setSocket(s)
-  }, [])
+  // useEffect(() => {
+  //   const s = io(config.backendURL)
+  //   s.on('connect', () => {})
+  //   setSocket(s)
+  // }, [])
 
   const { status, data: session } = useSession()
   const { notifications, addNewNotification } = useNotifications()
 
   useEffect(() => {
-    if (socket && status === 'authenticated') {
-      socket.emit('auth:connect', session?.accessToken, (res: any) => {
+    if (status === 'authenticated') {
+      const s = io(config.backendURL)
+      s.on('connect', () => {})
+      setSocket(s)
+      s.emit('auth:connect', session?.accessToken, (res: any) => {
         console.log(res)
       })
     }
-  }, [socket, status])
+  }, [status])
 
   useEffect(() => {
     if (socket && notifications) {
@@ -79,9 +81,7 @@ const Header = () => {
     setAnchorEl2(null)
   }
 
-  const { data } = useSession()
-
-  const { logout, profile } = data ? useProfile() : { logout: () => {}, profile: {} }
+  const { logout, profile } = useProfile()
 
   const handleLogout = (event: any) => {
     event.preventDefault()
