@@ -1,7 +1,6 @@
 import { Star } from '@mui/icons-material'
 import { Avatar, Stack, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import { COLOR } from '@utils/color'
 import SuggestMentorsProvider, { useSuggestMentors } from 'context/SuggestMentorsProvider'
 import { LoadingIndicator } from '../LoadingIndicator/LoadingIndicator'
 
@@ -53,7 +52,7 @@ const SuggestMentorsCardComp = () => {
               })}
           </ul>
         </div>
-        <Typography sx={{ textAlign: 'center' }}>Chưa có mentor nào.</Typography>
+        {!suggestMentors.length && <Typography align="center">Chưa có mentor nào</Typography>}
       </Stack>
     </LoadingIndicator>
   )
