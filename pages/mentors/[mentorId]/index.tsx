@@ -7,18 +7,14 @@ import SkillBadge from '@components/common/SkillBadge/SkillBadge'
 import SuggestMentorsCard from '@components/common/SuggestMentorsCard'
 import { MainLayout } from '@components/layouts'
 import { config } from '@config/main'
-import { useFavorite } from '@hooks/index'
 import { Achievement, Experience, Mentor } from '@models/mentor'
-import { Favorite } from '@mui/icons-material'
-import { Box, Card, CardContent, Divider, Grid, Stack, Tooltip, Typography } from '@mui/material'
+import { Box, Card, CardContent, Divider, Grid, Stack, Typography } from '@mui/material'
 import axios from 'axios'
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 //@ts-ignore
 import ExperienceCard from '@components/common/ExperienceCard/ExperienceCard'
-import { useSession } from 'next-auth/react'
-import { toast } from 'react-toastify'
 import { MentorRatingsCarousel } from '@components/pages/mentors/mentorId/MentorRatingsCarousel'
 import MentorRatingsProvider from 'context/MentorRatingsProvider'
 
@@ -173,9 +169,12 @@ function Profile({ mentor }: MentorProfileProps) {
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [
-      { params: { mentorId: '60' } },
-      { params: { mentorId: '61' } },
-      { params: { mentorId: '62' } },
+      { params: { mentorId: '151' } },
+      { params: { mentorId: '159' } },
+      { params: { mentorId: '160' } },
+      { params: { mentorId: '161' } },
+      { params: { mentorId: '163' } },
+      { params: { mentorId: '162' } },
     ],
     fallback: true,
   }

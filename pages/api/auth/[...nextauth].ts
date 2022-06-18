@@ -108,6 +108,6 @@ export default NextAuth({
   },
   secret: process.env.SECRET,
   session: {
-    maxAge: 60 * 60, // 1 hour
+    maxAge: 60 * 60,
   },
 })
