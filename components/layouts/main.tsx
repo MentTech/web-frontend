@@ -11,7 +11,7 @@ export function MainLayout({ children }: LayoutProps) {
       <NotificationProvider>
         <Header />
       </NotificationProvider>
-      <Container sx={{ marginTop: '68.5px', py: 1, minHeight: '100vh' }}>{children}</Container>
+      <Container sx={{ marginTop: '64px', py: 1, minHeight: '100vh' }}>{children}</Container>
       <Footer />
     </Box>
   )

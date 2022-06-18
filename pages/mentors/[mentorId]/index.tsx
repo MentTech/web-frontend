@@ -41,10 +41,6 @@ function Profile({ mentor }: MentorProfileProps) {
     { label: mentor.name as string },
   ]
 
-  const { data, status } = useSession()
-
-  console.log(mentor)
-
   const { mentorId } = router.query
   const skillDescs = mentor?.User_mentor.skills
 
@@ -53,58 +49,14 @@ function Profile({ mentor }: MentorProfileProps) {
 
   const achievements = mentor?.User_mentor.achievements
 
-  const { favorites, addFavorite, removeFavorite } = useFavorite()
-
-  let isFavorited = false
-  if (favorites) {
-    isFavorited = favorites.findIndex((item: any) => item == mentorId) !== -1
-  }
-
-  function addToWishList() {
-    if (status === 'unauthenticated') {
-      return router.push('/authenticate/login')
-    }
-    addFavorite(Number(mentorId))
-    toast.success('Đã thêm vào danh sách yêu thích')
-  }
-
-  function removeFromWishList() {
-    if (status === 'unauthenticated') {
-      return router.push('/authenticate/login')
-    }
-    removeFavorite(Number(mentorId))
-    toast.success('Đã xóa khỏi danh sách yêu thích')
-  }
-
   return (
     <>
       <Breadcrumb items={breadcrumbs} />
       <Box sx={{ flexGrow: 1, marginTop: 4 }}>
         <Grid container spacing={4}>
-          <Grid item sm={12} md={8}>
+          <Grid item xs={12} md={8}>
             <Card sx={{ borderRadius: '20px', boxShadow: 'none', height: '100%' }}>
               <CardContent sx={{ padding: '20px', position: 'relative' }}>
-                <Tooltip title="Thêm vào danh sách yêu thích">
-                  <button
-                    onClick={isFavorited ? removeFromWishList : addToWishList}
-                    style={{
-                      position: 'absolute',
-                      top: '24px',
-                      right: '32px',
-                      padding: '4px 4px',
-                      border: '1px solid rgba(0, 0, 0, 0.39)',
-                      borderRadius: '10px',
-                    }}
-                  >
-                    <Favorite
-                      sx={{
-                        width: '28px',
-                        height: '28px',
-                        color: isFavorited ? '#F54E19' : 'rgba(0, 0, 0, 0.39)',
-                      }}
-                    />
-                  </button>
-                </Tooltip>
                 <MentorMediaInfo mentor={mentor} />
                 {/* GiỚi thiệu */}
                 <Box sx={{ marginTop: '20px' }}>

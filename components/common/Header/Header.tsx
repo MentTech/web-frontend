@@ -35,6 +35,7 @@ const pages = [
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null)
   const [socket, setSocket] = useState<Socket>()
 
   useEffect(() => {
@@ -64,11 +65,18 @@ const Header = () => {
   }, [notifications, socket])
 
   const open = Boolean(anchorEl)
+  const open2 = Boolean(anchorEl2)
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget)
   }
+  const handleClick2 = (event: any) => {
+    setAnchorEl2(event.currentTarget)
+  }
   const handleClose = () => {
     setAnchorEl(null)
+  }
+  const handleClose2 = () => {
+    setAnchorEl2(null)
   }
   const { logout, profile } = useProfile()
 
@@ -84,9 +92,9 @@ const Header = () => {
   const router = useRouter()
 
   return (
-    <AppBar position="fixed">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters className="df aic jcsb">
+    <AppBar position="fixed" sx={{ height: '64px !important' }}>
+      <Container maxWidth="xl" sx={{ height: '100%' }}>
+        <Toolbar disableGutters className="df aic jcsb" sx={{ height: '100%' }}>
           <Typography
             variant="h6"
             noWrap
@@ -98,13 +106,19 @@ const Header = () => {
             </Link>
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: 'flex', md: 'none' },
+              alignItems: { xs: 'center', md: 'none' },
+            }}
+          >
             <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={handleClose}
+              onClick={handleClick}
               color="inherit"
             >
               <MenuIcon />
@@ -135,17 +149,18 @@ const Header = () => {
                 </Link>
               ))}
             </Menu>
+
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+            >
+              <Link href="/">
+                <img src="/static/logo.png" alt="logo" className="h-12 cursor-pointer" />
+              </Link>
+            </Typography>
           </Box>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-          >
-            <Link href="/">
-              <a>MentTech</a>
-            </Link>
-          </Typography>
           <Box
             sx={{
               flexGrow: 1,
@@ -201,11 +216,11 @@ const Header = () => {
                 </Box>
                 <Tooltip title="Tài khoản">
                   <IconButton
-                    onClick={handleClick}
+                    onClick={handleClick2}
                     size="small"
-                    aria-controls={open ? 'account-menu' : undefined}
+                    aria-controls={open2 ? 'account-menu' : undefined}
                     aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
+                    aria-expanded={open2 ? 'true' : undefined}
                   >
                     <Avatar src={profile?.avatar} sx={{ width: 32, height: 32 }}>
                       M
@@ -222,11 +237,11 @@ const Header = () => {
             )}
 
             <Menu
-              anchorEl={anchorEl}
+              anchorEl={anchorEl2}
               id="account-menu"
-              open={open}
-              onClose={handleClose}
-              onClick={handleClose}
+              open={open2}
+              onClose={handleClose2}
+              onClick={handleClose2}
               PaperProps={{
                 elevation: 0,
                 sx: {

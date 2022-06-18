@@ -39,7 +39,7 @@ export default function FavoriteItemCard({ mentorId }: FavoriteItemCardProps) {
       <div className="flex flex-col items-center justify-center p-4 -mt-16">
         <a href="#" className="block relative">
           <img
-            alt="profil"
+            alt="profile"
             src={mentor?.avatar ? mentor.avatar : '/static/default_avatar.png'}
             className="mx-auto object-cover rounded-full h-16 w-16 "
           />

@@ -194,10 +194,10 @@ export const TopUpPage = () => {
         {step === 0 && (
           <Paper style={{ padding: 24 }} className="df fdc aic jcc">
             <Typography className="sb" variant="h6">
-              NẠP TIỀN
+              NẠP TOKEN
             </Typography>
             <Grid container spacing={3} style={{ marginTop: 8 }}>
-              <Grid item xs={6}>
+              <Grid item xs={12} md={6}>
                 <Box className="df fdc aic jcc" my={2}>
                   <Grid container spacing={2}>
                     {topUpPaymentMethodArray.map(({ method, label, imageSrc }) => (
@@ -227,7 +227,7 @@ export const TopUpPage = () => {
                   </Grid>
                 </Box>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} md={6}>
                 <Box className="df aic jcc fdc" style={{ width: '100%' }}>
                   <Stack style={{ marginTop: 16 }} spacing={2} className="w100">
                     <TextField
