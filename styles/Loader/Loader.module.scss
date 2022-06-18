@@ -1,0 +1,27 @@
+
+.circleLoading2 {
+    display: inline-flex;
+    animation: loading2 1s infinite;
+
+    div {
+        width: 30px;
+        height: 30px;
+        background: #19857b;
+        border-radius: 50%;
+        margin: 0 5px;
+    }
+}
+
+@keyframes loading2 {
+    50% {
+        transform: rotate(200deg);
+    }
+
+    75% {
+        transform: rotate(160deg);
+    }
+
+    100% {
+        transform: rotate(180deg);
+    }
+}

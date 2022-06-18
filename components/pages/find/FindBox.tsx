@@ -1,25 +1,15 @@
-import {
-  Button,
-  Chip,
-  Collapse,
-  Menu,
-  MenuItem,
-  Paper,
-  TextField,
-  Tooltip,
-  Typography,
-} from '@mui/material'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Skill } from '@models/mentor'
+import { Button, Collapse, MenuItem, Paper, TextField, Tooltip, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import styles from '@styles/find/FindBox.module.scss'
-import * as yup from 'yup'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useRouter } from 'next/router'
 import { Order, ORDER_OPTIONS, SORT_OPTIONS } from '@utils/constant'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
 import { useFindMentor } from '../../../context/FindMentorProvider'
 import { LoadingIndicator } from '../../common/LoadingIndicator/LoadingIndicator'
-import { useState } from 'react'
-import { Skill } from '@models/mentor'
 import { SkillsArrayInput } from './SkillsArrayInput'
 
 export interface FindForm {
@@ -45,12 +35,14 @@ export const FindBox = () => {
 
   const [openSort, setOpenSort] = useState(false)
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FindForm>({
+  const { keyword, category } = router.query
+
+  const { register, handleSubmit } = useForm<FindForm>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      keyword: keyword?.toString() || '',
+      category: category?.toString() || '',
+    },
   })
   const onSubmit = (data: FindForm) => {
     router.push(
@@ -70,18 +62,34 @@ export const FindBox = () => {
 
   return (
     <LoadingIndicator loading={loading} style={{ marginTop: 40 }} title="Đang tìm kiếm mentor...">
-      <Box className={styles.container}>
-        <Box className={styles.glassBox}>
-          <Typography className="sb" variant="h3">
-            Tìm kiếm
-          </Typography>
+      <Paper elevation={2} style={{ marginTop: 16, padding: 16, borderRadius: 16 }}>
+        <Box className="w100">
+          <div
+            className="df aic rounded-2xl w-100 p-4 bg-white relative overflow-hidden"
+            style={{
+              height: 300,
+            }}
+          >
+            <img
+              src="/static/find-image.png"
+              style={{ height: 300 }}
+              className="absolute -right-0 -bottom-0 h-100 w-100 mb-4"
+            />
+            <div className="w-4/6">
+              <img src="/static/find-text.svg" />
+              <p className="text-gray-400 text-xl">
+                Tìm kiếm người hướng dẫn sử dụng những thông tin cơ bản
+              </p>
+              <p className="text-gray-400 text-xl">VD: Tên, chuyên mục, các kỹ năng,...</p>
+            </div>
+          </div>
         </Box>
-      </Box>
-      <Paper elevation={2} style={{ marginTop: 16, padding: 16 }}>
-        <form style={{ padding: 8 }} className="df aic jcc fdc" onSubmit={handleSubmit(onSubmit)}>
-          <Typography variant="h6" className="sb" style={{ margin: 16 }}>
-            Tìm kiếm theo thông tin
-          </Typography>
+        <Box
+          component={'form'}
+          style={{ padding: 8 }}
+          className="df aic jcc fdc"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Box mb={2} className="df jcc w100">
             <TextField
               defaultValue={''}
@@ -188,7 +196,7 @@ export const FindBox = () => {
               </TextField>
             </Box>
           </Collapse>
-        </form>
+        </Box>
       </Paper>
     </LoadingIndicator>
   )

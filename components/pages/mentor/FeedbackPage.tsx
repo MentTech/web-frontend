@@ -21,7 +21,11 @@ const columns: GridColDef[] = [
 export const FeedbackPage = () => {
   const { mentorRatings, loading, loadMore, isLoadingMore, paginationInfo } = useMentorRatings()
 
-  const displayRatings = mentorRatings.map((item) => ({ ...item, name: item?.user?.name }))
+  const displayRatings = mentorRatings.map((item) => ({
+    ...item,
+    name: item?.user?.name,
+    createAt: new Date(item.createAt).toLocaleString(),
+  }))
 
   const [selectedRows, setSelectedRows] = useState([] as any[])
 
