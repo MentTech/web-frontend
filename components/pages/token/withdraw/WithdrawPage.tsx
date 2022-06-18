@@ -135,7 +135,7 @@ export const WithdrawPage = () => {
       return
     }
     if (state.token < 1000) {
-      setErrorText('Số coin rút phải lớn hơn 1000')
+      setErrorText('Số token rút phải lớn hơn 1000')
       return
     }
     onWithdraw(state)
@@ -173,9 +173,9 @@ export const WithdrawPage = () => {
                   />
                   <TextField
                     fullWidth
-                    label="Số coin"
+                    label="Số token"
                     required
-                    placeholder="Nhập vào lượng coin bạn muốn rút..."
+                    placeholder="Nhập vào lượng token bạn muốn rút..."
                     {...formProps('token')}
                   />
                   <TextField
@@ -188,6 +188,15 @@ export const WithdrawPage = () => {
                   />
                 </Stack>
 
+                <Typography
+                  className="w100"
+                  align="center"
+                  variant="caption"
+                  style={{ color: COLOR.SEMANTIC_DANGER_5_MAIN, marginTop: 8 }}
+                >
+                  {errorText}
+                </Typography>
+
                 <Box mt={2} className="df w100 jcc aic">
                   <Box style={{ flex: 1 }}>
                     <Typography
@@ -196,16 +205,13 @@ export const WithdrawPage = () => {
                       color={'GrayText'}
                       variant="caption"
                     >
-                      {withdrawRate} coin = 10.000 VNĐ.
+                      {withdrawRate} token = 10.000 VNĐ.
                     </Typography>
                     <Typography color={'GrayText'} style={{ display: 'block' }} variant="caption">
-                      Số coin cần rút là bội số của {withdrawRate}
+                      Số token cần rút là bội số của {withdrawRate}
                     </Typography>
                   </Box>
                   <Box style={{ flex: 1 }}>
-                    <Typography variant="caption" style={{ color: COLOR.SEMANTIC_DANGER_5_MAIN }}>
-                      {errorText}
-                    </Typography>
                     <Button
                       disableRipple
                       fullWidth
