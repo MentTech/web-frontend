@@ -25,7 +25,7 @@ const UserTransactionProvider = ({ children }: UserTransactionProviderProps) => 
   const { balance, transactions } = useTransaction()
 
   useEffect(() => {
-    if (balance && transactions) {
+    if (balance != null && transactions != null) {
       setLoading(false)
     }
   }, [balance, transactions])
