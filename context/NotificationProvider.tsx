@@ -38,7 +38,7 @@ const NotificationProvider = ({ children }: NotificationProviderProps) => {
   const [hasMore, setHasMore] = useState(true)
   const [notifications, setNotifications] = useState<Notification[]>([])
 
-  const { data } = useSession()
+  const { status } = useSession()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,7 +53,7 @@ const NotificationProvider = ({ children }: NotificationProviderProps) => {
         setLoading(false)
       }
     }
-    if (data) {
+    if (status === 'authenticated') {
       fetchData()
     }
   }, [skip, limit])
