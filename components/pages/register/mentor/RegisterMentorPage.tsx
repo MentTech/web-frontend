@@ -56,6 +56,19 @@ const schema = yup.object({
   cv: yup.string(),
 })
 
+const getBase64FromInputFile = (file: File) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => {
+      resolve(reader.result)
+    }
+    reader.onerror = (error) => {
+      reject(error)
+    }
+  })
+}
+
 export const RegisterMentorPage = () => {
   const { loading, fetchedCategories, fetchedSkills } = useFindMentor()
 
@@ -66,21 +79,66 @@ export const RegisterMentorPage = () => {
 
   const [loadingSubmit, setLoadingSubmit] = useState(false)
 
-  const [avatarURL, setAvatarURL] = useState('')
+  const [avatarData, setAvatarData] = useState<string>('')
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
 
   const [submitError, setSubmitError] = useState('')
-
-  const onChangeAvatar = (value: string) => {
-    setAvatarURL(value)
-  }
 
   const { register, handleSubmit } = useForm<RegisterMentorPayload>({
     resolver: yupResolver(schema),
   })
 
+  const [loadingAvatar, setLoadingAvatar] = useState(false)
+
+  const onChangeAvatar = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      setLoadingAvatar(true)
+      const file = e.target.files?.[0]
+      if (file) {
+        if (!file.name.match(/\.(jpg|jpeg|png|gif|jfif|avif|tiff|tif|svg)$/)) {
+          throw new Error('Định dạng file không hỗ trợ! Vui lòng thử lại.')
+        }
+        const base64 = (await getBase64FromInputFile(file)) as string
+        setAvatarData(base64)
+        setAvatarFile(file)
+      }
+    } catch (error) {
+      setToastError(error)
+    } finally {
+      setLoadingAvatar(false)
+    }
+  }
+
+  const onUploadAvatar = async () => {
+    try {
+      let result = ''
+      var formdata = new FormData()
+
+      formdata.append('file', avatarFile as Blob)
+
+      var requestOptions = {
+        method: 'POST',
+        body: formdata,
+      }
+
+      await fetch('https://images.menttech.live/', requestOptions)
+        .then((response) => response.json())
+        .then((response) => {
+          result = `https://images.menttech.live/${response.filename}`
+        })
+        .catch((error) => {
+          setToastError(error)
+        })
+
+      return result
+    } catch (error) {
+      setToastError(error)
+    }
+  }
+
   const onSubmit = async (data: RegisterMentorPayload) => {
     try {
-      if (!avatarURL) {
+      if (!avatarData) {
         throw new Error('Hãy cập nhật avatar của bạn')
       }
       if (!data.categoryId) {
@@ -98,6 +156,16 @@ export const RegisterMentorPage = () => {
         throw new Error('Hãy cập nhật email của bạn')
       }
 
+      if (!data.cv) {
+        throw new Error('Hãy cập nhật link CV của bạn')
+      }
+
+      const avatar = await onUploadAvatar()
+
+      if (!avatar) {
+        throw new Error('Hãy cập nhật avatar của bạn')
+      }
+
       const payload = {
         ...data,
         birthday: new Date(data.birthday || '')?.toISOString(),
@@ -106,7 +174,7 @@ export const RegisterMentorPage = () => {
         achievements: acchivements,
         experiences: experiences,
         categoryId: Number(data.categoryId),
-        avatar: avatarURL,
+        avatar: avatar,
         cv: data.cv,
       }
       setSubmitError('')
@@ -158,8 +226,9 @@ export const RegisterMentorPage = () => {
               </Box>
               <Box style={{ marginLeft: 16 }} className="df aic jcc h100">
                 <UserAvatar
-                  avatarURL={avatarURL}
-                  setAvatarURL={(value: string) => onChangeAvatar(value)}
+                  avatarData={avatarData}
+                  loading={loadingAvatar}
+                  onUpdate={onChangeAvatar}
                 />
               </Box>
             </Box>

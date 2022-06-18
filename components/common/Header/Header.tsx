@@ -78,7 +78,10 @@ const Header = () => {
   const handleClose2 = () => {
     setAnchorEl2(null)
   }
-  const { logout, profile } = useProfile()
+
+  const { data } = useSession()
+
+  const { logout, profile } = data ? useProfile() : { logout: () => {}, profile: {} }
 
   const handleLogout = (event: any) => {
     event.preventDefault()
