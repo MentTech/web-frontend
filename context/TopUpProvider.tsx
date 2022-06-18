@@ -42,16 +42,20 @@ const TopUpProvider = ({ children }: TopUpProviderProps) => {
   const [topupRate, setTopupRate] = useState(0)
 
   const onTopUp = async (data: OrderTopup) => {
+    let result
     try {
       setLoadingTopUp(true)
-      const result = await orderApi.requestOrderTopup(data)
+      result = await orderApi.requestOrderTopup(data)
+      if (result.data && data.paymentMethod === TopUpPaymentMethod.Paypal) {
+        window.location.href = result.data.approveUrl
+      }
       setCurrentTopUp(result.data)
-      return result.data
     } catch (error) {
       setToastError(error)
     } finally {
       setLoading(false)
     }
+    if (result) return result.data
   }
 
   const getTopUpRate = async () => {

@@ -1,5 +1,5 @@
 import { MainLayout } from '@components/layouts'
-import { TopUpPage } from '@components/pages/coin/topup/TopUpPage'
+import { TopUpPage } from '@components/pages/token/topup/TopUpPage'
 import TopUpProvider from '@context/TopUpProvider'
 import { NextPageWithLayout } from '@models/common'
 import React from 'react'

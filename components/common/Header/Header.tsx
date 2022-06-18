@@ -272,7 +272,7 @@ const Header = () => {
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
               {/* <Link href="/tokens">
-                <MenuItem>Tokens: {profile?.coin}</MenuItem>
+                <MenuItem>Tokens: {profile?.token}</MenuItem>
               </Link> */}
               <Divider />
               <Link href="/profile">

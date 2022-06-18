@@ -146,11 +146,18 @@ export const TopUpPage = () => {
 
   const formProps = (field: string) => ({
     value: state[field as keyof TopUpPageReducerProps] || null,
-    onChange: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
+    onChange: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
       dispatch({
         type: field,
         payload: field === 'token' ? Number(e.target.value) : e.target.value,
-      }),
+      })
+    },
+    onBlur: (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+      dispatch({
+        type: field,
+        payload: field === 'token' ? Number(e.target.value) : e.target.value,
+      })
+    },
     ...(field === 'token' && { type: 'number' }),
   })
 
@@ -171,7 +178,8 @@ export const TopUpPage = () => {
       setErrorText('Số coin nạp phải lớn hơn 1000')
       return
     }
-    onTopUp(state)
+    await onTopUp(state)
+
     if (state.paymentMethod !== TopUpPaymentMethod.Paypal) {
       setStep(1)
     }

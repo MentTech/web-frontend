@@ -41,7 +41,7 @@ const WithdrawProvider = ({ children }: WithdrawProviderProps) => {
     } catch (error) {
       setToastError(error)
     } finally {
-      setLoading(false)
+      setLoadingWithdraw(false)
     }
   }
 

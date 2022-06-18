@@ -42,17 +42,17 @@ interface RegisterMentorPayload {
 }
 
 const schema = yup.object({
-  email: yup.string().email().required(),
-  name: yup.string().required(),
+  email: yup.string().email(),
+  name: yup.string(),
   birthday: yup.string(),
-  phone: yup.string().required(),
+  phone: yup.string(),
   avatar: yup.string(),
   degrees: yup.array(),
   experiences: yup.array(),
   linkedin: yup.string(),
   acchivements: yup.array(),
-  categoryId: yup.string().required(),
-  introduction: yup.string().required(),
+  categoryId: yup.string(),
+  introduction: yup.string(),
   jobs: yup.array(),
 })
 
@@ -66,8 +66,9 @@ export const RegisterMentorPage = () => {
 
   const [loadingSubmit, setLoadingSubmit] = useState(false)
 
-  const [birthday, setBirthday] = useState<Date | null>(new Date())
   const [avatarURL, setAvatarURL] = useState('')
+
+  const [submitError, setSubmitError] = useState('')
 
   const onChangeAvatar = (value: string) => {
     setAvatarURL(value)
@@ -81,18 +82,29 @@ export const RegisterMentorPage = () => {
     resolver: yupResolver(schema),
   })
 
-  const hasError = () => {
-    return Object.keys(errors).length > 0
-  }
-
   const onSubmit = async (data: RegisterMentorPayload) => {
     try {
       if (!avatarURL) {
         throw new Error('Hãy cập nhật avatar của bạn')
       }
+      if (!data.categoryId) {
+        throw new Error('Hãy chọn một chuyên mục')
+      }
+      if (!data.introduction) {
+        throw new Error('Hãy cập nhật giới thiệu của bạn')
+      }
+
+      if (!data.birthday) {
+        throw new Error('Hãy cập nhật ngày sinh của bạn')
+      }
+
+      if (!data.email) {
+        throw new Error('Hãy cập nhật email của bạn')
+      }
+
       const payload = {
         ...data,
-        birthday: birthday?.toISOString(),
+        birthday: new Date(data.birthday || '')?.toISOString(),
         skillIds: skills.map((skill) => Number(skill.id)),
         degrees: degrees,
         achievements: acchivements,
@@ -100,6 +112,7 @@ export const RegisterMentorPage = () => {
         categoryId: Number(data.categoryId),
         avatar: avatarURL,
       }
+      setSubmitError('')
       setLoadingSubmit(true)
       const response = await mentorApi.applyMentor(payload)
       if (response.status === 201) {
@@ -110,7 +123,7 @@ export const RegisterMentorPage = () => {
     } catch (error) {
       if (String(error).includes('409')) {
         setToastError('Email đã được sử dụng')
-      } else setToastError(error)
+      } else setSubmitError(new String(error).slice(7).toString())
     } finally {
       setLoadingSubmit(false)
     }
@@ -160,7 +173,14 @@ export const RegisterMentorPage = () => {
                 label={'Số điện thoại'}
                 style={{ marginRight: 16, marginTop: 16, width: '50%' }}
               />
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <TextField
+                label="Ngày sinh"
+                type={'date'}
+                {...register('birthday')}
+                defaultValue={new Date().toISOString().split('T')[0]}
+                style={{ marginTop: 16, width: '50%' }}
+              />
+              {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DesktopDatePicker
                   inputFormat="MM/dd/yyyy"
                   value={birthday}
@@ -168,10 +188,15 @@ export const RegisterMentorPage = () => {
                     setBirthday(date)
                   }}
                   renderInput={(params) => (
-                    <TextField fullWidth style={{ marginTop: 16, width: '50%' }} {...params} />
+                    <TextField
+                      label="Ngày sinh"
+                      fullWidth
+                      style={{ marginTop: 16, width: '50%' }}
+                      {...params}
+                    />
                   )}
                 />
-              </LocalizationProvider>
+              </LocalizationProvider> */}
             </Box>
             <TextField
               fullWidth
@@ -297,11 +322,7 @@ export const RegisterMentorPage = () => {
             </Box>
           </Box>
           <Box className="df fdc aic jcc" mt={4}>
-            {hasError() && (
-              <FormLabel error={hasError()}>
-                Thông tin chưa chính xác! Hãy kiểm tra lại các thông tin đã nhập
-              </FormLabel>
-            )}
+            {submitError && <FormLabel error={!!submitError}>{submitError}</FormLabel>}
             <Button
               variant="contained"
               style={{

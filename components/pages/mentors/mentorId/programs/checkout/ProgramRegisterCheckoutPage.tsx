@@ -74,7 +74,7 @@ export function ProgramRegisterCheckoutPage() {
   const onSubmit = async (data: CheckoutInfoProps) => {
     try {
       setCheckoutLoading(true)
-      const result = await ProgramApi.menteeRegister({
+      await ProgramApi.menteeRegister({
         mentorId: Number(mentorId),
         programId: Number(currentProgram?.id),
         checkoutInfo: data,
@@ -82,14 +82,12 @@ export function ProgramRegisterCheckoutPage() {
 
       setToastSuccess('Đã đăng ký chương trình thành công!')
     } catch (error: any) {
+      console.log('🚀 ~ file: ProgramRegisterCheckoutPage.tsx ~ line 85 ~ onSubmit ~ error', error)
       if (error) {
-        if (error.response.data.message) {
-          const errorMessage = error.response.data.message
-          if (errorMessage.includes('Can not get balance'))
-            return setToastError('Không đủ số dư trong tài khoản, vui lòng nạp thêm!')
-          if (errorMessage.includes('You have already registered for this program'))
-            return setToastError('Bạn đã đăng ký chương trình này rồi')
-        }
+        if (String(error).includes('422'))
+          return setToastError('Không đủ số dư trong tài khoản, vui lòng nạp thêm!')
+        if (String(error).includes('403'))
+          return setToastError('Bạn đã đăng ký chương trình này rồi')
       }
       setToastError(error)
     } finally {
@@ -107,18 +105,19 @@ export function ProgramRegisterCheckoutPage() {
               component={'form'}
               onSubmit={handleSubmit(onSubmit as any)}
               className="df fdc"
-              style={{ padding: 16, height: '100%' }}
+              style={{ height: '100%', paddingTop: 16 }}
               elevation={0}
             >
               <Typography variant="h6" align="center">
                 Đăng ký phiên Mentoring
               </Typography>
-              <Box className="df fdc" my={3}>
+              <Box className="df fdc" my={3} p={1}>
                 <TextField
                   disabled={checkoutLoading}
                   defaultValue={profile.name}
                   label="Họ và tên"
-                  style={{ marginTop: 8 }}
+                  style={{ margin: 8 }}
+                  placeholder="Nhập họ và tên..."
                   error={errors.name}
                   {...register('name')}
                 />
@@ -126,36 +125,41 @@ export function ProgramRegisterCheckoutPage() {
                   disabled={checkoutLoading}
                   defaultValue={profile.email}
                   label="Email"
+                  placeholder="Nhập email..."
                   error={errors.email}
-                  style={{ marginTop: 8 }}
+                  style={{ margin: 8 }}
                   {...register('email')}
                 />
 
                 <TextField
                   disabled={checkoutLoading}
                   label="Ghi chú cho mentor"
-                  style={{ marginTop: 8 }}
+                  style={{ margin: 8 }}
                   error={errors.note}
+                  placeholder="Nhập ghi chú..."
                   {...register('note')}
                 />
                 <TextField
                   disabled={checkoutLoading}
                   label="Kỳ vọng"
-                  style={{ marginTop: 8 }}
+                  style={{ margin: 8 }}
+                  placeholder="Nhập kỳ vọng..."
                   error={errors.expectation}
                   {...register('expectation')}
                 />
                 <TextField
                   disabled={checkoutLoading}
                   label="Mục tiêu"
-                  style={{ marginTop: 8 }}
+                  style={{ margin: 8 }}
                   error={errors.goal}
+                  placeholder="Nhập mục tiêu..."
                   {...register('goal')}
                 />
                 <TextField
                   disabled={checkoutLoading}
                   label="Mô tả bản thân"
-                  style={{ marginTop: 8 }}
+                  style={{ margin: 8 }}
+                  placeholder="Nhập mô tả bản thân..."
                   multiline={true}
                   rows={3}
                   error={errors.description}
@@ -163,7 +167,10 @@ export function ProgramRegisterCheckoutPage() {
                 />
               </Box>
               <LoadingIndicator noText loading={checkoutLoading}>
-                <button className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                <button
+                  style={{ borderRadius: '0px 0px 8px 8px', height: 46 }}
+                  className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 "
+                >
                   Đăng ký ngay
                 </button>
               </LoadingIndicator>
