@@ -47,6 +47,9 @@ export default function NotificationItem({
         disablePadding
         sx={{
           padding: '10px 4px',
+          display: 'flex',
+          alignItems: 'start',
+          gap: '20px',
           borderRadius: '10px',
           cursor: 'pointer',
           '&:hover': { backgroundColor: '#F7F7F7' },
@@ -55,7 +58,7 @@ export default function NotificationItem({
           handleReadNotification(notification)
         }}
       >
-        <Avatar sx={{ mr: 2, width: '3rem', height: '3rem' }} src={infor?.avatar} />
+        <Avatar sx={{ width: '3rem', height: '3rem' }} src={infor?.avatar} />
         <Box>
           <Typography sx={{ fontSize: '15px' }}>{showMessage()}</Typography>
           {notification.isRead ? (

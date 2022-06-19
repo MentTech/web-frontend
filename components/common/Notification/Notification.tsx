@@ -91,7 +91,7 @@ export default function NotificationComp(props: NotificationProps) {
         onClose={onCloseMenu}
         PaperProps={{
           style: {
-            padding: 16,
+            padding: 12,
             maxWidth: 350,
             maxHeight: 'calc(100vh - 72px)',
             marginTop: '20px',
