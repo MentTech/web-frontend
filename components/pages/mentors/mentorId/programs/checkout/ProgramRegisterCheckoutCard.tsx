@@ -1,7 +1,6 @@
 import { Mentor, Program } from '@models/mentor'
 import { Paid } from '@mui/icons-material'
 import { Divider } from '@mui/material'
-import React from 'react'
 
 export function ProgramRegisterCheckoutCard({
   program,

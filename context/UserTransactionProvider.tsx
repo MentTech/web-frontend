@@ -8,12 +8,14 @@ interface UserTransactionContextProps {
   balance: number
   transactions: Transaction[]
   loading: boolean
+  mutate: any
 }
 
 const UserTransactionContext = React.createContext<UserTransactionContextProps>({
   balance: 0,
   transactions: [],
   loading: false,
+  mutate: () => {},
 })
 
 interface UserTransactionProviderProps {
@@ -23,9 +25,7 @@ interface UserTransactionProviderProps {
 const UserTransactionProvider = ({ children }: UserTransactionProviderProps) => {
   const [loading, setLoading] = useState(true)
 
-  const { data } = useSession()
-
-  const { balance, transactions } = data ? useTransaction() : { balance: 0, transactions: [] }
+  const { balance, transactions, mutate } = useTransaction()
 
   useEffect(() => {
     if (balance != null && transactions != null) {
@@ -39,6 +39,7 @@ const UserTransactionProvider = ({ children }: UserTransactionProviderProps) => 
         loading,
         balance,
         transactions,
+        mutate,
       }}
     >
       {children}
