@@ -89,28 +89,25 @@ export default function NotificationComp(props: NotificationProps) {
         open={!!anchorEl}
         anchorEl={anchorEl}
         onClose={onCloseMenu}
-        // PaperProps={{
-        //   style: {
-        //     padding: 16,
-        //     maxWidth: 350,
-        //   },
-        // }}
         PaperProps={{
           style: {
             padding: 16,
             maxWidth: 350,
+            maxHeight: 'calc(100vh - 72px)',
+            marginTop: '20px',
+            display: 'block !important',
           },
           elevation: 0,
           sx: {
             overflow: 'visible',
             filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            mt: 1.5,
+            mt: 8,
             '&:before': {
               content: '""',
               display: 'block',
               position: 'absolute',
               top: 0,
-              right: 14,
+              right: 12,
               width: 10,
               height: 10,
               bgcolor: 'background.paper',
@@ -123,7 +120,13 @@ export default function NotificationComp(props: NotificationProps) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <List>
+        <Box
+          sx={{
+            overflowY: 'scroll',
+            height: 'calc(100vh - 120px) !important',
+            paddingTop: '0 !important',
+          }}
+        >
           <Typography variant="h6" noWrap>
             Thông báo
           </Typography>
@@ -164,7 +167,7 @@ export default function NotificationComp(props: NotificationProps) {
               </div>
             </div>
           )}
-        </List>
+        </Box>
       </Menu>
     </>
   )

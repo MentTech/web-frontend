@@ -1,4 +1,5 @@
 import Header from '@components/common/Header/Header'
+import { EmptyLayout } from '@components/layouts'
 import { config } from '@config/main'
 import { Mentor } from '@models/index'
 import Rating from '@mui/material/Rating'
@@ -335,4 +336,5 @@ function Home() {
   )
 }
 
+Home.Layout = EmptyLayout
 export default Home

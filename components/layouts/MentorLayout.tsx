@@ -2,6 +2,7 @@ import MentorToolbar from '@components/common/MentorToolbar/MentorToolbar'
 import { LayoutProps } from '@models/common'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
 import { Container } from '@mui/material'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
@@ -84,7 +85,7 @@ export function MentorLayout({ children }: LayoutProps) {
 
   return (
     <NotificationProvider>
-      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+      <Box sx={{ display: 'flex', height: '100%', minHeight: '100vh' }}>
         <CssBaseline />
 
         <AppBar position="fixed" open={open}>
@@ -232,6 +233,20 @@ export function MentorLayout({ children }: LayoutProps) {
                       <span className="flex-grow text-right"></span>
                     </a>
                   </Link>
+
+                  <Link href="/mentor/account">
+                    <a
+                      className={`hover:text-gray-800 hover:bg-gray-100 flex items-center p-2 my-6 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200  text-gray-600 dark:text-gray-400 rounded-lg ${
+                        router.pathname == '/mentor/account'
+                          ? 'bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-100'
+                          : ''
+                      }`}
+                    >
+                      <ManageAccountsIcon sx={{ width: '20px', height: '20px' }} />
+                      <span className="mx-4 text-lg font-normal">Tài khoản</span>
+                      <span className="flex-grow text-right"></span>
+                    </a>
+                  </Link>
                 </nav>
                 <div className="absolute bottom-0 my-10">
                   <a
@@ -255,7 +270,10 @@ export function MentorLayout({ children }: LayoutProps) {
             </div>
           </div>
         </Drawer>
-        <Main open={open} sx={{ backgroundColor: '#F3F2EF' }}>
+        <Main
+          open={open}
+          style={{ backgroundColor: '#F3F2EF', height: '100%', minHeight: '100vh' }}
+        >
           <DrawerHeader />
           {children}
           {/* <Footer /> */}

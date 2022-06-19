@@ -56,7 +56,7 @@ const NotificationProvider = ({ children }: NotificationProviderProps) => {
     if (status === 'authenticated') {
       fetchData()
     }
-  }, [skip, limit])
+  }, [skip, limit, status])
 
   function addNewNotification(notification: Notification) {
     setNotifications([...notifications, notification])

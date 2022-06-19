@@ -18,7 +18,6 @@ export default function NotificationItem({
   const { infor } = usePublicUserInfor(notification.actorId)
 
   function showMessage() {
-    console.log('notification', notification)
     switch (notification.type.name) {
       case 'MENTOR_RECEIVE_SESSION_REQUEST': {
         return `${infor?.name} đã đặt lịch phiên mentoring về chương trình ${notification.additional.program?.title}`

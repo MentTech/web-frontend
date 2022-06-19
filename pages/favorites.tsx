@@ -3,7 +3,7 @@ import { MainLayout } from '@components/layouts'
 import { useFavorite } from '@hooks/index'
 import { Typography } from '@mui/material'
 
-import { Box } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 import { useState } from 'react'
 import FavoriteCard from '@components/common/FavoriteCard/FavoriteCard'
 import FavoriteItemCard from '@components/common/FavoriteItemCard/FavoriteItemCard'
@@ -20,11 +20,17 @@ export default function Favorites() {
     <Box sx={{ my: '24px' }}>
       <HeadingPrimary>Danh sách yêu thích</HeadingPrimary>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: '20px' }}></Box>
-      {!favorites && <Loading />}
-      {favorites &&
-        (favorites.length === 0
-          ? 'Chưa có mentor yêu thích nào.'
-          : favorites.map((favorite: any, index: any) => <FavoriteItemCard mentorId={favorite} />))}
+      <Grid container spacing={3}>
+        {!favorites && <Loading />}
+        {favorites &&
+          (favorites.length === 0
+            ? 'Chưa có mentor yêu thích nào.'
+            : favorites.map((favorite: any, index: any) => (
+                <Grid item xs={12} sm={6} md={4} lg={3}>
+                  <FavoriteItemCard mentorId={favorite} />
+                </Grid>
+              )))}
+      </Grid>
     </Box>
   )
 }
