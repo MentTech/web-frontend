@@ -100,6 +100,11 @@ export function ProgramRegisterCheckoutPage() {
       <Container style={{ padding: 16 }}>
         <Breadcrump items={breadcrumbs} />
         <Grid container spacing={2}>
+          <Grid item xs={6} className="df aic jcc">
+            {currentProgram && (
+              <ProgramRegisterCheckoutCard mentorInfo={currentMentor} program={currentProgram} />
+            )}
+          </Grid>
           <Grid item xs={6}>
             <Paper
               component={'form'}
@@ -168,18 +173,13 @@ export function ProgramRegisterCheckoutPage() {
               </Box>
               <LoadingIndicator noText loading={checkoutLoading}>
                 <button
-                  style={{ borderRadius: '0px 0px 8px 8px', height: 46 }}
+                  style={{ borderRadius: '0px 0px 8px 8px', height: 46, marginTop: 'auto' }}
                   className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 "
                 >
                   Đăng ký ngay
                 </button>
               </LoadingIndicator>
             </Paper>
-          </Grid>
-          <Grid item xs={6} className="df aic jcc">
-            {currentProgram && (
-              <ProgramRegisterCheckoutCard mentorInfo={currentMentor} program={currentProgram} />
-            )}
           </Grid>
         </Grid>
       </Container>
