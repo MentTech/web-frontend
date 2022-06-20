@@ -19,8 +19,10 @@ export function useFavorite() {
   }
 
   async function removeFavorite(mentorId: number) {
+    console.log('removeFavorite', mentorId)
+    console.log(favorites)
     mutate(
-      favorites?.filter((f: any) => f !== mentorId),
+      favorites?.filter((f: number) => f !== mentorId),
       false
     )
     try {

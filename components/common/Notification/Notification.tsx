@@ -122,12 +122,12 @@ export default function NotificationComp(props: NotificationProps) {
       >
         <Box
           sx={{
-            overflowY: 'scroll',
-            height: 'calc(100vh - 120px) !important',
+            overflowY: 'auto',
+            maxHeight: 'calc(100vh - 120px) !important',
             paddingTop: '0 !important',
           }}
         >
-          <Typography variant="h6" noWrap>
+          <Typography variant="h6" noWrap sx={{ mb: 2 }}>
             Thông báo
           </Typography>
           {notifications && notifications.length > 0 ? (
