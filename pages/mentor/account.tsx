@@ -1,5 +1,5 @@
 import { MentorLayout } from '@components/layouts'
-import * as React from 'react'
+import { useState } from 'react'
 import HeadingPrimary from '@components/common/HeadingPrimary/HeadingPrimary'
 import { useProfile } from '@hooks/use-profile'
 import { useForm } from 'react-hook-form'
@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import { authApi } from '@api/auth-api'
 import { toast } from 'react-toastify'
+import UpdateProfileMentorForm from '@components/common/UpdateProfileMentorForm/UpdateProfileMentorForm'
 
 export interface MentorAccountProps {}
 
@@ -20,7 +21,9 @@ const schema = Yup.object({
 })
 
 function MentorAccount(props: MentorAccountProps) {
-  const { profile } = useProfile()
+  const [showEditPersonalInfor, setShowEditPersonalInfor] = useState(false)
+
+  const { profile, updateProfile } = useProfile()
 
   const {
     register,
@@ -43,6 +46,16 @@ function MentorAccount(props: MentorAccountProps) {
     }
   }
 
+  async function handleEditInforSubmit(data: any) {
+    handleCloseEditInforModal()
+    await updateProfile({ ...data, phone: data.phone.toString() })
+    toast.success('Cập nhật thông tin thành công!')
+  }
+
+  function handleCloseEditInforModal() {
+    setShowEditPersonalInfor(false)
+  }
+
   return (
     <>
       <HeadingPrimary>Tài khoản</HeadingPrimary>
@@ -63,7 +76,7 @@ function MentorAccount(props: MentorAccountProps) {
           </div>
         </div>
         <div className="space-y-6 bg-white">
-          <form className="flex sm:flex-col gap-8 px-6 py-6">
+          <div className="flex sm:flex-col gap-8 px-6 py-6">
             <h2 className="w-40">Thông tin</h2>
             <div className="w-full space-y-6">
               <div>
@@ -86,6 +99,7 @@ function MentorAccount(props: MentorAccountProps) {
                     className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                     placeholder="Name"
                     value={profile?.name}
+                    readOnly
                   />
                 </div>
               </div>
@@ -97,19 +111,20 @@ function MentorAccount(props: MentorAccountProps) {
                     className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                     placeholder="Phone number"
                     value={profile?.phone}
+                    readOnly
                   />
                 </div>
               </div>
               <div className="text-center">
                 <button
-                  type="submit"
+                  onClick={() => setShowEditPersonalInfor(true)}
                   className="py-2 px-8 ml-auto bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
                 >
-                  Lưu
+                  Chỉnh sửa
                 </button>
               </div>
             </div>
-          </form>
+          </div>
 
           <hr />
           <form
@@ -167,6 +182,16 @@ function MentorAccount(props: MentorAccountProps) {
           <hr />
         </div>
       </div>
+      <UpdateProfileMentorForm
+        data={{
+          name: profile?.name,
+          birthday: profile?.birthday,
+          phone: profile?.phone,
+        }}
+        onSubmit={handleEditInforSubmit}
+        onClose={handleCloseEditInforModal}
+        show={showEditPersonalInfor}
+      />
     </>
   )
 }
