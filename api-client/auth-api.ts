@@ -30,4 +30,10 @@ export const authApi = {
   resendActivation(email: string) {
     return axiosClient.post('/v1/activation/resend', { email })
   },
+  changePassword({ oldPassword, newPassword }: { oldPassword: string; newPassword: string }) {
+    return axiosClient.post('/v1/auth/changepassword', {
+      oldPassword,
+      newPassword,
+    })
+  },
 }
