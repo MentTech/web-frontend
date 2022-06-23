@@ -1,10 +1,11 @@
 import Modal from '../Modal/Modal'
 import { CameraAlt } from '@mui/icons-material'
-import { Avatar, Box } from '@mui/material'
+import { Avatar, Box, Button } from '@mui/material'
 import { useState, useRef } from 'react'
 import axios from 'axios'
 import { useProfile } from '@hooks/index'
 import { toast } from 'react-toastify'
+import { setToastError } from '@utils/method'
 
 export interface AvatarModalProps {
   show: boolean
@@ -15,6 +16,7 @@ export interface AvatarModalProps {
 export default function AvatarModal({ show, avatar, onClose }: AvatarModalProps) {
   const [showUploadAvatar, setShowUploadAvatar] = useState(false)
   const [preview, setPreview] = useState('')
+  const [loading, setLoading] = useState(false)
   const imageRef = useRef<HTMLInputElement>(null)
 
   const { updateAvatar } = useProfile()
@@ -29,20 +31,28 @@ export default function AvatarModal({ show, avatar, onClose }: AvatarModalProps)
   )
 
   async function handleSubmit(e: any) {
-    e.preventDefault()
-    var formData = new FormData()
-    var imageFile = document.getElementById('avatar') as HTMLInputElement
-    formData.append('file', imageFile?.files ? imageFile.files[0] : '')
-    const res = await axios.post('https://images.menttech.live/', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
+    try {
+      setLoading(true)
+      e.preventDefault()
+      var formData = new FormData()
+      var imageFile = document.getElementById('avatar') as HTMLInputElement
+      if (imageFile?.files?.length == 0) throw new Error('Bạn chưa chọn hình ảnh nào!')
+      formData.append('file', imageFile?.files ? imageFile.files[0] : '')
+      const res = await axios.post('https://images.menttech.live/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
 
-    if (res.status === 200) {
-      await updateAvatar('https://images.menttech.live/' + res.data.filename)
-      toast.success('Cập nhật ảnh đại diện thành công')
-      setShowUploadAvatar(false)
+      if (res.status === 200) {
+        await updateAvatar('https://images.menttech.live/' + res.data.filename)
+        toast.success('Cập nhật ảnh đại diện thành công!')
+        setShowUploadAvatar(false)
+      }
+    } catch (error) {
+      setToastError(error ?? 'Cập nhật ảnh đại diện không thành công!')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -94,11 +104,17 @@ export default function AvatarModal({ show, avatar, onClose }: AvatarModalProps)
                 onChange={imageChange}
                 name="avatar"
                 id="avatar"
+                style={{ height: 48 }}
               />
             </div>
-            <button type="submit" className="btn btn-active btn-primary ml-3">
+            <Button
+              style={{ height: 44 }}
+              type="submit"
+              disabled={loading || !preview}
+              className={'btn btn-primary ml-3'}
+            >
               Upload
-            </button>
+            </Button>
           </div>
         </form>
       </Modal>

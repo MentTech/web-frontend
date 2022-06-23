@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react'
-import { useRouter } from 'next/router'
-import { toast } from 'react-toastify'
-import { Mentor } from '@models/mentor'
 import { mentorApi } from '@api/mentor-api'
+import { Mentor } from '@models/mentor'
+import { setToastError } from '@utils/method'
+import { useRouter } from 'next/router'
+import React, { useContext, useState } from 'react'
 
 interface SuggestMentorsContext {
   suggestMentors: Mentor[]
@@ -30,17 +30,19 @@ const SuggestMentorsProvider = ({ children }: SuggestMentorsProviderProps) => {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      if (mentorId) {
-        setLoading(true)
-        try {
+      setLoading(true)
+      try {
+        if (mentorId) {
           const { data: mentor } = await mentorApi.getSuggestMentorsById(String(mentorId), 3)
           setSuggestMentors(mentor)
-        } catch (error: any) {
-          toast.error(error.message)
-          // setError(error.message)
-        } finally {
-          setLoading(false)
+        } else {
+          const res = await mentorApi.getRandomSuggestMentor()
+          setSuggestMentors(res.data)
         }
+      } catch (error: any) {
+        setToastError(error.message)
+      } finally {
+        setLoading(false)
       }
     }
     fetchData()

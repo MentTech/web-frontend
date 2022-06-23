@@ -129,3 +129,9 @@ html {
   -webkit-box-orient: vertical;
   word-break: break-all;
 }
+
+.centered-absolute-hoz {
+  position: absolute !important;
+  left: 50%;
+  transform: translate(-50%, 0);
+}

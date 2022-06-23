@@ -70,7 +70,10 @@ export function ProgramRegisterCheckoutPage() {
 
   const [checkoutLoading, setCheckoutLoading] = useState(false)
 
+  const [isCheckoutAlready, setIsCheckoutAlready] = useState(false)
+
   const onSubmit = async (data: CheckoutInfoProps) => {
+    if (isCheckoutAlready) return router.push('/sessions')
     try {
       setCheckoutLoading(true)
       await ProgramApi.menteeRegister({
@@ -81,12 +84,13 @@ export function ProgramRegisterCheckoutPage() {
 
       setToastSuccess('Đã đăng ký chương trình thành công!')
     } catch (error: any) {
-      console.log('🚀 ~ file: ProgramRegisterCheckoutPage.tsx ~ line 85 ~ onSubmit ~ error', error)
       if (error) {
-        if (String(error).includes('422'))
-          return setToastError('Không đủ số dư trong tài khoản, vui lòng nạp thêm!')
         if (String(error).includes('403'))
+          return setToastError('Không đủ số dư trong tài khoản, vui lòng nạp thêm!')
+        if (String(error).includes('422')) {
+          setIsCheckoutAlready(true)
           return setToastError('Bạn đã đăng ký chương trình này rồi')
+        }
       }
       setToastError(error)
     } finally {
@@ -170,12 +174,17 @@ export function ProgramRegisterCheckoutPage() {
                   {...register('description')}
                 />
               </Box>
-              <LoadingIndicator noText loading={checkoutLoading}>
+              <LoadingIndicator noText loading={checkoutLoading} style={{ padding: 8 }}>
                 <button
-                  style={{ borderRadius: '0px 0px 8px 8px', height: 46, marginTop: 'auto' }}
-                  className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 "
+                  style={{
+                    borderRadius: '0px 0px 8px 8px',
+                    height: 46,
+                    marginTop: 'auto',
+                    padding: 32,
+                  }}
+                  className="  px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 df aic jcc"
                 >
-                  Đăng ký ngay
+                  {isCheckoutAlready ? 'Đến trang quản lý phiên mentoring' : 'Đăng ký ngay'}
                 </button>
               </LoadingIndicator>
             </Paper>

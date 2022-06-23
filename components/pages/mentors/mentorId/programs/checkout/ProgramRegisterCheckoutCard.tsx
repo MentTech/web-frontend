@@ -25,7 +25,10 @@ export function ProgramRegisterCheckoutCard({
         <p className="text-sm text-gray-900 leading-sm">Giới thiệu:</p>
         <div dangerouslySetInnerHTML={{ __html: detail }} className="truncate-text"></div>
       </div>
-      <span className="bg-teal-600 w-full flex justify-center py-2 text-white font-semibold transition duration-300">
+      <span
+        style={{ height: 64 }}
+        className="bg-teal-600 w-full flex justify-center py-4 text-white font-semibold transition duration-300"
+      >
         <Paid style={{ marginRight: 8 }} />
         {credit}
       </span>

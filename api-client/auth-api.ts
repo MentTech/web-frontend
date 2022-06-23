@@ -1,4 +1,4 @@
-import { loginPayload, LoginSocialPayload } from '@models/index'
+import { loginPayload, LoginSocialPayload, SetPasswordPayload } from '@models/index'
 import { RegisterForm } from 'pages/authenticate/register'
 import axiosClient from './axios-client'
 import axios from 'axios'
@@ -35,5 +35,8 @@ export const authApi = {
       oldPassword,
       newPassword,
     })
+  },
+  setPassword(payload: SetPasswordPayload) {
+    return axiosClient.post('/v1/auth/setpassword', payload)
   },
 }

@@ -81,4 +81,7 @@ export const mentorApi = {
   ) {
     return axiosClient.patch(`/v1/mentor/${mentorId}/rating/feature`, payload)
   },
+  getRandomSuggestMentor() {
+    return axiosClient.get('/v1/mentor/suggest')
+  },
 }
