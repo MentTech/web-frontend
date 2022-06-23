@@ -33,7 +33,7 @@ function Profile({ mentor }: MentorProfileProps) {
   }
   const breadcrumbs = [
     { label: 'Home', href: '/' },
-    { label: 'Mentors', href: '/mentors' },
+    { label: 'Mentors', href: '/find' },
     { label: mentor.name as string },
   ]
 

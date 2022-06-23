@@ -192,11 +192,15 @@ export const ProgramDetailPage = () => {
                   <Box sx={{ marginTop: '32px' }}>
                     <HeadingPrimary>Các chương trình khác</HeadingPrimary>
                     {/* Todo: Carousel */}
-                    <Carousel isRTL={false} itemPadding={[10, 30]} breakPoints={breakPoints}>
-                      {relativePrograms.map((program, index) => (
-                        <MentorProgramCard key={index} program={program} />
-                      ))}
-                    </Carousel>
+                    {relativePrograms.length === 0 ? (
+                      <div>Chưa có chương trình nào khác.</div>
+                    ) : (
+                      <Carousel isRTL={false} itemPadding={[10, 30]} breakPoints={breakPoints}>
+                        {relativePrograms.map((program, index) => (
+                          <MentorProgramCard key={index} program={program} />
+                        ))}
+                      </Carousel>
+                    )}
                   </Box>
                 </Grid>
                 {/* <Grid item xs={4}>

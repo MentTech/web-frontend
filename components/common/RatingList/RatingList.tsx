@@ -30,7 +30,7 @@ export default function RatingList({ onPageChange, ratings, page, totalPage }: R
             <CommonPagination page={page} onPageChange={onPageChange} count={totalPage} />
           </Box>
         ) : (
-          <Typography>Chưa có đánh giá nào</Typography>
+          <Typography>Chưa có đánh giá nào.</Typography>
         )}
       </Box>
     </Stack>
