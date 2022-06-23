@@ -274,10 +274,6 @@ const Header = () => {
               transformOrigin={{ horizontal: 'right', vertical: 'top' }}
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-              {/* <Link href="/tokens">
-                <MenuItem>Tokens: {profile?.token}</MenuItem>
-              </Link> */}
-              <Divider />
               <Link href="/profile">
                 <MenuItem>
                   <Person sx={{ mr: 2 }} /> Trang cá nhân
@@ -307,9 +303,7 @@ const Header = () => {
                 Settings
               </MenuItem> */}
               <MenuItem onClick={handleLogout}>
-                <ListItemIcon>
-                  <Logout fontSize="small" />
-                </ListItemIcon>
+                <Logout sx={{ mr: 2 }} />
                 Đăng xuất
               </MenuItem>
             </Menu>

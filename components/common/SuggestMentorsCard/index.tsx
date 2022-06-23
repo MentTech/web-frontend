@@ -1,23 +1,24 @@
 import { Star } from '@mui/icons-material'
 import { Avatar, Stack, Typography } from '@mui/material'
 import { Box } from '@mui/system'
+import { COLOR } from '@utils/color'
 import SuggestMentorsProvider, { useSuggestMentors } from 'context/SuggestMentorsProvider'
 import Link from 'next/link'
 import { LoadingIndicator } from '../LoadingIndicator/LoadingIndicator'
 
-const SuggestMentorsCardComp = () => {
+const SuggestMentorsCardComp = ({ title = '' }) => {
   const { loading, suggestMentors } = useSuggestMentors()
 
   return (
     <LoadingIndicator
       loading={loading}
       style={{
-        marginTop: 16,
+        padding: 16,
       }}
     >
       <Box className="df aic jcc" p={1}>
         <Typography sx={{ fontWeight: '600', fontSize: '24px', textAlign: 'center' }}>
-          Mentor tương tự
+          {title ?? 'Mentor tương tự'}
         </Typography>
       </Box>
       <Stack>
@@ -43,7 +44,10 @@ const SuggestMentorsCardComp = () => {
                           </div>
                         </div>
                         <div className="text-gray-600 dark:text-gray-200 text-sm df aic jcc">
-                          <Star fontSize="small" style={{ marginRight: 4 }} />
+                          <Star
+                            fontSize="small"
+                            style={{ marginRight: 4, color: COLOR.SEMANTIC_WARNING_4 }}
+                          />
                           {suggestMentor.User_mentor.rating}
                         </div>
                       </div>
@@ -61,46 +65,12 @@ const SuggestMentorsCardComp = () => {
   )
 }
 
-const SuggestMentorsCard = () => {
+const SuggestMentorsCard = (props: any) => {
   return (
     <SuggestMentorsProvider>
-      <SuggestMentorsCardComp />
+      <SuggestMentorsCardComp {...props} />
     </SuggestMentorsProvider>
   )
 }
 
 export default SuggestMentorsCard
-
-// <Box
-//   onClick={() => {
-//     router.push('/mentors/[id]', `/mentors/${suggestMentor.id}`)
-//   }}
-//   sx={{ cursor: 'pointer' }}
-//   className="df aic jcsb list-item-hover"
-//   p={2}
-// >
-//   <Box className="df aic">
-//     <Avatar
-//       alt={suggestMentor.name}
-//       src={suggestMentor.avatar}
-//       sx={{ width: 44, height: 44 }}
-//     />
-//     <Box
-//       className="df fdc"
-//       sx={{ textAlign: 'left', marginLeft: '16px', fontSize: '18px' }}
-//     >
-//       <Typography color="#00BFA6">{suggestMentor.name}</Typography>
-//       {last && !last.endAt && (
-//         <Typography>{`${last.title} tại ${last.company}`}</Typography>
-//       )}
-//     </Box>
-//   </Box>
-//   <Box
-//     className="df aic"
-//     style={{ border: COLOR.BORDER_LINE, borderRadius: 8 }}
-//     p={0.5}
-//   >
-//     <Typography color={'GrayText'}>{rating}</Typography>
-//     <Star style={{ color: 'yellow', marginLeft: 4 }} fontSize="small" />
-//   </Box>
-// </Box>
