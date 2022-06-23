@@ -30,7 +30,7 @@ export const MentorCard = ({ mentor, ...props }: MentorCardProps) => {
 
   const { favorites, addFavorite, removeFavorite } = useFavorite()
 
-  const isFavorited = favorites?.findIndex((item: any) => item == mentor.id) !== -1
+  const isFavorited = favorites && favorites?.findIndex((item: any) => item == mentor.id) !== -1
 
   function addToWishList() {
     if (status === 'unauthenticated') {
