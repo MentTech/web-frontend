@@ -7,15 +7,14 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardMedia,
   CardProps,
   Chip,
   IconButton,
   Typography,
 } from '@mui/material'
 import { Box } from '@mui/system'
+import { COLOR } from '@utils/color'
 import { copyTextToClipboard } from '@utils/method'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 
@@ -24,7 +23,7 @@ interface MentorCardProps extends CardProps {
 }
 
 export const MentorCard = ({ mentor, ...props }: MentorCardProps) => {
-  const { name, id, avatar, User_mentor } = mentor
+  const { name, id, avatar, User_mentor, averageRating } = mentor
   const { introduction, experiences } = User_mentor
 
   const last_experience = experiences?.[experiences.length - 1]
@@ -79,11 +78,26 @@ export const MentorCard = ({ mentor, ...props }: MentorCardProps) => {
       }}
       {...props}
     >
-      <Box className="df aic jcc" style={{ height: 200 }}>
+      <Box className="df aic jcc " style={{ height: 200, position: 'relative' }}>
         <Avatar
           style={{ height: 180, width: 180, margin: 16, border: '2px solid #19857b' }}
           src={avatar}
         />
+        <Box
+          p={1}
+          className="df aic jcc centered-absolute-hoz"
+          style={{
+            borderRadius: '50%',
+            position: 'absolute',
+            bottom: -8,
+            background: COLOR.WHITE,
+            border: `1px solid ${COLOR.SEMANTIC_WARNING_6}`,
+          }}
+        >
+          <Typography variant="body2" className="sb">
+            {User_mentor.rating || '0.0'}
+          </Typography>
+        </Box>
       </Box>
 
       <CardContent className="flex-1 truncate-text" style={{ height: 280 }}>
