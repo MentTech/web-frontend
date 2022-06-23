@@ -227,7 +227,7 @@ export default function MentorHome() {
     <Box sx={{ marginTop: '24px' }}>
       <Grid container spacing={3}>
         <Grid item sm={12}>
-          <HeadingPrimary>Chương trình mentorship</HeadingPrimary>
+          <HeadingPrimary>Chương trình cố vấn</HeadingPrimary>
           <button className="btn btn-sm btn-primary mb-2" onClick={handleModalOpen}>
             <Add />
           </button>
@@ -266,7 +266,6 @@ export default function MentorHome() {
             <Controller
               name="detail"
               control={controlEdit}
-              defaultValue={selectedCell?.detail}
               render={({ field }) => (
                 <Editor
                   editorState={field.value}

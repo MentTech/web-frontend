@@ -10,13 +10,7 @@ export interface DataTableProps {
 export default function DataTable({ rows, columns }: DataTableProps) {
   return (
     <div style={{ height: 400, width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        checkboxSelection
-      />
+      <DataGrid rows={rows} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
     </div>
   )
 }

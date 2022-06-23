@@ -248,7 +248,7 @@ export function MentorLayout({ children }: LayoutProps) {
                     </a>
                   </Link>
                 </nav>
-                <div className="absolute bottom-0 my-10">
+                {/* <div className="absolute bottom-0 my-10">
                   <a
                     className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 transition-colors duration-200 flex items-center py-2 px-8"
                     href="#"
@@ -265,7 +265,7 @@ export function MentorLayout({ children }: LayoutProps) {
                     </svg>
                     <span className="mx-4 font-medium">Hỗ trợ</span>
                   </a>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
