@@ -12,3 +12,12 @@ export enum ROLE {
   mentor = 'mentor',
   mentee = 'mentee',
 }
+
+export interface UpdatePasswordPayload {
+  oldPassword?: string
+  newPassword?: string
+}
+
+export interface SetPasswordPayload {
+  password: string
+}
