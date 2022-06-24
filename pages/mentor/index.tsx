@@ -115,7 +115,7 @@ export default function DashBoard(props: DashBoardProps) {
           <div className="mb-5 text-md text-black font-semibold dark:text-white ml-2">
             Trạng thái của các phiên cố vấn
           </div>
-          <div className="flex items-center">
+          <div className="w-3/4 m-auto flex items-center">
             {sessionPieData.every((item: any) => item === 0) ? (
               <p className="text-sm text-center w-full">Chưa có dữ liệu.</p>
             ) : (
@@ -142,7 +142,14 @@ export default function DashBoard(props: DashBoardProps) {
                     },
                   ],
                 }}
-                options={{ responsive: true }}
+                options={{
+                  plugins: {
+                    legend: {
+                      align: 'center',
+                      position: 'bottom',
+                    },
+                  },
+                }}
               />
             )}
           </div>

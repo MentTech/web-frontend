@@ -87,6 +87,17 @@ html {
   line-clamp: 3;
   -webkit-box-orient: vertical;
 }
+
+.thlt5 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  /* number of lines to show */
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }

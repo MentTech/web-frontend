@@ -392,6 +392,8 @@ label#fileLabel {
     width: 62px;
     height: 62px;
     margin-right: 14px;
+    object-fit: cover;
+    border-radius: 50%;
   }
 
   .feedBackName {

@@ -16,7 +16,9 @@ import { Box } from '@mui/system'
 import { COLOR } from '@utils/color'
 import { copyTextToClipboard } from '@utils/method'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import { toast } from 'react-toastify'
+import { useSession } from 'next-auth/react'
 
 interface MentorCardProps extends CardProps {
   mentor: Mentor
@@ -25,8 +27,8 @@ interface MentorCardProps extends CardProps {
 export const MentorCard = ({ mentor, ...props }: MentorCardProps) => {
   const { name, id, avatar, User_mentor, averageRating } = mentor
   const { introduction, experiences } = User_mentor
-
   const last_experience = experiences?.[experiences.length - 1]
+  const { status } = useSession()
 
   const { favorites, addFavorite, removeFavorite } = useFavorite()
 
@@ -140,7 +142,7 @@ export const MentorCard = ({ mentor, ...props }: MentorCardProps) => {
             </IconButton>
           </Box>
           <Button color="primary" onClick={() => onClickGoToDetail()}>
-            Xem thêm
+            Xem chi tiết
           </Button>
         </Box>
       </CardActions>

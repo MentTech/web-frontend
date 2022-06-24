@@ -215,7 +215,7 @@ function SessionStatusCard({ session, ...props }: SessionStatusCardProps) {
           </Stack>
           {session.isAccepted && !session.done ? (
             <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-              <button className="btn btn-outline btn-warning btn-sm">Khiếu nại</button>
+              {/* <button className="btn btn-outline btn-warning btn-sm">Khiếu nại</button> */}
               <button
                 className="ml-2 btn btn-success btn-sm text-white"
                 onClick={() => setDoneModalOpen(true)}

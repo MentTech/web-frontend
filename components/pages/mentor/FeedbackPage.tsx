@@ -14,29 +14,106 @@ const columns: GridColDef[] = [
   { field: 'id', headerName: 'Mã', width: 100, editable: false },
   { field: 'name', headerName: 'Tên', width: 150, editable: false },
   { field: 'rating', headerName: 'Đánh giá', width: 150, editable: false },
-  { field: 'comment', headerName: 'Bình luận', width: 400, editable: false },
-  { field: 'createAt', headerName: 'Thời gian', width: 150, editable: false },
+  { field: 'comment', headerName: 'Bình luận', width: 370, editable: false },
+  { field: 'createAt', headerName: 'Thời gian', width: 180, editable: false },
 ]
 
 export const FeedbackPage = () => {
-  const { mentorRatings, loading, loadMore, isLoadingMore, paginationInfo } = useMentorRatings()
+  const [selectedRows, setSelectedRows] = useState([] as any[])
+  const [selectedFeatureRatings, setSelectedFeatureRatings] = useState([] as any[])
+  const [loadingSubmit, setLoadingSubmit] = useState(false)
+  const {
+    mentorRatings,
+    featureRatings,
+    loading,
+    setRevalidate,
+    loadMore,
+    isLoadingMore,
+    paginationInfo,
+  } = useMentorRatings()
 
-  const displayRatings = mentorRatings.map((item) => ({
+  const displayRatings = mentorRatings
+    .map((item) => ({
+      ...item,
+      name: item?.user?.name,
+      createAt: new Date(item.createAt).toLocaleString(),
+    }))
+    .filter((item) => {
+      let hide = false
+      for (let featureRating of featureRatings) {
+        if (featureRating.id === item.id) {
+          hide = true
+        }
+      }
+      return !hide
+    })
+
+  const displayFeatureRating = featureRatings.map((item) => ({
     ...item,
     name: item?.user?.name,
     createAt: new Date(item.createAt).toLocaleString(),
   }))
 
-  const [selectedRows, setSelectedRows] = useState([] as any[])
-
   const userMentorId = useSession().data?.user.id
-
-  const [loadingSubmit, setLoadingSubmit] = useState(false)
 
   return (
     <LoadingIndicator loading={loading} style={{ marginTop: 32 }}>
-      <HeadingPrimary>Đánh giá của mentee</HeadingPrimary>
+      <Box>
+        <HeadingPrimary>Đánh giá được chọn hiển thị</HeadingPrimary>
+        <div className="mb-2">Các đánh giá này sẽ được hiển thị khi mentee xem hồ sơ của bạn.</div>
+        {selectedFeatureRatings.length > 0 && (
+          <Button
+            variant="contained"
+            style={{
+              background: COLOR.PRIMARY_4_MAIN,
+              borderRadius: 8,
+              marginBottom: 8,
+              display: 'block',
+              marginLeft: 'auto',
+            }}
+            disableRipple
+            onClick={async () => {
+              try {
+                setLoadingSubmit(true)
 
+                await mentorApi.updateMentorFeatureRating(Number(userMentorId), {
+                  ids: featureRatings
+                    .filter((item) => !selectedFeatureRatings.includes(item.id))
+                    .map((item) => item.id),
+                })
+                setToastSuccess('Đánh giá đã được cập nhật')
+                setLoadingSubmit(false)
+              } catch (error) {
+                setToastError(error)
+              } finally {
+                setRevalidate(true)
+              }
+            }}
+          >
+            Bỏ hiển thị
+          </Button>
+        )}
+        <DataGrid
+          style={{ maxHeight: 500, marginBottom: '36px' }}
+          rows={displayFeatureRating}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          checkboxSelection
+          disableSelectionOnClick
+          loading={isLoadingMore}
+          hideFooterPagination
+          hideFooterSelectedRowCount
+          hideFooter
+          autoHeight
+          disableColumnMenu
+          onSelectionModelChange={(rows) => {
+            setSelectedFeatureRatings(rows as any)
+          }}
+        />
+      </Box>
+
+      <HeadingPrimary>Đánh giá của mentee</HeadingPrimary>
       {selectedRows.length > 0 && (
         <Box my={2} className="df aic jcsb">
           <Typography variant="h6">Bạn đã chọn {selectedRows.length} đánh giá</Typography>
@@ -61,6 +138,8 @@ export const FeedbackPage = () => {
                 setLoadingSubmit(false)
               } catch (error) {
                 setToastError(error)
+              } finally {
+                setRevalidate(true)
               }
             }}
           >

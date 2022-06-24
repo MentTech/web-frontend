@@ -12,7 +12,7 @@ export interface MentorMediaInfoProps {
 
 export default function MentorMediaInfo({ mentor }: MentorMediaInfoProps) {
   const router = useRouter()
-  const { data, status } = useSession()
+  const { status } = useSession()
   const { favorites, addFavorite, removeFavorite } = useFavorite()
   const { User_mentor } = mentor
   User_mentor.experiences?.sort((a, b) => {

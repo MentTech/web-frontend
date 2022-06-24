@@ -2,6 +2,7 @@ import Header from '@components/common/Header/Header'
 import { EmptyLayout } from '@components/layouts'
 import { config } from '@config/main'
 import { Mentor } from '@models/index'
+import { Typography } from '@mui/material'
 import Rating from '@mui/material/Rating'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
@@ -272,24 +273,61 @@ function Home() {
         <h2 className={styles.contentHeading}>Trải nghiệm của mentee</h2>
         <div className={styles.feedBacksList}>
           <Carousel enableAutoPlay isRTL={false} breakPoints={breakPoints}>
-            {items.map((item) => (
-              <div key={item} className={styles.feedBackItem}>
-                <Rating name="read-only" value={5} readOnly />
-                <p className={styles.feedBackDesc}>
-                  Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consecte abitasse platea
-                  dictumst. Nullam pretium faucibus dui id laoreet. Aliquam luctus auctor tortor nec
-                  sollicitudin. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet.
-                </p>
-                <div className={styles.feedBackInfo}>
-                  <img
-                    className={styles.feedBackAvatar}
-                    src="/static/mentorAvatar.png"
-                    alt="avatar"
-                  />
-                  <h3 className={styles.feedBackName}>Jack Adams</h3>
-                </div>
+            <div className={styles.feedBackItem}>
+              <Rating name="read-only" value={5} readOnly />
+              <p className={`${styles.feedBackDesc} thlt5`}>
+                Em rất cảm ơn chị Linh đã dành cho em hẳn 1h40 phút để chia sẻ với em về ngành Công
+                nghệ thông tin ạ. Những chia sẻ của chị vô cùng thực tế và có nhiều insight. Sau
+                buổi chia sẻ, em đã có nhiều góc nhìn hơn về HR, có cả những update mà khi học trên
+                trường không được nhắc tới. Em chúc chị Linh luôn vui vẻ và thành công trong công
+                việc. Loveee youuu
+              </p>
+              <div className={styles.feedBackInfo}>
+                <img className={styles.feedBackAvatar} src="/static/avatar1.jpg" alt="avatar" />
+                <h3 className={styles.feedBackName}>Thanh Tuấn</h3>
               </div>
-            ))}
+            </div>
+            <div className={styles.feedBackItem}>
+              <Rating name="read-only" value={5} readOnly />
+              <p className={`${styles.feedBackDesc} thlt5`}>
+                Cảm ơn anh rất nhiều đã chia sẽ nhiều thứ mới và trò chuyện một cách rất gần gủi.
+                Sau cuộc nói chuyện với anh, mình biết thêm vài vấn đề quan trọng và hiểu hơn về
+                chuyên ngành. Hơn nữa mình cũng biết một số điểm để cải thiển bản thân và cv
+              </p>
+              <div className={styles.feedBackInfo}>
+                <img className={styles.feedBackAvatar} src="/static/avatar2.avif" alt="avatar" />
+                <h3 className={styles.feedBackName}>Vinh Trần</h3>
+              </div>
+            </div>
+            <div className={styles.feedBackItem}>
+              <Rating name="read-only" value={5} readOnly />
+              <Typography
+                sx={{ wordBreak: 'break-word' }}
+                className={`${styles.feedBackDesc} thlt5`}
+              >
+                Anh chia sẻ rất nhiệt tình và phân tích rất kỹ vấn đề. Sau buổi chia sẻ, em đã có
+                cái nhìn rõ hơn về định hướng nghề nghiệp của bản thân. Em cảm ơn anh nhiều nhiều
+                nhiều ạ
+              </Typography>
+              <div className={styles.feedBackInfo}>
+                <img className={styles.feedBackAvatar} src="/static/avatar4.avif" alt="avatar" />
+                <h3 className={styles.feedBackName}>Hoàng Việt</h3>
+              </div>
+            </div>
+            <div className={styles.feedBackItem}>
+              <Rating name="read-only" value={5} readOnly />
+              <p className={`${styles.feedBackDesc} thlt5`}>
+                Em rất cảm ơn chị Linh đã dành cho em hẳn 1h40 phút để chia sẻ với em về ngành Công
+                nghệ thông tin ạ. Những chia sẻ của chị vô cùng thực tế và có nhiều insight. Sau
+                buổi chia sẻ, em đã có nhiều góc nhìn hơn về HR, có cả những update mà khi học trên
+                trường không được nhắc tới. Em chúc chị Linh luôn vui vẻ và thành công trong công
+                việc. Loveee youuu
+              </p>
+              <div className={styles.feedBackInfo}>
+                <img className={styles.feedBackAvatar} src="/static/avatar3.avif" alt="avatar" />
+                <h3 className={styles.feedBackName}>Bùi Mai Phương</h3>
+              </div>
+            </div>
           </Carousel>
         </div>
       </div>

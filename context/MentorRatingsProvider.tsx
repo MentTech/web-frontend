@@ -15,6 +15,7 @@ interface MentorRatingsContext {
   loadMore: Function
   isLoadingMore: boolean
   paginationInfo: any
+  setRevalidate: Function
 }
 
 const MentorRatingsContext = React.createContext<MentorRatingsContext>({
@@ -26,6 +27,7 @@ const MentorRatingsContext = React.createContext<MentorRatingsContext>({
   loadMore: () => {},
   isLoadingMore: false,
   paginationInfo: {},
+  setRevalidate: () => {},
 })
 
 interface MentorRatingsProviderProps {
@@ -47,6 +49,8 @@ const MentorRatingsProvider = ({ children }: MentorRatingsProviderProps) => {
     totalPage: 1,
     limit: 5,
   } as any)
+
+  const [revalidate, setRevalidate] = useState(true)
 
   const { mentorId } = router.query
 
@@ -103,8 +107,11 @@ const MentorRatingsProvider = ({ children }: MentorRatingsProviderProps) => {
         }
       }
     }
-    fetchData()
-  }, [mentorId])
+    if (revalidate) {
+      fetchData()
+      setRevalidate(false)
+    }
+  }, [mentorId, revalidate])
 
   return (
     <MentorRatingsContext.Provider
@@ -113,6 +120,7 @@ const MentorRatingsProvider = ({ children }: MentorRatingsProviderProps) => {
         mentorRatings,
         setMentorRatings,
         featureRatings,
+        setRevalidate,
         setFeatureRatings,
         loadMore,
         isLoadingMore,
