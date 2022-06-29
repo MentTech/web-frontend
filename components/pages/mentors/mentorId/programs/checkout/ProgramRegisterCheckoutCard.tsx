@@ -1,6 +1,7 @@
 import { Mentor, Program } from '@models/mentor'
 import { Paid } from '@mui/icons-material'
 import { Divider } from '@mui/material'
+import xss from 'xss'
 
 export function ProgramRegisterCheckoutCard({
   program,
@@ -14,16 +15,16 @@ export function ProgramRegisterCheckoutCard({
   return (
     <div className="wrapper flex flex-col bg-gray-50 rounded shadow-lg overflow-hidden w-full h-full">
       <div className="df aic jcc">
-        <img src={avatar} alt={name} style={{ maxHeight: 300, objectFit: 'contain' }} />
+        <img src={avatar} alt={name} style={{ maxHeight: 250, objectFit: 'contain' }} />
       </div>
-      <Divider />
+
       <div className="p-3 space-y-3 flex-1">
         <h3 className="text-gray-700 font-semibold text-md">Chương trình: {title}</h3>
         <p className="text-sm text-gray-900 leading-sm">
           Được tạo lúc: {new Date(createAt).toLocaleDateString()}
         </p>
-        <p className="text-sm text-gray-900 leading-sm">Giới thiệu:</p>
-        <div dangerouslySetInnerHTML={{ __html: detail }} className="truncate-text"></div>
+        <p className="text-sm text-gray-900 leading-sm">Nội dung chương trình:</p>
+        <div dangerouslySetInnerHTML={{ __html: xss(detail) }} className="truncate-text"></div>
       </div>
       <span
         style={{ height: 64 }}

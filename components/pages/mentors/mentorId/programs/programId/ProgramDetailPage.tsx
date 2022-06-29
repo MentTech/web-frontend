@@ -11,6 +11,7 @@ import { useCurrentMentor } from 'context/MentorProvider'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Carousel from 'react-elastic-carousel'
+import xss from 'xss'
 
 interface AverageRating {
   average: number
@@ -174,7 +175,7 @@ export const ProgramDetailPage = () => {
                       <div
                         dangerouslySetInnerHTML={{
                           __html: currentProgram?.detail
-                            ? currentProgram.detail
+                            ? xss(currentProgram.detail)
                             : 'Chưa có thông tin.',
                         }}
                       ></div>

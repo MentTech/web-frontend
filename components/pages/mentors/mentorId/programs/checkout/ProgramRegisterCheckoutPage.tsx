@@ -52,7 +52,7 @@ export function ProgramRegisterCheckoutPage() {
   const breadcrumbs = [
     { label: 'Trang chủ', href: '/' },
     { label: currentMentor.name as string, href: `/mentors/${mentorId}` },
-    { label: 'Chương trình' },
+    { label: 'Chương trình', href: `/mentors/${mentorId}/programs` },
     {
       label: currentProgram?.title as string,
       href: `/mentors/${mentorId}/programs/${currentProgram?.id}`,

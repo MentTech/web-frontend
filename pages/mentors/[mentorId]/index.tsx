@@ -17,6 +17,7 @@ import { useRouter } from 'next/router'
 import ExperienceCard from '@components/common/ExperienceCard/ExperienceCard'
 import { MentorRatingsCarousel } from '@components/pages/mentors/mentorId/MentorRatingsCarousel'
 import MentorRatingsProvider from 'context/MentorRatingsProvider'
+import xss from 'xss'
 
 export interface MentorProfileProps {
   mentor: Mentor
@@ -72,7 +73,7 @@ function Profile({ mentor }: MentorProfileProps) {
                   </ReactReadMoreReadLess> */}
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: mentor.User_mentor.introduction as string,
+                      __html: xss(mentor.User_mentor.introduction as string),
                     }}
                   ></div>
                 </Box>
