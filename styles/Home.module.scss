@@ -1,16 +1,21 @@
+
+.homeContainer {
+  background-color: #f2f2f2;
+}
+
 .headerSession {
   padding: 64px 188px;
-  background-color: #3F3D56;
+  background: linear-gradient(to right bottom, rgb(96, 165, 250, .4), rgba(63, 61, 86, .8)),
+    url('/static/homebackground.avif') no-repeat center / cover;
   display: block;
   width: 100%;
   min-height: 824px;
+  clip-path: ellipse(60% 60% at 50% 33%);
 }
+
 
 .HeaderContent {
   margin-top: 138px;
-  display: flex;
-  gap: 64px;
-  flex-wrap: wrap;
 }
 
 .HeaderContentLeft {
@@ -28,35 +33,85 @@
   position: relative;
 }
 
+.headingPrimary {
+  text-transform: uppercase;
+  color: #fff;
+  text-align: center;
+}
+
 .HeadingPrimaryMain {
+  text-transform: uppercase;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 64px;
   line-height: 75px;
-  /* or 117% */
-
-  letter-spacing: -0.04em;
-
-  color: #FFFFFF;
+  letter-spacing: 15px;
+  animation: moveInLeft 1s ease-out;
 }
 
 .HeadingPrimarySub {
   margin-top: 20px;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 35px;
-  letter-spacing: -0.04em;
-  color: #FFFFFF;
-  opacity: 0.7;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 18px;
+  margin-bottom: 32px;
+  animation: moveInRight 1s ease-out;
 }
 
-.HeaderButtons {
-  margin-top: 60px;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: start;
+.btn,
+.btn:link,
+.btn:visited{
+  position: relative;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 100px;
+  font-size: 16px;
+  transition: all .2s;
+  padding: 15px 40px;
 }
+
+.btn::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  border-radius: 100px;
+  transition: all .4s;
+}
+
+.btn:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, .2);
+}
+
+.btn:active{
+  outline: none;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+}
+.btnWhite{
+  color: #777777;
+  background-color: #fff;
+}
+
+.btnWhite::after{
+  background-color: #fff;
+}
+
+.btnAnimated{
+  animation: moveInBottom .5s ease-out .75s;
+}
+
+.btn:hover::after{
+  transform: scaleX(1.4) scaleY(1.6);
+  opacity: 0;
+}
+
 
 .HeaderHatIcon {
   position: absolute;
@@ -143,10 +198,11 @@
     justify-content: space-between;
     margin-left: -10px;
     margin-right: -10px;
+    animation: moveInBottom .5s ease-out .75s;
     .mentorItem {
       margin: 10px;
       width: 340px;
-      padding: 62px 60px 30px;
+      padding: 62px 50px 30px;
       background: rgba(255, 255, 255, 0.7);
       box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.1);
       border-radius: 35px;
@@ -157,14 +213,14 @@
       .mentorName {
         margin-top: 43px;
         font-weight: 600;
-        font-size: 32px;
+        font-size: 28px;
         line-height: 35px;
       }
 
       .mentorJob {
+        margin-top: 12px;
         font-weight: 400;
         font-size: 14px;
-        line-height: 35px;
         letter-spacing: -0.04em;
         text-align: center;
         color: #000000;
@@ -446,10 +502,6 @@ label#fileLabel {
     font-size: 36px;
     line-height: 48px;
   }
-
-  .HeaderButtons {
-    justify-content: center !important;
-  }
   
   .contentSection {
     padding: 24px 16px;
@@ -504,3 +556,49 @@ label#fileLabel {
     margin: 12px auto !important;
   }
 }
+
+
+@keyframes moveInLeft {
+  0% {
+      opacity: 0;
+      transform: translateX(-100px);
+  }
+
+  80% {
+      transform: translateX(10px)
+  }
+
+  100% {
+      opacity: 1;
+      transform: translateX(0);
+  }
+}
+
+@keyframes moveInRight {
+  0% {
+      opacity: 0;
+      transform: translateX(100px);
+  }
+
+  80% {
+      transform: translateX(-10px)
+  }
+
+  100% {
+      opacity: 1;
+      transform: translateX(0);
+  }
+}
+
+@keyframes moveInBottom {
+  0% {
+      opacity: 0;
+      transform: translateY(30px);
+  }
+
+  100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
