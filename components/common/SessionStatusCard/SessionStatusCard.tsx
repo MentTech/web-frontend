@@ -175,7 +175,7 @@ function SessionStatusCard({ session, ...props }: SessionStatusCardProps) {
   return (
     <>
       <Card>
-        <CardContent sx={{ position: 'relative', minHeight: '220px' }}>
+        <CardContent sx={{ position: 'relative', minHeight: '280px' }}>
           <Tooltip title={sessionStatusMessage(session)?.tooltip}>
             <Chip
               label={sessionStatusMessage(session)?.message}
@@ -184,12 +184,15 @@ function SessionStatusCard({ session, ...props }: SessionStatusCardProps) {
               sx={{ position: 'absolute', top: '10px', left: '15px' }}
             />
           </Tooltip>
-
-          <Link href={`/sessions/${session.id}`}>
-            <a className="mt-7 text-2xl inline-block underline text-blue-400">
-              {session.program.title}
-            </a>
-          </Link>
+          <Tooltip title={session.program.title}>
+            <div className="thlt1">
+              <Link href={`/sessions/${session.id}`}>
+                <a className="mt-7 text-2xl underline block text-blue-400">
+                  {session.program.title}
+                </a>
+              </Link>
+            </div>
+          </Tooltip>
           <Divider sx={{ my: 2, width: '100%' }} />
           <Stack
             direction="row"

@@ -76,13 +76,14 @@ export function ProgramRegisterCheckoutPage() {
     if (isCheckoutAlready) return router.push('/sessions')
     try {
       setCheckoutLoading(true)
-      await ProgramApi.menteeRegister({
+      const res = await ProgramApi.menteeRegister({
         mentorId: Number(mentorId),
         programId: Number(currentProgram?.id),
         checkoutInfo: data,
       })
 
       setToastSuccess('Đã đăng ký chương trình thành công!')
+      router.push(`/sessions/${res.data.id}`)
     } catch (error: any) {
       if (error) {
         if (String(error).includes('403'))

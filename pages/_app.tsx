@@ -50,7 +50,7 @@ function MyApp({
                     <Component {...pageProps} />
                   </Layout>
                 )}
-                <ToastContainer />
+                <ToastContainer autoClose={1500} />
               </LocalizationProvider>
             </SWRConfig>
           </SessionProvider>

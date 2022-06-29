@@ -84,7 +84,7 @@ export default function Login(props: LoginProps) {
             }
           }
           if (errors.statusCode === 403) {
-            return router.push('/check-email?email=' + data.email)
+            return router.push('/check-email?email=' + encodeURIComponent(data.email))
           }
         } else {
           return router.push('/find')
