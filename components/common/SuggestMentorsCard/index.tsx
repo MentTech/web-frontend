@@ -48,7 +48,8 @@ const SuggestMentorsCardComp = ({ title = '' }) => {
                             fontSize="small"
                             style={{ marginRight: 4, color: COLOR.SEMANTIC_WARNING_4 }}
                           />
-                          {suggestMentor.User_mentor.rating}
+                          {Math.round((suggestMentor.User_mentor.rating as number) * 10) / 10 ||
+                            '0.0'}
                         </div>
                       </div>
                     </Link>

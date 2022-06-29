@@ -211,9 +211,9 @@ function SessionStatusCard({ session, ...props }: SessionStatusCardProps) {
               )}
             </Stack>
             {!session.done ? (
-              <Rating name="no-value" value={rating} readOnly />
+              <Rating name="no-value" value={rating} readOnly precision={0.5} />
             ) : (
-              <Rating name="read-only" value={rating} readOnly />
+              <Rating name="read-only" value={rating} readOnly precision={0.5} />
             )}
           </Stack>
           {session.isAccepted && !session.done ? (

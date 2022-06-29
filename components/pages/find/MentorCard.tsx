@@ -97,7 +97,7 @@ export const MentorCard = ({ mentor, ...props }: MentorCardProps) => {
           }}
         >
           <Typography variant="body2" className="sb">
-            {User_mentor.rating || '0.0'}
+            {Math.round((User_mentor.rating as number) * 10) / 10 || '0.0'}
           </Typography>
         </Box>
       </Box>
