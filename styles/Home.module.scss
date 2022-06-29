@@ -4,12 +4,12 @@
 }
 
 .headerSession {
-  padding: 64px 188px;
+  padding: 64px 188px 0px 188px;
   background: linear-gradient(to right bottom, rgb(96, 165, 250, .4), rgba(63, 61, 86, .8)),
     url('/static/homebackground.avif') no-repeat center / cover;
   display: block;
   width: 100%;
-  min-height: 824px;
+  min-height: 110vh;
   clip-path: ellipse(60% 60% at 50% 33%);
 }
 
@@ -101,6 +101,15 @@
 
 .btnWhite::after{
   background-color: #fff;
+}
+
+.btnGreen {
+  color: #fff;
+  background-color: #00BFA6;
+}
+
+.btnGreen::after {
+  background-color: #00BFA6;
 }
 
 .btnAnimated{
@@ -195,10 +204,9 @@
   .mentorsList {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
     margin-left: -10px;
     margin-right: -10px;
-    animation: moveInBottom .5s ease-out .75s;
     .mentorItem {
       margin: 10px;
       width: 340px;
@@ -468,7 +476,11 @@ label#fileLabel {
 .buttonGroup {
   margin-top: 45px;
   text-align: center;
+  display: flex;
+  gap: 24px;
+  justify-content: center;
 }
+
 
 // PC
 @media (min-width: 1024px) {

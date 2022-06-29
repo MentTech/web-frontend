@@ -10,7 +10,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Carousel from 'react-elastic-carousel'
 import styles from '../styles/Home.module.scss'
 
@@ -36,6 +36,8 @@ function Home() {
     // }
   }
 
+  const observer = useRef<IntersectionObserver | null>(null)
+
   async function getSuggestMentor() {
     try {
       const res = await axios.get(`${config.backendURL}/v1/mentor/suggest`)
@@ -44,6 +46,21 @@ function Home() {
   }
 
   useEffect(() => {
+    observer.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          console.log('interseting')
+          if (entry.isIntersecting) {
+            entry.target.classList.add('Home_btnAnimated__3K9Ug')
+          }
+        })
+      },
+      { threshold: 0.2 }
+    )
+    const contentSession = document.querySelectorAll('.contentSection')
+    if (contentSession) {
+      contentSession.forEach((el) => observer?.current?.observe(el))
+    }
     getSuggestMentor()
   }, [])
 
@@ -70,7 +87,7 @@ function Home() {
 
             <div className={styles.headingPrimary}>
               <h2 className={styles.HeadingPrimaryMain}>Menttech</h2>
-              <h4 className={styles.HeadingPrimarySub}>Tìm người cố vấn phù hợp với bạn</h4>
+              <h4 className={styles.HeadingPrimarySub}>Tìm người cố vấn phù hợp với bạn!</h4>
 
               <Link href="/authenticate/register">
                 <a className={`${styles.btn} ${styles.btnWhite} ${styles.btnAnimated}`}>
@@ -92,32 +109,38 @@ function Home() {
             </div> */}
           </div>
         </div>
-        <div className={styles.contentSection}>
-          <h2 className={styles.contentHeading}>Gặp gỡ những mentor tốt nhất</h2>
-          <p className={styles.contentSubheading}>
-            Quản lý và xem tất cả các mục tiêu học tập, lộ trình, người cố vấn, khóa học và mọi thứ
-            khác mà bạn cần.
-          </p>
-          {mentors.length > 0 ? (
-            <div className={styles.mentorsList}>
-              {mentors.map((mentor: Mentor, index) => (
-                <div className={styles.mentorItem} key={index}>
-                  <img className={styles.mentorAvatar} src={mentor.avatar} alt="#" />
-                  <h3 className={styles.mentorName}>{mentor.name}</h3>
-                  <p className={styles.mentorJob}>
-                    {mentor.User_mentor.experiences[0] && mentor.User_mentor.experiences[0].title}
-                  </p>
-                  <Link href={`/mentors/${mentor.id}`}>
-                    <a className={`${styles.btnPrimary} ${styles.mentorCardBtn}`}>Xem chi tiết</a>
-                  </Link>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <Loading />
-          )}
+        <div className={`${styles.contentSection}`}>
+          <div className="contentSection">
+            <h2 className={`${styles.contentHeading}`}>Gặp gỡ những mentor tốt nhất</h2>
+            <p className={styles.contentSubheading}>
+              Quản lý và xem tất cả các mục tiêu học tập, lộ trình, người cố vấn, khóa học và mọi
+              thứ khác mà bạn cần.
+            </p>
+            {mentors.length > 0 ? (
+              <div className={styles.mentorsList}>
+                {mentors.map((mentor: Mentor, index) => (
+                  <div className={styles.mentorItem} key={index}>
+                    <img className={styles.mentorAvatar} src={mentor.avatar} alt="#" />
+                    <h3 className={styles.mentorName}>{mentor.name}</h3>
+                    <p className={styles.mentorJob}>
+                      {mentor.User_mentor.experiences[0] && mentor.User_mentor.experiences[0].title}
+                    </p>
+                    <div className="absolute bottom-7 left-0 right-0">
+                      <Link href={`/mentors/${mentor.id}`}>
+                        <a className={`${styles.btn} ${styles.btnGreen} ${styles.btnAnimated}`}>
+                          Xem chi tiết
+                        </a>
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <Loading />
+            )}
+          </div>
         </div>
-        <div className={styles.contentDarkSection}>
+        <div className={`${styles.contentDarkSection} contentSection`}>
           <div className="absolute top-0 left-0 opacity-90">
             <Image src={'/static/Design.png'} layout="fixed" width={261} height={270} alt="de" />
           </div>
@@ -252,119 +275,142 @@ function Home() {
             />
           </div>
         </div>
-        <div className={styles.contentSection}>
-          <h2 className={styles.contentHeading}>
-            Khởi đầu sự nghiệp của bạn cùng Menttech <br />
-          </h2>
-          <div className={styles.signUpWrapper}>
-            <div className={styles.signUpLeft}>
-              <form className={styles.signUpForm}>
-                <h3 className={styles.formTitle}>Đăng ký</h3>
-                <div className={styles.formGroup}>
-                  <label className={styles.formLable} htmlFor="name">
-                    Name
-                  </label>
-                  <input className={styles.formControl} type="text" name="name" id="name" />
-                </div>
-                <div className={styles.formGroup}>
-                  <label className={styles.formLable} htmlFor="">
-                    Email
-                  </label>
-                  <input className={styles.formControl} type="email" name="email" id="email" />
-                </div>
-                <div className={styles.formGroup}>
-                  <label id="fileLabel1" htmlFor="cv" className={styles.formLable}>
-                    Upload CV
-                  </label>
-                  <input id="cv" className={styles.formFile} type="file" />
-                </div>
-              </form>
-            </div>
-            <div className={styles.signUpRight}>
-              <Image
-                id={styles.signUpImage}
-                src="/static/signUpImg.png"
-                alt="signUpImg"
-                layout="fill"
-              />
+        <div className={`${styles.contentSection}`}>
+          <div className="contentSection">
+            <h2 className={styles.contentHeading}>
+              Khởi đầu sự nghiệp của bạn cùng Menttech <br />
+            </h2>
+            <div className={styles.signUpWrapper}>
+              <div className={styles.signUpLeft}>
+                <form className={styles.signUpForm}>
+                  <h3 className={styles.formTitle}>Đăng ký</h3>
+                  <div className={styles.formGroup}>
+                    <label className={styles.formLable} htmlFor="name">
+                      Name
+                    </label>
+                    <input className={styles.formControl} type="text" name="name" id="name" />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label className={styles.formLable} htmlFor="">
+                      Email
+                    </label>
+                    <input className={styles.formControl} type="email" name="email" id="email" />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label id="fileLabel1" htmlFor="cv" className={styles.formLable}>
+                      Upload CV
+                    </label>
+                    <input id="cv" className={styles.formFile} type="file" />
+                  </div>
+                </form>
+              </div>
+              <div className={styles.signUpRight}>
+                <Image
+                  id={styles.signUpImage}
+                  src="/static/signUpImg.png"
+                  alt="signUpImg"
+                  layout="fill"
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        <div className={styles.contentDarkSection}>
-          <h2 className={styles.contentHeading}>Trải nghiệm của mentee</h2>
-          <div className={styles.feedBacksList}>
-            <Carousel enableAutoPlay isRTL={false} breakPoints={breakPoints}>
-              <div className={styles.feedBackItem}>
-                <Rating name="read-only" value={5} readOnly />
-                <p className={`${styles.feedBackDesc} thlt5`}>
-                  Em rất cảm ơn chị Linh đã dành cho em hẳn 1h40 phút để chia sẻ với em về ngành
-                  Công nghệ thông tin ạ. Những chia sẻ của chị vô cùng thực tế và có nhiều insight.
-                  Sau buổi chia sẻ, em đã có nhiều góc nhìn hơn về HR, có cả những update mà khi học
-                  trên trường không được nhắc tới. Em chúc chị Linh luôn vui vẻ và thành công trong
-                  công việc. Loveee youuu
-                </p>
-                <div className={styles.feedBackInfo}>
-                  <img className={styles.feedBackAvatar} src="/static/avatar1.jpg" alt="avatar" />
-                  <h3 className={styles.feedBackName}>Thanh Tuấn</h3>
+        <div className={`${styles.contentDarkSection}`}>
+          <div className="contentSection">
+            <h2 className={styles.contentHeading}>Trải nghiệm của mentee</h2>
+            <div className={styles.feedBacksList}>
+              <Carousel enableAutoPlay isRTL={false} breakPoints={breakPoints}>
+                <div className={styles.feedBackItem}>
+                  <Rating name="read-only" value={5} readOnly />
+                  <p className={`${styles.feedBackDesc} thlt5`}>
+                    Em rất cảm ơn chị Linh đã dành cho em hẳn 1h40 phút để chia sẻ với em về ngành
+                    Công nghệ thông tin ạ. Những chia sẻ của chị vô cùng thực tế và có nhiều
+                    insight. Sau buổi chia sẻ, em đã có nhiều góc nhìn hơn về HR, có cả những update
+                    mà khi học trên trường không được nhắc tới. Em chúc chị Linh luôn vui vẻ và
+                    thành công trong công việc. Loveee youuu
+                  </p>
+                  <div className={styles.feedBackInfo}>
+                    <img className={styles.feedBackAvatar} src="/static/avatar1.jpg" alt="avatar" />
+                    <h3 className={styles.feedBackName}>Thanh Tuấn</h3>
+                  </div>
                 </div>
-              </div>
-              <div className={styles.feedBackItem}>
-                <Rating name="read-only" value={5} readOnly />
-                <p className={`${styles.feedBackDesc} thlt5`}>
-                  Cảm ơn anh rất nhiều đã chia sẽ nhiều thứ mới và trò chuyện một cách rất gần gủi.
-                  Sau cuộc nói chuyện với anh, mình biết thêm vài vấn đề quan trọng và hiểu hơn về
-                  chuyên ngành. Hơn nữa mình cũng biết một số điểm để cải thiển bản thân và cv
-                </p>
-                <div className={styles.feedBackInfo}>
-                  <img className={styles.feedBackAvatar} src="/static/avatar2.avif" alt="avatar" />
-                  <h3 className={styles.feedBackName}>Vinh Trần</h3>
+                <div className={styles.feedBackItem}>
+                  <Rating name="read-only" value={5} readOnly />
+                  <p className={`${styles.feedBackDesc} thlt5`}>
+                    Cảm ơn anh rất nhiều đã chia sẽ nhiều thứ mới và trò chuyện một cách rất gần
+                    gủi. Sau cuộc nói chuyện với anh, mình biết thêm vài vấn đề quan trọng và hiểu
+                    hơn về chuyên ngành. Hơn nữa mình cũng biết một số điểm để cải thiển bản thân và
+                    cv
+                  </p>
+                  <div className={styles.feedBackInfo}>
+                    <img
+                      className={styles.feedBackAvatar}
+                      src="/static/avatar2.avif"
+                      alt="avatar"
+                    />
+                    <h3 className={styles.feedBackName}>Vinh Trần</h3>
+                  </div>
                 </div>
-              </div>
-              <div className={styles.feedBackItem}>
-                <Rating name="read-only" value={5} readOnly />
-                <Typography
-                  sx={{ wordBreak: 'break-word' }}
-                  className={`${styles.feedBackDesc} thlt5`}
-                >
-                  Anh chia sẻ rất nhiệt tình và phân tích rất kỹ vấn đề. Sau buổi chia sẻ, em đã có
-                  cái nhìn rõ hơn về định hướng nghề nghiệp của bản thân. Em cảm ơn anh nhiều nhiều
-                  nhiều ạ
-                </Typography>
-                <div className={styles.feedBackInfo}>
-                  <img className={styles.feedBackAvatar} src="/static/avatar4.avif" alt="avatar" />
-                  <h3 className={styles.feedBackName}>Hoàng Việt</h3>
+                <div className={styles.feedBackItem}>
+                  <Rating name="read-only" value={5} readOnly />
+                  <Typography
+                    sx={{ wordBreak: 'break-word' }}
+                    className={`${styles.feedBackDesc} thlt5`}
+                  >
+                    Anh chia sẻ rất nhiệt tình và phân tích rất kỹ vấn đề. Sau buổi chia sẻ, em đã
+                    có cái nhìn rõ hơn về định hướng nghề nghiệp của bản thân. Em cảm ơn anh nhiều
+                    nhiều nhiều ạ
+                  </Typography>
+                  <div className={styles.feedBackInfo}>
+                    <img
+                      className={styles.feedBackAvatar}
+                      src="/static/avatar4.avif"
+                      alt="avatar"
+                    />
+                    <h3 className={styles.feedBackName}>Hoàng Việt</h3>
+                  </div>
                 </div>
-              </div>
-              <div className={styles.feedBackItem}>
-                <Rating name="read-only" value={5} readOnly />
-                <p className={`${styles.feedBackDesc} thlt5`}>
-                  Em rất cảm ơn chị Linh đã dành cho em hẳn 1h40 phút để chia sẻ với em về ngành
-                  Công nghệ thông tin ạ. Những chia sẻ của chị vô cùng thực tế và có nhiều insight.
-                  Sau buổi chia sẻ, em đã có nhiều góc nhìn hơn về HR, có cả những update mà khi học
-                  trên trường không được nhắc tới. Em chúc chị Linh luôn vui vẻ và thành công trong
-                  công việc. Loveee youuu
-                </p>
-                <div className={styles.feedBackInfo}>
-                  <img className={styles.feedBackAvatar} src="/static/avatar3.avif" alt="avatar" />
-                  <h3 className={styles.feedBackName}>Bùi Mai Phương</h3>
+                <div className={styles.feedBackItem}>
+                  <Rating name="read-only" value={5} readOnly />
+                  <p className={`${styles.feedBackDesc} thlt5`}>
+                    Em rất cảm ơn chị Linh đã dành cho em hẳn 1h40 phút để chia sẻ với em về ngành
+                    Công nghệ thông tin ạ. Những chia sẻ của chị vô cùng thực tế và có nhiều
+                    insight. Sau buổi chia sẻ, em đã có nhiều góc nhìn hơn về HR, có cả những update
+                    mà khi học trên trường không được nhắc tới. Em chúc chị Linh luôn vui vẻ và
+                    thành công trong công việc. Loveee youuu
+                  </p>
+                  <div className={styles.feedBackInfo}>
+                    <img
+                      className={styles.feedBackAvatar}
+                      src="/static/avatar3.avif"
+                      alt="avatar"
+                    />
+                    <h3 className={styles.feedBackName}>Bùi Mai Phương</h3>
+                  </div>
                 </div>
-              </div>
-            </Carousel>
+              </Carousel>
+            </div>
           </div>
         </div>
-        <div className={styles.contentSection}>
-          <h2 className={styles.contentHeading}>
-            Bạn còn chờ gì nữa? <br /> Trở thành mentor ngay hôm nay!
-          </h2>
-          <div className={styles.buttonGroup}>
-            <Link href="/register/mentor">
-              <a className={`${styles.btnPrimary} ${styles.askBtn}`}>Trở thành mentor</a>
-            </Link>
+        <div className={`${styles.contentSection} contentSection`}>
+          <div className="contentSection">
+            <h2 className={styles.contentHeading}>
+              Bạn còn chờ gì nữa? <br /> Trở thành mentor ngay hôm nay!
+            </h2>
+            <div className={styles.buttonGroup}>
+              <Link href="/register/mentor">
+                <a className={`${styles.btn} ${styles.btnGreen} ${styles.btnAnimated}`}>
+                  Trở thành mentor
+                </a>
+              </Link>
 
-            <Link href="/authenticate/register">
-              <a className={`${styles.btnPrimary} ${styles.askBtn}`}>Đăng ký mentee</a>
-            </Link>
+              <Link href="/authenticate/register">
+                <a className={`${styles.btn} ${styles.btnGreen} ${styles.btnAnimated}`}>
+                  Đăng ký mentee
+                </a>
+              </Link>
+            </div>
           </div>
         </div>
         <footer className="footer p-10 bg-base-200 text-base-content">
