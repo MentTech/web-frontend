@@ -4596,6 +4596,11 @@ react-virtualized-auto-sizer@^1.0.6:
   resolved "https://registry.npmjs.org/react-virtualized-auto-sizer/-/react-virtualized-auto-sizer-1.0.6.tgz"
   integrity sha512-7tQ0BmZqfVF6YYEWcIGuoR3OdYe8I/ZFbNclFlGOC3pMqunkYF/oL30NCjSGl9sMEb17AnzixDz98Kqc3N76HQ==
 
+react-webcam@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/react-webcam/-/react-webcam-7.0.1.tgz#8249e1d621eb4bba7e3f52135f562439d0528df3"
+  integrity sha512-8E/Eb/7ksKwn5QdLn67tOR7+TdP9BZdu6E5/DSt20v8yfW/s0VGBigE6VA7R4278mBuBUowovAB3DkCfVmSPvA==
+
 react-window@^1.8.7:
   version "1.8.7"
   resolved "https://registry.npmjs.org/react-window/-/react-window-1.8.7.tgz"
