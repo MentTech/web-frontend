@@ -19,6 +19,7 @@ import { Box } from '@mui/system'
 import { setToastError, setToastSuccess } from '@utils/method'
 import { theme } from '@utils/theme'
 import { useFindMentor } from 'context/FindMentorProvider'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -89,6 +90,8 @@ export const RegisterMentorPage = () => {
   })
 
   const [loadingAvatar, setLoadingAvatar] = useState(false)
+
+  const router = useRouter()
 
   const onChangeAvatar = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
@@ -181,9 +184,8 @@ export const RegisterMentorPage = () => {
       setLoadingSubmit(true)
       const response = await mentorApi.applyMentor(payload)
       if (response.status === 201) {
-        setToastSuccess(
-          'Đăng ký thành công! Hãy kiểm tra email để xác nhận thông tin đăng ký mentor'
-        )
+        setToastSuccess('Đăng ký thành công! Bạn có thể xác minh danh tính ngay bây giờ.')
+        router.push(`/register/mentor/verify/${response.data.verifyCode}`)
       }
     } catch (error) {
       if (String(error).includes('409')) {
@@ -209,6 +211,9 @@ export const RegisterMentorPage = () => {
         <Box className="df fdc jcc" p={2}>
           <Box>
             <HeadingPrimary>Thông tin liên hệ</HeadingPrimary>
+            <Typography variant={'body1'}>
+              Vui lòng nhập chính xác các thông tin dưới đây để thực hiện xác minh danh tính.
+            </Typography>
             <Box className="df aic w100">
               <Box className="df fdc " style={{ flex: 1 }}>
                 <TextField

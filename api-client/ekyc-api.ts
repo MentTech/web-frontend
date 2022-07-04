@@ -1,4 +1,5 @@
 import axios from 'axios'
+import axiosClient from './axios-client'
 import { config } from '@config/main'
 
 const axiosKYC = axios.create({
@@ -10,12 +11,10 @@ const axiosKYC = axios.create({
   },
 })
 
-interface ImageFormData {
-  file: File
-  title: string
-  description: string
+interface VerifyMentorPayload {
+  dataSign: string
+  dataBase64: string
 }
-
 interface CheckImageFrontFormData {
   img_front: string
   client_session?: string
@@ -39,5 +38,13 @@ export const ekycApi = {
         'mac-address': 'TEST1',
       },
     })
+  },
+
+  checkVerifyCode(token: string) {
+    return axiosClient.get(`/v1/mentor/verify/${token}`)
+  },
+
+  verifyMentor(token: string, payload: VerifyMentorPayload) {
+    return axiosClient.post(`/v1/mentor/verify/${token}`, payload)
   },
 }
