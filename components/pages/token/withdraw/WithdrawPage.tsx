@@ -1,10 +1,22 @@
 import { LoadingIndicator } from '@components/common/LoadingIndicator/LoadingIndicator'
+import { useUserTransaction } from '@context/UserTransactionProvider'
 import { useWithdraw } from '@context/WithdrawProvider'
+import { useProfile } from '@hooks/use-profile'
 import { OrderWithdrawResult } from '@models/order'
-import { Button, Container, Paper, Stack, TextField, Tooltip, Typography } from '@mui/material'
+import { LoadingButton } from '@mui/lab'
+import {
+  Button,
+  Chip,
+  Container,
+  Paper,
+  Stack,
+  TextField,
+  Tooltip,
+  Typography,
+} from '@mui/material'
 import { Box } from '@mui/system'
 import { COLOR } from '@utils/color'
-import React, { useReducer, useState } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import Lottie from 'react-lottie'
 const empty = require('../../../../public/static/58796-warning.json')
 
@@ -106,7 +118,20 @@ const InfoBox = ({
 const checkIsEmail = (email: string) => new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).test(email)
 
 export const WithdrawPage = () => {
+  const { balance } = useUserTransaction()
+  const { profile = {} } = useProfile()
   const [state, dispatch] = useReducer(reducer, withdrawInitialState)
+
+  useEffect(() => {
+    dispatch({
+      type: 'name',
+      payload: profile.name,
+    })
+    dispatch({
+      type: 'email',
+      payload: profile.email,
+    })
+  }, [profile])
 
   const [errorText, setErrorText] = useState('')
 
@@ -131,16 +156,22 @@ export const WithdrawPage = () => {
 
   const onSubmit = async () => {
     if (state.token === 0 || !state.name || !state.email || checkIsEmail(state.email) === false) {
-      setErrorText('Thông tin chưa chính xác! Vui lòng nhập đầy đủ thông tin')
+      setErrorText('Thông tin chưa chính xác! Vui lòng nhập đầy đủ thông tin!')
       return
     }
     if (state.token < 1000) {
-      setErrorText('Số token rút phải lớn hơn 1000')
+      setErrorText('Số token rút phải lớn hơn 1000!')
+      return
+    }
+    if (state.token > balance) {
+      setErrorText('Số dư tài khoản không đủ!')
       return
     }
     onWithdraw(state)
     setErrorText('')
   }
+
+  const isDisableSubmit = !state.email || !state.name || !state.token
 
   return (
     <LoadingIndicator loading={loading} style={{ marginTop: 40 }}>
@@ -176,16 +207,60 @@ export const WithdrawPage = () => {
                     label="Số token"
                     required
                     placeholder="Nhập vào lượng token bạn muốn rút..."
+                    defaultValue={state.token || 0}
                     {...formProps('token')}
                   />
-                  <TextField
-                    fullWidth
-                    label="Ghi chú"
-                    placeholder="Nhập ghi chú..."
-                    multiline
-                    rows={4}
-                    {...formProps('note')}
-                  />
+                  <Box className="df aic">
+                    <Typography variant="caption">Chọn nhanh:</Typography>
+                    <Chip
+                      sx={{
+                        ml: 1,
+                      }}
+                      onClick={() =>
+                        dispatch({
+                          type: 'token',
+                          payload: 1000,
+                        })
+                      }
+                      label={'1000'}
+                    />
+                    <Chip
+                      sx={{
+                        ml: 1,
+                      }}
+                      onClick={() =>
+                        dispatch({
+                          type: 'token',
+                          payload: 3000,
+                        })
+                      }
+                      label={'3000'}
+                    />
+                    <Chip
+                      sx={{
+                        ml: 1,
+                      }}
+                      onClick={() =>
+                        dispatch({
+                          type: 'token',
+                          payload: 5000,
+                        })
+                      }
+                      label={'5000'}
+                    />
+                    <Chip
+                      sx={{
+                        ml: 1,
+                      }}
+                      onClick={() =>
+                        dispatch({
+                          type: 'token',
+                          payload: 10000,
+                        })
+                      }
+                      label={'10000'}
+                    />
+                  </Box>
                 </Stack>
 
                 <Typography
@@ -212,20 +287,21 @@ export const WithdrawPage = () => {
                     </Typography>
                   </Box>
                   <Box style={{ flex: 1 }}>
-                    <Button
+                    <LoadingButton
                       disableRipple
                       fullWidth
                       style={{
-                        background: loadingWithdraw ? COLOR.NEUTRAL_8 : COLOR.PRIMARY_1,
+                        background: isDisableSubmit ? COLOR.NEUTRAL_8 : COLOR.PRIMARY_1,
                         color: COLOR.WHITE,
                         textTransform: 'none',
                         height: 56,
                       }}
+                      loading={loadingWithdraw}
                       onClick={onSubmit}
-                      disabled={loadingWithdraw}
+                      disabled={isDisableSubmit}
                     >
                       Rút tiền
-                    </Button>
+                    </LoadingButton>
                   </Box>
                 </Box>
               </Box>
