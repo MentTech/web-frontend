@@ -1,5 +1,6 @@
 import { MentorLayout } from '@components/layouts'
 import { WithdrawPage } from '@components/pages/token/withdraw/WithdrawPage'
+import UserTransactionProvider from '@context/UserTransactionProvider'
 import WithdrawProvider from '@context/WithdrawProvider'
 import { NextPageWithLayout } from '@models/common'
 import React from 'react'
@@ -7,7 +8,9 @@ import React from 'react'
 const Withdraw: NextPageWithLayout = () => {
   return (
     <WithdrawProvider>
-      <WithdrawPage />
+      <UserTransactionProvider>
+        <WithdrawPage />
+      </UserTransactionProvider>
     </WithdrawProvider>
   )
 }

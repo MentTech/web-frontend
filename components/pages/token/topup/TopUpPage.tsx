@@ -1,7 +1,18 @@
 import { LoadingIndicator } from '@components/common/LoadingIndicator/LoadingIndicator'
 import { TopUpPaymentMethod, useTopUp } from '@context/TopUpProvider'
 import { useProfile } from '@hooks/use-profile'
-import { Button, Card, Container, Grid, Paper, Stack, TextField, Typography } from '@mui/material'
+import { LoadingButton } from '@mui/lab'
+import {
+  Button,
+  Card,
+  Chip,
+  Container,
+  Grid,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material'
 import { Box } from '@mui/system'
 import { COLOR } from '@utils/color'
 import { stat } from 'fs'
@@ -138,11 +149,26 @@ const PaymentInfo = ({ onBack }: { onBack: () => void }) => {
 }
 
 export const TopUpPage = () => {
+  const { profile } = useProfile()
+
+  const { name, email } = profile || {}
+
   const [state, dispatch] = useReducer(reducer, topUpInitialState)
 
   const [errorText, setErrorText] = useState('')
 
   const { loading, onTopUp, loadingTopUp, topupRate, setCurrentTopUp } = useTopUp()
+
+  useEffect(() => {
+    dispatch({
+      type: 'name',
+      payload: profile.name,
+    })
+    dispatch({
+      type: 'email',
+      payload: profile.email,
+    })
+  }, [profile])
 
   const formProps = (field: string) => ({
     value: state[field as keyof TopUpPageReducerProps] || null,
@@ -193,8 +219,7 @@ export const TopUpPage = () => {
     setCurrentTopUp({})
   }
 
-  const isDisableSubmit =
-    loadingTopUp || !state.paymentMethod || !state.token || !state.name || !state.email
+  const isDisableSubmit = !state.paymentMethod || !state.token || !state.name || !state.email
 
   return (
     <LoadingIndicator loading={loading} style={{ marginTop: 40 }}>
@@ -243,6 +268,7 @@ export const TopUpPage = () => {
                       label="Tên"
                       required
                       placeholder="Nhập tên..."
+                      defaultValue={name || ''}
                       {...formProps('name')}
                     />
 
@@ -251,6 +277,7 @@ export const TopUpPage = () => {
                       label="Email"
                       type={'email'}
                       required
+                      defaultValue={email || ''}
                       placeholder="Nhập email..."
                       {...formProps('email')}
                     />
@@ -258,17 +285,73 @@ export const TopUpPage = () => {
                       fullWidth
                       label="Số token"
                       required
+                      defaultValue={state.token}
                       placeholder="Nhập vào lượng token bạn muốn nạp..."
                       {...formProps('token')}
                     />
-                    <TextField
-                      fullWidth
-                      label="Ghi chú"
-                      placeholder="Nhập ghi chú..."
-                      multiline
-                      rows={4}
-                      {...formProps('note')}
-                    />
+                    <Box className="df aic">
+                      <Typography variant="caption">Chọn nhanh:</Typography>
+                      <Chip
+                        sx={{
+                          ml: 1,
+                        }}
+                        onClick={() =>
+                          dispatch({
+                            type: 'token',
+                            payload: 100,
+                          })
+                        }
+                        label={'100'}
+                      />
+                      <Chip
+                        sx={{
+                          ml: 1,
+                        }}
+                        onClick={() =>
+                          dispatch({
+                            type: 'token',
+                            payload: 500,
+                          })
+                        }
+                        label={'500'}
+                      />
+                      <Chip
+                        sx={{
+                          ml: 1,
+                        }}
+                        onClick={() =>
+                          dispatch({
+                            type: 'token',
+                            payload: 1000,
+                          })
+                        }
+                        label={'1000'}
+                      />
+                      <Chip
+                        sx={{
+                          ml: 1,
+                        }}
+                        onClick={() =>
+                          dispatch({
+                            type: 'token',
+                            payload: 3000,
+                          })
+                        }
+                        label={'3000'}
+                      />
+                      <Chip
+                        sx={{
+                          ml: 1,
+                        }}
+                        onClick={() =>
+                          dispatch({
+                            type: 'token',
+                            payload: 10000,
+                          })
+                        }
+                        label={'10000'}
+                      />
+                    </Box>
                   </Stack>
 
                   <Typography
@@ -295,7 +378,7 @@ export const TopUpPage = () => {
                       </Typography>
                     </Box>
                     <Box style={{ flex: 1 }}>
-                      <Button
+                      <LoadingButton
                         disableRipple
                         fullWidth
                         style={{
@@ -305,10 +388,11 @@ export const TopUpPage = () => {
                           height: 56,
                         }}
                         onClick={onSubmit}
+                        loading={loadingTopUp}
                         disabled={isDisableSubmit}
                       >
                         Thanh toán
-                      </Button>
+                      </LoadingButton>
                     </Box>
                   </Box>
                 </Box>

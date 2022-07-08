@@ -102,7 +102,7 @@ export default function DashBoard(props: DashBoardProps) {
           <div className="flex flex-col justify-start">
             <p className="text-gray-700 dark:text-gray-100 text-4xl text-left font-bold my-4">
               {!isNaN(avgRating?.average) ? (
-                avgRating?.average
+                Number.parseFloat(avgRating?.average).toFixed(2)
               ) : (
                 <div className="text-sm">Đang tải...</div>
               )}
