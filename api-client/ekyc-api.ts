@@ -2,15 +2,6 @@ import axios from 'axios'
 import axiosClient from './axios-client'
 import { config } from '@config/main'
 
-const axiosKYC = axios.create({
-  baseURL: config.ekycApiURL,
-  headers: {
-    Authorization: 'Bearer ' + config.ekycAccessToken,
-    'Token-id': config.ekycTokenId,
-    'Token-key': config.ekycTokenKey,
-  },
-})
-
 interface VerifyMentorPayload {
   dataSign: string
   dataBase64: string
@@ -23,6 +14,27 @@ interface CheckImageFrontFormData {
   token: string
 }
 
+interface CompareFaceFormData {
+  img_front: String
+  img_face: String
+  client_session: String
+  token: String
+}
+
+interface CheckValidCardFormData {
+  img: string
+  client_session: string
+}
+
+const axiosKYC = axios.create({
+  baseURL: config.ekycApiURL,
+  headers: {
+    Authorization: 'Bearer ' + config.ekycAccessToken,
+    'Token-id': config.ekycTokenId,
+    'Token-key': config.ekycTokenKey,
+  },
+})
+
 export const ekycApi = {
   uploadImage(formData: FormData) {
     return axiosKYC.post('/file-service/v1/addFile', formData, {
@@ -34,6 +46,22 @@ export const ekycApi = {
 
   front(formData: CheckImageFrontFormData) {
     return axiosKYC.post('/ai/v1/ocr/id/front', formData, {
+      headers: {
+        'mac-address': 'TEST1',
+      },
+    })
+  },
+
+  checkValidIdentityCard(formData: CheckValidCardFormData) {
+    return axiosKYC.post('/ai/v1/card/liveness', formData, {
+      headers: {
+        'mac-address': 'TEST1',
+      },
+    })
+  },
+
+  compareFace(formData: CompareFaceFormData) {
+    return axiosKYC.post('/ai/v1/face/compare', formData, {
       headers: {
         'mac-address': 'TEST1',
       },
