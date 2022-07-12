@@ -155,7 +155,7 @@ export const WithdrawPage = () => {
   })
 
   const onSubmit = async () => {
-    if (state.token === 0 || !state.name || !state.email || checkIsEmail(state.email) === false) {
+    if (state.token === 0 || !state.name || !state.email) {
       setErrorText('Thông tin chưa chính xác! Vui lòng nhập đầy đủ thông tin!')
       return
     }
