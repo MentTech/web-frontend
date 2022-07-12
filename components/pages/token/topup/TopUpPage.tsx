@@ -190,13 +190,7 @@ export const TopUpPage = () => {
   const [step, setStep] = useState(0)
 
   const onSubmit = async () => {
-    if (
-      state.token === 0 ||
-      !state.name ||
-      !state.email ||
-      checkIsEmail(state.email) === false ||
-      !state.paymentMethod
-    ) {
+    if (state.token === 0 || !state.name || !state.email || !state.paymentMethod) {
       setErrorText('Thông tin chưa chính xác! Vui lòng nhập đầy đủ thông tin')
       return
     }
