@@ -122,13 +122,13 @@ export default function Verify(props: VerifyIProps) {
           })
           if (res3.status === 201) {
             setSuccess(true)
-          } else {
-            toast.error('Xác minh thất bại, thông tin đã nhập không trùng khớp với giấy tờ!')
           }
         } else {
           toast.error('Xác minh thất bại, khuôn mặt không khớp với giấy tờ!')
         }
-      } catch (err) {}
+      } catch (err) {
+        toast.error('Xác minh thất bại, thông tin đã nhập không trùng khớp với giấy tờ!')
+      }
     }
   }
 
