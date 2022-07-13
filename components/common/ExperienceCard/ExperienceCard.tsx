@@ -24,9 +24,7 @@ export default function ExperienceCard({ experience, onEditClick }: ExperienceCa
             sx={{ fontSize: '16px', color: 'rgba(0,0,0, .6)' }}
           >
             {moment(new Date(experience.startAt)).format('MMMM YYYY')} -{' '}
-            {experience.endAt
-              ? moment(new Date(experience.startAt)).format('MMMM YYYY')
-              : 'Hiện tại'}
+            {experience.endAt ? moment(new Date(experience.endAt)).format('MMMM YYYY') : 'Hiện tại'}
           </Typography>
           <Typography component="p">{experience.company}</Typography>
           <Typography component="p" sx={{ color: 'rgba(0,0,0,.6)', mt: 2 }}>

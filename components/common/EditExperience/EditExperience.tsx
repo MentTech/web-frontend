@@ -76,11 +76,15 @@ export default function EditExperience({
     resolver: yupResolver(schema),
   })
 
+  const mode = watch('isCurrent')
+
+  useEffect(() => {
+    setValue('endAt', mode ? null : getValues('endAt'))
+  }, [mode])
+
   function editSubmit(data: any) {
     onEditClick({ ...data, id: experience.id })
   }
-
-  const mode = watch('isCurrent')
 
   const modalActions = (
     <>
